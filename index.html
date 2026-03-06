@@ -1,10 +1,287 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <title>Dronaut</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRNT • Dronaut | Mapování a průzkum drony</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body style="text-align: center;">
-    <img src="images/drnt_logo.png" alt="Dronaut Logo" />
+<body>
+  <header>
+    <div class="header-top">
+      <img src="images/drnt_logo.png" alt="DRNT logo" loading="lazy" />
+      <button class="nav-toggle" aria-expanded="false" aria-label="Otevřít navigaci">
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <h1>DRNT – profesionální mapování a průzkum pomocí dronů</h1>
+    <p>
+      Pomáháme firmám i institucím získat přesná prostorová data rychle a s vysokou
+      přesností. Převádíme letecké snímky na užitečné mapy, mračna bodů na 3D modely a
+      analytické podklady pro další rozhodování.
+    </p>
+    <nav aria-label="Sekce stránky">
+      <ul>
+        <li><a href="#o-nas">O nás</a></li>
+        <li><a href="#sluzby">Služby</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#technologie">Technologie</a></li>
+        <li><a href="#pro-koho">Pro koho</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="o-nas">
+      <h2>O nás</h2>
+      <p>
+        DRNT vznikl jako spojení vášní pro drony a geodata. Naše mise je jasná: dodávat
+        spolehlivé a použitelné výsledky, které pomáhají klientům škálovat projekty,
+        řešit rizika a šetřit čas i náklady.
+      </p>
+      <div class="row">
+        <div class="card">
+          <h3>Krátká historie</h3>
+          <p>
+            Začínali jsme jako malý tým v oblasti GIS, dnes pokrýváme kompletní proces
+            od plánování letu až po hotové výstupy. Každý projekt stavíme na přesnosti a
+            ověřených postupech.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Tým a certifikace</h3>
+          <p>
+            Naši piloti a specialisté mají certifikace pro komerční lety, práci se senzory a
+            zpracování dat. Pracujeme se standardy kvality ISO a ASTM.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Proč právě my</h3>
+          <p>
+            Kvalita dat, rychlost dodání a transparentní komunikace. Využíváme moderní
+            technologie, analyzujeme výsledky a poskytujeme jasné doporučení pro další
+            kroky.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sluzby">
+      <h2>Služby</h2>
+      <p>
+        Nabízíme široké portfolio služeb pro různé obory – stavebnictví, infrastrukturu,
+        zemědělství, energetiku, životní prostředí i krizové situace.
+      </p>
+      <div class="row">
+        <div class="card">
+          <h3>Mapování a fotogrammetrie</h3>
+          <p>
+            Výstupy: ortofotomapy, klastry bodů, základní metriky.
+          </p>
+          <p>
+            Přínosy: rychlé ucelené pokrytí území pro plánování, kontrolu a dokumentaci.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Ortofotomapy</h3>
+          <p>
+            Výstupy: ortofoto včetně georeference, přesnost na úrovni centimetrů.
+          </p>
+          <p>
+            Přínosy: kvalitní podklad pro projektování, pozemkové úpravy, kontrolu stavby.
+          </p>
+        </div>
+        <div class="card">
+          <h3>3D modely terénu a budov</h3>
+          <p>
+            Výstupy: 3D modely, digitální modely terénu (DTM/DSM), mračna bodů.
+          </p>
+          <p>
+            Přínosy: vizualizace stavu, analýza objemů, příprava pro BIM/CAx.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Měření objemů</h3>
+          <p>
+            Výstupy: výpočty objemů zásobníků, hald, skládky materiálu.
+          </p>
+          <p>
+            Přínosy: rychlé a opakovatelné porovnání stavu / spotřeby materiálu.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Odvozené mapové a analytické výstupy</h3>
+          <p>
+            Výstupy: vrstevnice, sklonové mapy, klasifikace, NDVI, termální zobrazení.
+          </p>
+          <p>
+            Přínosy: detailní kontrola stavu, plánování údržby a identifikace rizik.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h2>Portfolio a reference</h2>
+      <p>
+        Ukázky výsledků z reálných projektů. Každý projekt je jiný, ale výstup je vždy
+        navržen pro konkrétní použití klienta.
+      </p>
+      <div class="gallery" aria-label="Ukázky fotek z letů dronem">
+        <div class="gallery-item">
+          <img src="images/drnt_logo.png" alt="Ukázka ortofota" loading="lazy" />
+          <p class="gallery-caption">Ortofoto / DEM (příklad)</p>
+        </div>
+        <div class="gallery-item">
+          <img src="images/drnt_logo.png" alt="Ukázka 3D modelu" loading="lazy" />
+          <p class="gallery-caption">3D model budov (příklad)</p>
+        </div>
+        <div class="gallery-item">
+          <img src="images/drnt_logo.png" alt="Záběr dronu" loading="lazy" />
+          <p class="gallery-caption">Záběry z letu (příklad)</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card">
+          <h3>Ortofoto & DEM</h3>
+          <p>
+            Kompletní ortofotomapa s DEM a kontrolními body. Použito v infrastrukturním
+            projektu pro návrh vedení trasy.
+          </p>
+        </div>
+        <div class="card">
+          <h3>3D model budov</h3>
+          <p>
+            Modellace komplexních střech a fasád pro plánování obnovy památkových budov.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Video a snímky z letu</h3>
+          <p>
+            Vizuální dokumentace průběhu prací včetně hodinových přele­tů a termálních průzkumů.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="technologie">
+      <h2>Technologie</h2>
+      <p>
+        Pracujeme s moderními drony a senzory, abychom zaručili vysokou kvalitu dat a
+        reprodukovatelnost výsledků.
+      </p>
+      <div class="row">
+        <div class="card">
+          <h3>Drony a senzory</h3>
+          <p>
+            Používáme systémy s RGB, multispektrálními, termálními i LiDAR senzory podle
+            specifikace projektu.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Software a metodiky</h3>
+          <p>
+            Zpracováváme data v profesionálních prostředích (Pix4D, Agisoft, Cloud&nbsp;Mapper).
+          </p>
+        </div>
+        <div class="card">
+          <h3>Standardy kvality</h3>
+          <p>
+            Dodržujeme standardy přesnosti, kontrolní body a reportujeme výsledky v souladu
+            s normami geodézie.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pro-koho">
+      <h2>Pro koho to je</h2>
+      <p>
+        Naše služby využívají:
+      </p>
+      <ul>
+        <li>stavební společnosti a developery</li>
+        <li>správce sítí, silnic a infrastruktury</li>
+        <li>lesnické a zemědělské provozy</li>
+        <li>obce a instituce pro plánování a krizový management</li>
+      </ul>
+    </section>
+
+    <section id="cenik">
+      <h2>Ceník / nabídka řešení</h2>
+      <p>
+        Ceník se odvíjí od rozsahu projektu, požadované přesnosti a použitých senzorů. Níže
+        jsou orientační balíčky – napište nám, pomůžeme sestavit řešení na míru.
+      </p>
+      <div class="row">
+        <div class="card">
+          <h3>Základní balíček</h3>
+          <p>
+            Mapování menšího území (do 5&nbsp;ha), ortofoto a základní 3D produkt.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Pokročilý balíček</h3>
+          <p>
+            Ortofoto s vylepšenou přesností, měření objemů a základní analytické výstupy.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Komplexní balíček</h3>
+          <p>
+            Kompletní dodávka s kombinací LiDAR/termální/multispektrálního snímání a
+            dodanými reporty.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt">
+      <h2>Kontakt</h2>
+      <p>
+        Máte zájem o nabídku nebo chcete konzultaci? Napište nám nebo zavolejte.
+      </p>
+      <p>
+        <strong>Email:</strong> <a href="mailto:info@drnt.cz">info@drnt.cz</a><br />
+        <strong>Telefon:</strong> <a href="tel:+420123456789">+420 123 456 789</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      © <span id="year"></span> DRNT. Všechna práva vyhrazena.
+    </p>
+    <div class="footer-links">
+      <a href="#o-nas">O nás</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const navToggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    if (navToggle && nav) {
+      navToggle.addEventListener('click', () => {
+        const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('open', !expanded);
+      });
+
+      // Close menu after selecting a link (mobile)
+      nav.addEventListener('click', (event) => {
+        if (event.target.tagName === 'A') {
+          navToggle.setAttribute('aria-expanded', 'false');
+          nav.classList.remove('open');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
