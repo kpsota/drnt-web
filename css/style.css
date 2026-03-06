@@ -37,7 +37,8 @@ header {
 }
 
 header img {
-  max-width: 260px;
+  max-width: 780px;
+  width: min(100%, 780px);
   height: auto;
   display: block;
   margin: 0 auto 1.5rem;
