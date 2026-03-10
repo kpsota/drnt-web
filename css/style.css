@@ -15,7 +15,7 @@
 
 body {
   margin: 0;
-  font-family: Supply, sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   color: var(--text);
   background: var(--bg);
   line-height: 1.6;
