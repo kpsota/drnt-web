@@ -1,0 +1,15 @@
+Ceník / nabídka řešení
+
+Ceník se odvíjí od rozsahu projektu, požadované přesnosti a použitých senzorů. Níže jsou orientační balíčky – napište nám, pomůžeme sestavit řešení na míru.
+
+Základní balíček
+
+Mapování menšího území (do 5 ha), ortofoto a základní 3D produkt.
+
+Pokročilý balíček
+
+Ortofoto s vylepšenou přesností, měření objemů a základní analytické výstupy.
+
+Komplexní balíček
+
+Kompletní dodávka s kombinací LiDAR/termální/multispektrálního snímání a dodanými reporty.

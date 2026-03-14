@@ -1,0 +1,21 @@
+Portfolio a reference
+
+Ukázky výsledků z reálných projektů. Každý projekt je jiný, ale výstup je vždy navržen pro konkrétní použití klienta.
+
+Ortofoto / DEM (příklad)
+
+3D model budov (příklad)
+
+Záběry z letu (příklad)
+
+Ortofoto & DEM
+
+Kompletní ortofotomapa s DEM a kontrolními body. Použito v infrastrukturním projektu pro návrh vedení trasy.
+
+3D model budov
+
+Modellace komplexních střech a fasád pro plánování obnovy památkových budov.
+
+Video a snímky z letu
+
+Vizuální dokumentace průběhu prací včetně hodinových přele­tů a termálních průzkumů.

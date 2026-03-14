@@ -1,0 +1,15 @@
+Technologie
+
+Pracujeme s moderními drony a senzory, abychom zaručili vysokou kvalitu dat a reprodukovatelnost výsledků.
+
+Drony a senzory
+
+Používáme systémy s RGB, multispektrálními, termálními i LiDAR senzory podle specifikace projektu.
+
+Software a metodiky
+
+Zpracováváme data v profesionálních prostředích (Pix4D, Agisoft, Cloud Mapper).
+
+Standardy kvality
+
+Dodržujeme standardy přesnosti, kontrolní body a reportujeme výsledky v souladu s normami geodézie.
