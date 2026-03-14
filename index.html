@@ -177,8 +177,6 @@
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
     const navToggle = document.querySelector('.nav-toggle');
     const nav = document.querySelector('nav');
 
@@ -222,8 +220,10 @@
       // Header
       const headerText = await loadText('header');
       const headerLines = headerText.split('\n\n');
-      document.getElementById('header-title').textContent = headerLines[0];
-      document.getElementById('header-description').textContent = headerLines[1];
+      const headerTitle = document.getElementById('header-title');
+      if (headerTitle) headerTitle.textContent = headerLines[0];
+      const headerDesc = document.getElementById('header-description');
+      if (headerDesc) headerDesc.textContent = headerLines[1];
 
       // O nás
       const onasText = await loadText('o-nas');
@@ -306,7 +306,9 @@
     }
 
     // Load content when page loads
-    document.addEventListener('DOMContentLoaded', populateContent);
+    document.addEventListener('DOMContentLoaded', () => {
+      populateContent().catch(error => console.error('Error in populateContent:', error));
+    });
   </script>
 </body>
 </html>
