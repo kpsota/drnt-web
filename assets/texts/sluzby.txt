@@ -2,12 +2,6 @@ Služby
 
 Nabízíme široké portfolio služeb pro různé obory – stavebnictví, infrastrukturu, zemědělství, energetiku, životní prostředí i krizové situace.
 
-Mapování a fotogrammetrie
-
-Výstupy: ortofotomapy, klastry bodů, základní metriky.
-
-Přínosy: rychlé ucelené pokrytí území pro plánování, kontrolu a dokumentaci.
-
 Ortofotomapy
 
 Výstupy: ortofoto včetně georeference, přesnost na úrovni centimetrů.
@@ -26,8 +20,8 @@ Výstupy: výpočty objemů zásobníků, hald, skládky materiálu.
 
 Přínosy: rychlé a opakovatelné porovnání stavu / spotřeby materiálu.
 
-Odvozené mapové a analytické výstupy
+Odvozené mapové výstupy
 
-Výstupy: vrstevnice, sklonové mapy, klasifikace, NDVI, termální zobrazení.
+Výstupy: vrstevnice, sklonové mapy, klasifikace.
 
 Přínosy: detailní kontrola stavu, plánování údržby a identifikace rizik.
