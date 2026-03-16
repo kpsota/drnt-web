@@ -73,6 +73,13 @@ header h1 {
   white-space: nowrap;
 }
 
+.logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .logo-badge {
   display: inline-block;
   font-family: 'Orbitron', sans-serif;
