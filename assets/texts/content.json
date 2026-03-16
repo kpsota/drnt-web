@@ -1,0 +1,133 @@
+{
+  "header": {
+    "title": "Profesionální mapování a průzkum pomocí dronů",
+    "description": "Pomáháme firmám i institucím získat přesná prostorová data z leteckého snímkování. Dodáváme ortofotomapy, 3D modely, mračna bodů a další digitální mapové podklady pro plánování a analýzu."
+  },
+  "onas": {
+    "title": "O nás",
+    "description": "Dronaut vznikl jako spojení vášní pro drony a geodata. Naše mise je jasná: dodávat spolehlivé a použitelné výsledky, které pomáhají klientům škálovat projekty, řešit rizika a šetřit čas i náklady.",
+    "cards": [
+      {
+        "title": "Krátká historie",
+        "description": "Začínali jsme jako malý tým v oblasti GIS, dnes pokrýváme kompletní proces od plánování letu až po hotové výstupy. Každý projekt stavíme na přesnosti a ověřených postupech."
+      },
+      {
+        "title": "Tým a certifikace",
+        "description": "Naši piloti a specialisté mají certifikace pro komerční lety, práci se senzory a zpracování dat. Pracujeme se standardy kvality ISO a ASTM."
+      },
+      {
+        "title": "Proč právě my",
+        "description": "Kvalita dat, rychlost dodání a transparentní komunikace. Využíváme moderní technologie, analyzujeme výsledky a poskytujeme jasné doporučení pro další kroky."
+      }
+    ],
+    "fullText": [
+      "Naše uskupení vzniklo v roce 2024 a na trh jsme vstoupili jako firma v roce 2026. Stojí za námi dva hlavní představitelé s vysokoškolským vzděláním v oboru kartografie a geoinformatiky (GIS), kteří mají odborné zkušenosti s moderními technologiemi využívanými v oblasti dronů, IT a geodézie.",
+      "Naším cílem je přinášet nové služby založené na využití moderních technologií, které pomáhají zpřesňovat, zefektivňovat a zkvalitňovat dosavadní postupy při sběru a zpracování dat. Díky propojení geoinformatiky, bezpilotních technologií a datových analýz dokážeme poskytovat přesné a prakticky využitelné informace pro široké spektrum klientů.",
+      "Naše řešení pomáhají organizacím, obcím i firmám efektivně spravovat jejich majetek, zeleň, dopravní infrastrukturu, bezpečnost i složky životního prostředí. Věříme, že moderní technologie mohou významně přispět k lepšímu rozhodování, kvalitnější správě území a udržitelnému rozvoji."
+    ]
+  },
+  "sluzby": {
+    "title": "Služby",
+    "description": "Nabízíme široké portfolio služeb pro různé obory – stavebnictví, infrastrukturu, zemědělství, energetiku, životní prostředí i krizové situace.",
+    "cards": [
+      {
+        "title": "Ortofotomapy",
+        "desc1": "Výstupy: ortofoto včetně georeference, přesnost na úrovni centimetrů.",
+        "desc2": "Přínosy: kvalitní podklad pro projektování, pozemkové úpravy, kontrolu stavby."
+      },
+      {
+        "title": "3D modely terénu a budov",
+        "desc1": "Výstupy: 3D modely, digitální modely terénu (DTM/DSM), mračna bodů.",
+        "desc2": "Přínosy: vizualizace stavu, analýza objemů, příprava pro BIM/CAx."
+      },
+      {
+        "title": "Měření objemů",
+        "desc1": "Výstupy: výpočty objemů zásobníků, hald, skládky materiálu.",
+        "desc2": "Přínosy: rychlé a opakovatelné porovnání stavu / spotřeby materiálu."
+      },
+      {
+        "title": "Odvozené mapové výstupy",
+        "desc1": "Výstupy: vrstevnice, sklonové mapy, klasifikace.",
+        "desc2": "Přínosy: detailní kontrola stavu, plánování údržby a identifikace rizik."
+      }
+    ]
+  },
+  "portfolio": {
+    "title": "Portfolio a reference",
+    "description": "Ukázky výsledků z reálných projektů. Každý projekt je jiný, ale výstup je vždy navržen pro konkrétní použití klienta.",
+    "gallery": [
+      "Ortofoto / DEM (příklad)",
+      "3D model budov (příklad)",
+      "Záběry z letu (příklad)"
+    ],
+    "cards": [
+      {
+        "title": "Ortofoto & DEM",
+        "description": "Kompletní ortofotomapa s DEM a kontrolními body. Použito v infrastrukturním projektu pro návrh vedení trasy."
+      },
+      {
+        "title": "3D model budov",
+        "description": "Modellace komplexních střech a fasád pro plánování obnovy památkových budov."
+      },
+      {
+        "title": "Video a snímky z letu",
+        "description": "Vizuální dokumentace průběhu prací včetně hodinových přeletů a termálních průzkumů."
+      }
+    ]
+  },
+  "technologie": {
+    "title": "Technologie",
+    "description": "Pracujeme s moderními drony a senzory, abychom zaručili vysokou kvalitu dat a reprodukovatelnost výsledků.",
+    "cards": [
+      {
+        "title": "Drony a senzory",
+        "description": "Používáme systémy s RGB, multispektrálními, termálními i LiDAR senzory podle specifikace projektu."
+      },
+      {
+        "title": "Software a metodiky",
+        "description": "Zpracováváme data v profesionálních prostředích (Pix4D, Agisoft, Cloud Mapper)."
+      },
+      {
+        "title": "Standardy kvality",
+        "description": "Dodržujeme standardy přesnosti, kontrolní body a reportujeme výsledky v souladu s normami geodézie."
+      }
+    ]
+  },
+  "prokoho": {
+    "title": "Pro koho to je",
+    "description": "Naše služby využívají:",
+    "items": [
+      "stavební společnosti a developery",
+      "správce sítí, silnic a infrastruktury",
+      "lesnické a zemědělské provozy",
+      "obce a instituce pro plánování a krizový management"
+    ]
+  },
+  "cenik": {
+    "title": "Ceník / nabídka řešení",
+    "description": "Ceník se odvíjí od rozsahu projektu, požadované přesnosti a použitých senzorů. Níže jsou orientační balíčky – napište nám, pomůžeme sestavit řešení na míru.",
+    "cards": [
+      {
+        "title": "Základní balíček",
+        "description": "Mapování menšího území (do 5 ha), ortofoto a základní 3D produkt."
+      },
+      {
+        "title": "Pokročilý balíček",
+        "description": "Ortofoto s vylepšenou přesností, měření objemů a základní analytické výstupy."
+      },
+      {
+        "title": "Komplexní balíček",
+        "description": "Kompletní dodávka s kombinací LiDAR/termální/multispektrálního snímání a dodanými reporty."
+      }
+    ]
+  },
+  "kontakt": {
+    "title": "Kontakt",
+    "description": "Máte zájem o nabídku nebo chcete konzultaci? Napište nám nebo zavolejte.",
+    "email": "info@drnt.cz",
+    "phone": "+420 123 456 789"
+  },
+  "footer": {
+    "text": "Dronaut. Všechna práva vyhrazena."
+  }
+}

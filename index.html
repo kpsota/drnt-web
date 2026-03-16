@@ -204,19 +204,18 @@
       });
     }
 
-    // Load text content dynamically
-    function loadText(section) {
-      return new Promise((resolve, reject) => {
+    // Load all content from a single JSON file
+    function loadContent() {
+      return new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', `assets/texts/${section}.txt`, true);
+        xhr.open('GET', 'assets/texts/content.json', true);
         xhr.onreadystatechange = function() {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-              console.log(`Loaded ${section}:`, xhr.responseText);
-              resolve(xhr.responseText);
+              resolve(JSON.parse(xhr.responseText));
             } else {
-              console.error(`Error loading ${section}.txt: ${xhr.status}`);
-              resolve('');
+              console.error(`Error loading content.json: ${xhr.status}`);
+              resolve({});
             }
           }
         };
@@ -225,91 +224,72 @@
     }
 
     async function populateContent() {
+      const c = await loadContent();
+
       // Header
-      const headerText = await loadText('header');
-      const headerLines = headerText.split('\n\n');
       const headerTitle = document.getElementById('header-title');
-      if (headerTitle) headerTitle.textContent = headerLines[0];
+      if (headerTitle) headerTitle.textContent = c.header.title;
       const headerDesc = document.getElementById('header-description');
-      if (headerDesc) headerDesc.textContent = headerLines[1];
+      if (headerDesc) headerDesc.textContent = c.header.description;
 
       // O nás
-      const onasText = await loadText('o-nas');
-      const onasLines = onasText.split('\n\n');
-      document.getElementById('onas-title').textContent = onasLines[0];
-      document.getElementById('onas-description').textContent = onasLines[1];
-      document.getElementById('onas-card1-title').textContent = onasLines[2];
-      document.getElementById('onas-card1-description').textContent = onasLines[3];
-      document.getElementById('onas-card2-title').textContent = onasLines[4];
-      document.getElementById('onas-card2-description').textContent = onasLines[5];
-      document.getElementById('onas-card3-title').textContent = onasLines[6];
-      document.getElementById('onas-card3-description').textContent = onasLines[7];
+      document.getElementById('onas-title').textContent = c.onas.title;
+      document.getElementById('onas-description').textContent = c.onas.description;
+      c.onas.cards.forEach((card, i) => {
+        document.getElementById(`onas-card${i+1}-title`).textContent = card.title;
+        document.getElementById(`onas-card${i+1}-description`).textContent = card.description;
+      });
 
       // Služby
-      const sluzbyText = await loadText('sluzby');
-      const sluzbyLines = sluzbyText.split('\n\n');
-      document.getElementById('sluzby-title').textContent = sluzbyLines[0];
-      document.getElementById('sluzby-description').textContent = sluzbyLines[1];
-      for (let i = 0; i < 5; i++) {
-        const base = 2 + i * 3;
-        document.getElementById(`sluzby-card${i+1}-title`).textContent = sluzbyLines[base];
-        document.getElementById(`sluzby-card${i+1}-desc1`).textContent = sluzbyLines[base + 1];
-        document.getElementById(`sluzby-card${i+1}-desc2`).textContent = sluzbyLines[base + 2];
-      }
+      document.getElementById('sluzby-title').textContent = c.sluzby.title;
+      document.getElementById('sluzby-description').textContent = c.sluzby.description;
+      c.sluzby.cards.forEach((card, i) => {
+        document.getElementById(`sluzby-card${i+1}-title`).textContent = card.title;
+        document.getElementById(`sluzby-card${i+1}-desc1`).textContent = card.desc1;
+        document.getElementById(`sluzby-card${i+1}-desc2`).textContent = card.desc2;
+      });
 
       // Portfolio
-      const portfolioText = await loadText('portfolio');
-      const portfolioLines = portfolioText.split('\n\n');
-      document.getElementById('portfolio-title').textContent = portfolioLines[0];
-      document.getElementById('portfolio-description').textContent = portfolioLines[1];
-      document.getElementById('portfolio-gallery1').textContent = portfolioLines[2];
-      document.getElementById('portfolio-gallery2').textContent = portfolioLines[3];
-      document.getElementById('portfolio-gallery3').textContent = portfolioLines[4];
-      document.getElementById('portfolio-card1-title').textContent = portfolioLines[5];
-      document.getElementById('portfolio-card1-description').textContent = portfolioLines[6];
-      document.getElementById('portfolio-card2-title').textContent = portfolioLines[7];
-      document.getElementById('portfolio-card2-description').textContent = portfolioLines[8];
-      document.getElementById('portfolio-card3-title').textContent = portfolioLines[9];
-      document.getElementById('portfolio-card3-description').textContent = portfolioLines[10];
+      document.getElementById('portfolio-title').textContent = c.portfolio.title;
+      document.getElementById('portfolio-description').textContent = c.portfolio.description;
+      c.portfolio.gallery.forEach((label, i) => {
+        document.getElementById(`portfolio-gallery${i+1}`).textContent = label;
+      });
+      c.portfolio.cards.forEach((card, i) => {
+        document.getElementById(`portfolio-card${i+1}-title`).textContent = card.title;
+        document.getElementById(`portfolio-card${i+1}-description`).textContent = card.description;
+      });
 
       // Technologie
-      const technologieText = await loadText('technologie');
-      const technologieLines = technologieText.split('\n\n');
-      document.getElementById('technologie-title').textContent = technologieLines[0];
-      document.getElementById('technologie-description').textContent = technologieLines[1];
-      for (let i = 0; i < 3; i++) {
-        document.getElementById(`technologie-card${i+1}-title`).textContent = technologieLines[2 + i * 2];
-        document.getElementById(`technologie-card${i+1}-description`).textContent = technologieLines[3 + i * 2];
-      }
+      document.getElementById('technologie-title').textContent = c.technologie.title;
+      document.getElementById('technologie-description').textContent = c.technologie.description;
+      c.technologie.cards.forEach((card, i) => {
+        document.getElementById(`technologie-card${i+1}-title`).textContent = card.title;
+        document.getElementById(`technologie-card${i+1}-description`).textContent = card.description;
+      });
 
       // Pro koho
-      const prokohoText = await loadText('pro-koho');
-      const prokohoLines = prokohoText.split('\n\n');
-      document.getElementById('prokoho-title').textContent = prokohoLines[0];
-      document.getElementById('prokoho-description').textContent = prokohoLines[1];
-      const listItems = prokohoLines.slice(2).map(line => `<li>${line}</li>`).join('');
-      document.getElementById('prokoho-list').innerHTML = listItems;
+      document.getElementById('prokoho-title').textContent = c.prokoho.title;
+      document.getElementById('prokoho-description').textContent = c.prokoho.description;
+      document.getElementById('prokoho-list').innerHTML = c.prokoho.items.map(item => `<li>${item}</li>`).join('');
 
       // Ceník
-      const cenikText = await loadText('cenik');
-      const cenikLines = cenikText.split('\n\n');
-      document.getElementById('cenik-title').textContent = cenikLines[0];
-      document.getElementById('cenik-description').textContent = cenikLines[1];
-      for (let i = 0; i < 3; i++) {
-        document.getElementById(`cenik-card${i+1}-title`).textContent = cenikLines[2 + i * 2];
-        document.getElementById(`cenik-card${i+1}-description`).textContent = cenikLines[3 + i * 2];
-      }
+      document.getElementById('cenik-title').textContent = c.cenik.title;
+      document.getElementById('cenik-description').textContent = c.cenik.description;
+      c.cenik.cards.forEach((card, i) => {
+        document.getElementById(`cenik-card${i+1}-title`).textContent = card.title;
+        document.getElementById(`cenik-card${i+1}-description`).textContent = card.description;
+      });
 
       // Kontakt
-      const kontaktText = await loadText('kontakt');
-      const kontaktLines = kontaktText.split('\n\n');
-      document.getElementById('kontakt-title').textContent = kontaktLines[0];
-      document.getElementById('kontakt-description').textContent = kontaktLines[1];
-      document.getElementById('kontakt-details').innerHTML = kontaktLines[2].replace('Email: ', '<strong>Email:</strong> <a href="mailto:info@drnt.cz">') + '</a><br />' + kontaktLines[3].replace('Telefon: ', '<strong>Telefon:</strong> <a href="tel:+420123456789">') + '</a>';
+      document.getElementById('kontakt-title').textContent = c.kontakt.title;
+      document.getElementById('kontakt-description').textContent = c.kontakt.description;
+      document.getElementById('kontakt-details').innerHTML =
+        `<strong>Email:</strong> <a href="mailto:${c.kontakt.email}">${c.kontakt.email}</a><br />` +
+        `<strong>Telefon:</strong> <a href="tel:${c.kontakt.phone.replace(/\s/g, '')}">${c.kontakt.phone}</a>`;
 
       // Footer
-      const footerText = await loadText('footer');
-      document.getElementById('footer-text').innerHTML = `© <span id="year"></span> ${footerText}`;
+      document.getElementById('footer-text').innerHTML = `© <span id="year"></span> ${c.footer.text}`;
       document.getElementById('year').textContent = new Date().getFullYear();
     }
 
