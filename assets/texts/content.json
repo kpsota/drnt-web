@@ -1,133 +1,133 @@
 {
   "header": {
-    "title": "Profesionální mapování a průzkum pomocí dronů",
-    "description": "Pomáháme firmám i institucím získat přesná prostorová data z leteckého snímkování. Dodáváme ortofotomapy, 3D modely, mračna bodů a další digitální mapové podklady pro plánování a analýzu."
+    "title": "Precizní data z výšky. Inteligentní mapování pro vaše projekty.",
+    "description": "Pomáháme firmám i institucím získat přesné digitální podklady z leteckého snímkování. Dodáváme ortofotomapy, 3D modely a mračna bodů, na kterých můžete bezpečně stavět a plánovat."
   },
   "onas": {
-    "title": "O nás",
-    "description": "Dronaut vznikl jako spojení vášní pro drony a geodata. Naše mise je jasná: dodávat spolehlivé a použitelné výsledky, které pomáhají klientům škálovat projekty, řešit rizika a šetřit čas i náklady.",
+    "title": "Kde se potkává geoinformatika s technologií dronů",
+    "description": "Dronaut je spojením vášně pro bezpilotní systémy a hluboké odbornosti v geoinformatice. Naše mise je jasná: dodávat data, která šetří čas, eliminují rizika a přinášejí reálnou hodnotu pro váš byznys.",
     "cards": [
       {
-        "title": "Krátká historie",
-        "description": "Začínali jsme jako malý tým v oblasti GIS, dnes pokrýváme kompletní proces od plánování letu až po hotové výstupy. Každý projekt stavíme na přesnosti a ověřených postupech."
+        "title": "Odbornost v GIS",
+        "description": "Nejsme jen piloti. Rozumíme struktuře dat, souřadnicovým systémům a kartografickým standardům. Každý výstup stavíme na geodetické přesnosti."
       },
       {
-        "title": "Tým a certifikace",
-        "description": "Naši piloti a specialisté mají certifikace pro komerční lety, práci se senzory a zpracování dat. Pracujeme se standardy kvality ISO a ASTM."
+        "title": "Certifikace a kvalita",
+        "description": "Létáme bezpečně, legálně a podle standardů ISO a ASTM. Naši specialisté drží veškerá oprávnění pro komerční provoz i v náročných lokalitách."
       },
       {
-        "title": "Proč právě my",
-        "description": "Kvalita dat, rychlost dodání a transparentní komunikace. Využíváme moderní technologie, analyzujeme výsledky a poskytujeme jasné doporučení pro další kroky."
+        "title": "Data s přidanou hodnotou",
+        "description": "Neodevzdáváme jen snímky. Analyzujeme výsledky, počítáme objemy a poskytujeme jasná doporučení pro vaše další kroky a investice."
       }
     ],
     "fullText": [
-      "Naše uskupení vzniklo v roce 2024 a na trh jsme vstoupili jako firma v roce 2026. Stojí za námi dva hlavní představitelé s vysokoškolským vzděláním v oboru kartografie a geoinformatiky (GIS), kteří mají odborné zkušenosti s moderními technologiemi využívanými v oblasti dronů, IT a geodézie.",
-      "Naším cílem je přinášet nové služby založené na využití moderních technologií, které pomáhají zpřesňovat, zefektivňovat a zkvalitňovat dosavadní postupy při sběru a zpracování dat. Díky propojení geoinformatiky, bezpilotních technologií a datových analýz dokážeme poskytovat přesné a prakticky využitelné informace pro široké spektrum klientů.",
-      "Naše řešení pomáhají organizacím, obcím i firmám efektivně spravovat jejich majetek, zeleň, dopravní infrastrukturu, bezpečnost i složky životního prostředí. Věříme, že moderní technologie mohou významně přispět k lepšímu rozhodování, kvalitnější správě území a udržitelnému rozvoji."
+      "Náš tým se zformoval v roce 2024 a na trh jsme vstoupili jako firma v roce 2026. Stojí za námi experti s vysokoškolským vzděláním v oboru kartografie a geoinformatiky, kteří propojují akademické znalosti s moderní praxí v IT a geodézii.",
+      "Cílem Dronautu je přinášet služby, které zásadně zefektivňují sběr dat v terénu. Díky propojení bezpilotních technologií a pokročilé datové analýzy dokážeme poskytovat informace, které byly dříve drahé nebo technicky nedosažitelné.",
+      "Pomáháme organizacím, obcím i soukromému sektoru efektivně spravovat majetek, infrastrukturu i životní prostředí. Věříme, že přesná data jsou základem pro lepší rozhodování a udržitelný rozvoj každého územního celku."
     ]
   },
   "sluzby": {
-    "title": "Služby",
-    "description": "Nabízíme široké portfolio služeb pro různé obory – stavebnictví, infrastrukturu, zemědělství, energetiku, životní prostředí i krizové situace.",
+    "title": "Naše služby",
+    "description": "Nabízíme komplexní portfolio řešení pro stavebnictví, energetiku, zemědělství i veřejnou správu.",
     "cards": [
       {
         "title": "Ortofotomapy",
-        "desc1": "Výstupy: ortofoto včetně georeference, přesnost na úrovni centimetrů.",
-        "desc2": "Přínosy: kvalitní podklad pro projektování, pozemkové úpravy, kontrolu stavby."
+        "desc1": "Výstupy: Georeferencované snímky s centimetrovou přesností pixelu.",
+        "desc2": "Přínosy: Precizní podklad pro projektování, pasportizaci a kontrolu postupu prací."
       },
       {
-        "title": "3D modely terénu a budov",
-        "desc1": "Výstupy: 3D modely, digitální modely terénu (DTM/DSM), mračna bodů.",
-        "desc2": "Přínosy: vizualizace stavu, analýza objemů, příprava pro BIM/CAx."
+        "title": "3D modely a mračna bodů",
+        "desc1": "Výstupy: Digitální modely terénu (DTM/DSM), 3D vizualizace a BIM podklady.",
+        "desc2": "Přínosy: Snadná analýza sklonů, vizualizace budov a příprava pro projekční software."
       },
       {
-        "title": "Měření objemů",
-        "desc1": "Výstupy: výpočty objemů zásobníků, hald, skládky materiálu.",
-        "desc2": "Přínosy: rychlé a opakovatelné porovnání stavu / spotřeby materiálu."
+        "title": "Výpočty kubatur",
+        "desc1": "Výstupy: Přesné výpočty objemů skládek, hald a vytěženého materiálu.",
+        "desc2": "Přínosy: Rychlé a bezpečné měření bez nutnosti zastavení provozu nebo pohybu v terénu."
       },
       {
-        "title": "Odvozené mapové výstupy",
-        "desc1": "Výstupy: vrstevnice, sklonové mapy, klasifikace.",
-        "desc2": "Přínosy: detailní kontrola stavu, plánování údržby a identifikace rizik."
+        "title": "Analytické mapy",
+        "desc1": "Výstupy: Vrstevnice, analýzy odtoku, klasifikace zeleně a termovize.",
+        "desc2": "Přínosy: Identifikace rizikových míst, plánování údržby a monitoring zdraví vegetace."
       }
     ]
   },
   "portfolio": {
-    "title": "Portfolio a reference",
-    "description": "Ukázky výsledků z reálných projektů. Každý projekt je jiný, ale výstup je vždy navržen pro konkrétní použití klienta.",
+    "title": "Referenční projekty",
+    "description": "Ukázky reálných výsledků. Každý výstup přizpůsobujeme specifickým potřebám a formátům klienta.",
     "gallery": [
-      "Ortofoto / DEM (příklad)",
-      "3D model budov (příklad)",
-      "Záběry z letu (příklad)"
+      "Detailní ortofoto & DEM lokality",
+      "3D model historické budovy",
+      "Termální inspekce a LiDAR mračno"
     ],
     "cards": [
       {
-        "title": "Ortofoto & DEM",
-        "description": "Kompletní ortofotomapa s DEM a kontrolními body. Použito v infrastrukturním projektu pro návrh vedení trasy."
+        "title": "Infrastrukturní mapování",
+        "description": "Tvorba ortofotomapy a DEM pro plánování nové trasy vedení s milimetrovou přesností návaznosti."
       },
       {
-        "title": "3D model budov",
-        "description": "Modellace komplexních střech a fasád pro plánování obnovy památkových budov."
+        "title": "Pasportizace objektů",
+        "description": "Komplexní 3D modelování fasád a střech pro účely rekonstrukce a památkové péče."
       },
       {
-        "title": "Video a snímky z letu",
-        "description": "Vizuální dokumentace průběhu prací včetně hodinových přeletů a termálních průzkumů."
+        "title": "Vizuální inspekce",
+        "description": "Dokumentace rozsáhlých staveb a průmyslových celků včetně termálního průzkumu úniků tepla."
       }
     ]
   },
   "technologie": {
-    "title": "Technologie",
-    "description": "Pracujeme s moderními drony a senzory, abychom zaručili vysokou kvalitu dat a reprodukovatelnost výsledků.",
+    "title": "Technologické zázemí",
+    "description": "Kvalita dat začíná u špičkového hardwaru a končí u profesionálního zpracování.",
     "cards": [
       {
-        "title": "Drony a senzory",
-        "description": "Používáme systémy s RGB, multispektrálními, termálními i LiDAR senzory podle specifikace projektu."
+        "title": "Senzory a drony",
+        "description": "Využíváme RGB s vysokým rozlišením, LiDAR, termální i multispektrální senzory pro různorodé aplikace."
       },
       {
-        "title": "Software a metodiky",
-        "description": "Zpracováváme data v profesionálních prostředích (Pix4D, Agisoft, Cloud Mapper)."
+        "title": "Zpracování dat",
+        "description": "Pracujeme v profesionálním prostředí Pix4D, Agisoft a Cloud Mapper, které zaručují validitu výsledků."
       },
       {
-        "title": "Standardy kvality",
-        "description": "Dodržujeme standardy přesnosti, kontrolní body a reportujeme výsledky v souladu s normami geodézie."
+        "title": "Kontrola přesnosti",
+        "description": "Každý projekt kontrolujeme pomocí pozemních bodů (GCP) a reportujeme výslednou odchylku dle geodetických norem."
       }
     ]
   },
   "prokoho": {
-    "title": "Pro koho to je",
-    "description": "Naše služby využívají:",
+    "title": "Cílové obory",
+    "description": "Naše řešení jsou navržena pro profesionály v těchto oblastech:",
     "items": [
-      "stavební společnosti a developery",
-      "správce sítí, silnic a infrastruktury",
-      "lesnické a zemědělské provozy",
-      "obce a instituce pro plánování a krizový management"
+      "Stavební společnosti, architekti a developeři",
+      "Správci liniových staveb a energetické infrastruktury",
+      "Lesní hospodářství a precizní zemědělství",
+      "Města a obce pro krizové řízení a územní plánování"
     ]
   },
   "cenik": {
-    "title": "Ceník / nabídka řešení",
-    "description": "Ceník se odvíjí od rozsahu projektu, požadované přesnosti a použitých senzorů. Níže jsou orientační balíčky – napište nám, pomůžeme sestavit řešení na míru.",
+    "title": "Individuální nabídka",
+    "description": "Cena závisí na rozloze území, členitosti terénu a požadované výstupní kvalitě. Kontaktujte nás pro nacenění na míru.",
     "cards": [
       {
-        "title": "Základní balíček",
-        "description": "Mapování menšího území (do 5 ha), ortofoto a základní 3D produkt."
+        "title": "Základní mapování",
+        "description": "Rychlý sběr dat (do 5 ha), ortofotomapa a digitální model povrchu pro základní přehled."
       },
       {
-        "title": "Pokročilý balíček",
-        "description": "Ortofoto s vylepšenou přesností, měření objemů a základní analytické výstupy."
+        "title": "Profesionální analýza",
+        "description": "Vysoká přesnost s geodetickým zaměřením, výpočet kubatur a podrobné 3D mračno bodů."
       },
       {
-        "title": "Komplexní balíček",
-        "description": "Kompletní dodávka s kombinací LiDAR/termální/multispektrálního snímání a dodanými reporty."
+        "title": "Komplexní monitoring",
+        "description": "Multisenzorické snímání (např. LiDAR + Termo), periodické nálety a hloubkové expertní reporty."
       }
     ]
   },
   "kontakt": {
-    "title": "Kontakt",
-    "description": "Máte zájem o nabídku nebo chcete konzultaci? Napište nám nebo zavolejte.",
+    "title": "Kontaktujte nás",
+    "description": "Potřebujete poradit s výběrem technologie nebo poptat konkrétní lokalitu? Jsme vám k dispozici.",
     "email": "info@drnt.cz",
     "phone": "+420 123 456 789"
   },
   "footer": {
-    "text": "Dronaut. Všechna práva vyhrazena."
+    "text": "© 2026 Dronaut. Data, která dávají smysl."
   }
 }
