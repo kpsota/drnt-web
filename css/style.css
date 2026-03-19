@@ -68,9 +68,32 @@ header h1 {
 #logo {
   font-size: clamp(2rem, 10vw, 5rem);
   font-family: 'Chakra Petch', sans-serif;
-  color: #53CBF3;
   letter-spacing: 0.5em;
   white-space: nowrap;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+}
+
+/* Dvě vrstvy textu pro split-color efekt */
+.logo-layer {
+  display: block;
+}
+
+/* Bílá je základní vrstva — nastavuje výšku h1 */
+.logo-layer--white {
+  color: #ffffff;
+}
+
+/* Cyan překrývá zleva — antialiasing na hraně splyne s bílou, ne s tmavým pozadím */
+/* Střed písmene N ≈ 47 % šířky textu DRONAUT — upravte dle potřeby */
+.logo-layer--cyan {
+  color: #53CBF3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  clip-path: polygon(0% 0%, 47% 0%, 47% 100%, 0% 100%);
 }
 
 .logo-text {
@@ -85,6 +108,7 @@ header h1 {
   margin: -0.3em 0 0 0;
   opacity: 0.7;
   text-align: center;
+  letter-spacing: 0.5em;
 }
 
 .logo-wrap {
