@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Dronaut | Profesionální mapování drony a GIS"
+  },
+  "nav": {
+    "intro": "Úvod",
+    "services": "Služby",
+    "about": "O nás",
+    "technology": "Technologie",
+    "references": "Reference",
+    "contact": "Kontakt"
+  },
+  "intro": {
+    "heading": "DRONAUT",
+    "subheading": "Profesionální letecké mapování a GIS",
+    "text": "Přesná data z výšky pro váš projekt. Specializujeme se na fotogrammetrii, 3D digitalizaci a pokročilé zpracování v GIS.",
+    "button": "Konzultovat projekt"
+  },
+  "about": {
+    "heading": "Proč spolupracovat s námi?",
+    "text": "Propojujeme svět bezpilotních systémů, geoinformatiky a moderního IT. Naše expertíza zahrnuje nejen precizní pilotáž, ale především pokročilé zpracování dat, vizualizaci v GIS a správu rozsáhlých datových sad. Rozumíme struktuře dat stejně dobře jako pohybu v letovém prostoru.",
+    "founders": [
+      {
+        "name": "Ondřej Slavík",
+        "role": "Chief Pilot & Business Development",
+        "bio": "Certifikovaný pilot a stratég. Má na starosti bezpečné provedení leteckých operací a konzultace projektů tak, aby zvolená technologie přesně odpovídala vašim cílům.",
+        "icon": "user-tie"
+      },
+      {
+        "name": "Karel Psota",
+        "role": "Chief Data & GIS Officer",
+        "bio": "Expert na geoinformatiku a digitální zpracování leteckých dat. Zodpovídá za metodickou správnost výstupů a jejich bezproblémovou integraci do vašich CAD a GIS systémů.",
+        "icon": "database"
+      }
+    ],
+    "pillars": [
+      {
+        "title": "Letecká zkušenost a licence",
+        "text": "Disponujeme všemi potřebnými pilotními licencemi pro specifickou kategorii. Bezpečný a legální provoz v souladu s předpisy ÚCL a pojištění jsou pro nás samozřejmostí.",
+        "icon": "certificate"
+      },
+      {
+        "title": "GIS a precizní geodata",
+        "text": "Výstupy dodáváme ve standardních souřadnicových systémech a formátech, které jsou plně kompatibilní s vaším GIS, CAD nebo BIM softwarem.",
+        "icon": "globe"
+      },
+      {
+        "title": "IT a Moderní nástroje",
+        "text": "Využíváme moderní software a výpočetní technologie pro zpracování leteckých dat. Rozumíme automatizaci a zpracování velkých dat.",
+        "icon": "cogs"
+      }
+    ]
+  },
+  "services": [
+    {
+      "title": "Mapování a 3D digitalizace",
+      "text": "Tvorba ortofotomap, digitálních modelů povrchu a 3D modelů budov. Ideální podklad pro územní plánování, pasportizaci majetku a projekční činnost.",
+      "image": "images/pic01.jpg",
+      "alt": "Mapování",
+      "position": "center center"
+    },
+    {
+      "title": "Objemové analýzy",
+      "text": "Výpočty kubatur skládek a násypů s vysokou přesností. Pravidelný monitoring postupu prací na stavbách.",
+      "image": "images/pic02.jpg",
+      "alt": "Kubatury",
+      "position": "top center"
+    },
+    {
+      "title": "Video dokumentace a monitoring staveb",
+      "text": "Pravidelný vizuální monitoring postupu výstavby a technických celků. Detailní dokumentace pro snadný reporting.",
+      "image": "images/pic03.jpg",
+      "alt": "Monitoring",
+      "position": "25% 25%"
+    },
+    {
+      "title": "Vizuální marketing a foto",
+      "text": "Profesionální letecké fotografie a videozáznamy v 4K/6K kvalitě. Reprezentativní záběry pro váš web, sociální sítě či realitní trh, které zvýrazní unikátnost vašeho projektu.",
+      "image": "images/pic04.jpg",
+      "alt": "Letecká fotografie",
+      "position": "center center"
+    }
+  ],
+  "technology": {
+    "heading": "High-tech vybavení",
+    "text": "Kvalita výstupu je přímo závislá na použité technice a softwaru. Používáme špičkové nástroje pro sběr i zpracování dat.",
+    "stack": [
+      { "category": "Hardware", "items": ["Drony DJI", "GPS XYZ"] },
+      { "category": "Software", "items": ["Litchi Pilot", "OpenDroneMap", "QGIS"] }
+    ]
+  },
+  "references": {
+    "heading": "Naše realizace",
+    "projects": [
+      {
+        "client": "Dálnice D55",
+        "task": "Kompletní ortofotomapa dokončené výstavby úseku dálnice D55 s centimetrovou přesností pro účely kolaudace a dokumentace skutečného provedení.",
+        "tag": "Infrastruktura",
+        "icon": "road"
+      },
+      {
+        "client": "Rekultivace haldy Ostrava - Přívoz",
+        "task": "Letecké snímkování pro projekt rekultivace. Dodání digitálního modelu terénu (DMT) a odvozených mapových výstupů.",
+        "tag": "Ekologie a sanace",
+        "icon": "leaf"
+      },
+      {
+        "client": "3D digitalizace vodárenských objektů",
+        "task": "Detailní 3D skenování a tvorba mračna bodů a modelu jako podklad pro pasportizaci.",
+        "tag": "Průmyslová architektura",
+        "icon": "industry"
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Pojďme se sejít",
+    "intro": "Rádi vám ukážeme ukázky našich dat a navrhneme optimální metodiku pro váš projekt.",
+    "email": "info@drnt.cz",
+    "phone": "+420 123 456 789"
+  },
+  "footer": {
+    "copyright": "&copy; 2026 Dronaut. Data, která dávají smysl."
+  }
+}
