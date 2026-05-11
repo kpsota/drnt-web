@@ -106,10 +106,7 @@ body, input, select, textarea { font-size: 12.5pt; }
 	.spotlights > section + section { margin-top: 2em; }
 }
 @media screen and (max-width: 980px) {
-	.spotlights > section > .image { height: 14em; }
-}
-@media screen and (max-width: 736px) {
-	.spotlights > section > .image { height: 12em; }
+	.spotlights > section > .image { height: calc(100vw * 2 / 3); }
 }
 
 /* Mobile nav — sidebar is display:none at ≤736px in main.css, restore as compact top bar */
