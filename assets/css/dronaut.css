@@ -99,7 +99,42 @@ body, input, select, textarea { font-size: 12.5pt; }
 @media screen and (max-width: 1280px) { body, input, select, textarea { font-size: 8pt; } }
 @media screen and (max-width: 360px)  { body, input, select, textarea { font-size: 7pt; } }
 
-/* Services — smaller images, spacing between items */
-.spotlights > section { min-height: 14em; }
-.spotlights > section > .image { width: 14em; height: 14em; align-self: center; }
-.spotlights > section + section { margin-top: 2em; }
+/* Services — smaller images, spacing between items (desktop only) */
+@media screen and (min-width: 981px) {
+	.spotlights > section { min-height: 14em; }
+	.spotlights > section > .image { width: 14em; height: 9.33em; align-self: center; }
+	.spotlights > section + section { margin-top: 2em; }
+}
+
+/* Mobile nav — sidebar is display:none at ≤736px in main.css, restore as compact top bar */
+@media screen and (max-width: 736px) {
+	#sidebar {
+		display: block;
+		height: auto;
+		line-height: 2em;
+		overflow: visible;
+		padding: 0.75em 1em;
+		text-align: center;
+		width: 100%;
+	}
+	#sidebar > .inner {
+		flex-direction: row;
+		flex-wrap: wrap;
+		height: auto;
+		line-height: inherit;
+		justify-content: center;
+	}
+	#sidebar nav { height: auto; line-height: inherit; }
+	#sidebar nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0 1em;
+		height: auto;
+		line-height: inherit;
+		margin: 0;
+	}
+	#sidebar nav ul li { height: auto; line-height: inherit; margin: 0; padding: 0.25em 0; }
+	#sidebar nav a { height: auto; line-height: inherit; padding: 0; font-size: 0.55em; }
+	#sidebar + #wrapper { padding-top: 4em; }
+}
