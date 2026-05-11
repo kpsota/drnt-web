@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html lang="cs">
+	<head>
+		<title>Dronaut | Profesionální mapování a GIS analýzy</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="templates/story/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="templates/story/assets/css/noscript.css" /></noscript>
+
+
+	</head>
+	<body class="is-preload">
+		<div id="wrapper" class="divided">
+
+			<!-- Banner -->
+			<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+				<div class="content">
+					<h1 data-content="intro.heading">DRONAUT</h1>
+					<p class="major" data-content="intro.subheading"></p>
+					<p data-content="intro.text"></p>
+				</div>
+				<div class="image">
+					<img src="images/sluzby_ortophoto.png" alt="Dronaut" />
+				</div>
+			</section>
+
+			<!-- Služby — spotlighty -->
+			<div id="services" data-array="services" data-template="spotlight"></div>
+
+			<!-- Reference -->
+			<section class="wrapper style1 align-center" id="references">
+				<div class="inner">
+					<h2 data-content="references.heading">Naše realizace</h2>
+					<div class="items style1 medium onscroll-fade-in" data-array="references.projects" data-template="reference"></div>
+				</div>
+			</section>
+
+			<!-- O nás -->
+			<section class="wrapper style1 align-center" id="about">
+				<div class="inner">
+					<h2>O nás</h2>
+					<p data-content="about.text"></p>
+					<div class="items style1 medium onscroll-fade-in" data-array="about.founders" data-template="founder"></div>
+					<div class="items style1 medium onscroll-fade-in" data-array="about.pillars" data-template="pillar"></div>
+				</div>
+			</section>
+
+			<!-- Kontakt -->
+			<section class="wrapper style1 align-center" id="contact">
+				<div class="inner medium">
+					<h2 data-content="contact.heading">Pojďme se sejít</h2>
+					<p data-content="contact.intro"></p>
+					<ul class="actions special">
+						<li><a href="#" class="button primary large" data-content="contact.email">info@drnt.cz</a></li>
+						<li><a href="#" class="button large" data-content="contact.phone"></a></li>
+					</ul>
+				</div>
+			</section>
+
+			<!-- Footer -->
+			<footer class="wrapper style1 align-center">
+				<div class="inner">
+					<p data-content="footer.copyright"></p>
+				</div>
+			</footer>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="templates/story/assets/js/jquery.min.js"></script>
+		<script src="templates/story/assets/js/jquery.scrollex.min.js"></script>
+		<script src="templates/story/assets/js/jquery.scrolly.min.js"></script>
+		<script src="templates/story/assets/js/browser.min.js"></script>
+		<script src="templates/story/assets/js/breakpoints.min.js"></script>
+		<script src="templates/story/assets/js/util.js"></script>
+		<script src="templates/story/assets/js/main.js"></script>
+		<script>
+		fetch('content.json')
+			.then(r => r.json())
+			.then(c => {
+				const get = (obj, path) => path.split('.').reduce((o, k) => o?.[k], obj);
+
+				document.querySelectorAll('[data-content]').forEach(el => {
+					const val = get(c, el.dataset.content);
+					if (val !== undefined) el.innerHTML = Array.isArray(val) ? val.join(', ') : val;
+				});
+
+				const templates = {
+					spotlight: (item, i) => `
+						<section class="spotlight style1 orient-${i % 2 === 0 ? 'right' : 'left'} content-align-left image-position-center onscroll-image-fade-in">
+							<div class="content">
+								<h2>${item.title}</h2>
+								<p>${item.text}</p>
+							</div>
+							<div class="image">
+								<img src="${item.image}" alt="${item.alt}" />
+							</div>
+						</section>`,
+					reference: item => `
+						<section>
+							<span class="icon solid style2 major fa-${item.icon}"></span>
+							<h3>${item.client}</h3>
+							<p>${item.task}</p>
+							<p><strong>${item.tag}</strong></p>
+						</section>`,
+					founder: item => `
+						<section>
+							<span class="icon solid style2 major fa-${item.icon}"></span>
+							<h3>${item.name}</h3>
+							<p><em>${item.role}</em></p>
+							<p>${item.bio}</p>
+						</section>`,
+					pillar: item => `
+						<section>
+							<span class="icon solid style2 major fa-${item.icon}"></span>
+							<h3>${item.title}</h3>
+							<p>${item.text}</p>
+						</section>`,
+				};
+
+				document.querySelectorAll('[data-array]').forEach(el => {
+					const items = get(c, el.dataset.array);
+					const tmpl = templates[el.dataset.template];
+					if (Array.isArray(items) && tmpl) el.insertAdjacentHTML('beforeend', items.map(tmpl).join(''));
+				});
+
+				document.title = c.meta.title;
+			});
+		</script>
+
+	</body>
+</html>
