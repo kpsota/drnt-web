@@ -6,10 +6,112 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="templates/story/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="templates/story/assets/css/noscript.css" /></noscript>
+		<style>
+			section.banner { background-color: #ffffff; }
+
+			#topnav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				z-index: 1000;
+				background: #ffffff;
+				border-bottom: 1px solid rgba(0,0,0,0.1);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 2.5rem;
+				height: 3.5rem;
+			}
+			#topnav .logo {
+				font-weight: 700;
+				font-size: 1em;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: #000000;
+				text-decoration: none;
+			}
+			#topnav ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+			}
+			#topnav ul li {
+				border-left: 1px solid rgba(0,0,0,0.1);
+				padding: 0 1.5rem;
+			}
+			#topnav ul li:last-child {
+				border-right: 1px solid rgba(0,0,0,0.1);
+			}
+			#topnav ul a {
+				font-size: 0.8em;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: #000000;
+				text-decoration: none;
+				transition: color 0.2s;
+			}
+			#topnav ul a:hover { color: #47D3E5; }
+
+			#topnav-burger {
+				display: none;
+				background: none;
+				border: none;
+				outline: none;
+				-webkit-appearance: none;
+				font-size: 1.5em;
+				cursor: pointer;
+				color: #000;
+				padding: 0;
+				line-height: 1;
+			}
+			#topnav-burger,
+			#topnav-burger:focus,
+			#topnav-burger:focus-visible,
+			#topnav-burger:hover {
+				outline: none;
+				box-shadow: none;
+			}
+
+			@media (max-width: 768px) {
+				#topnav ul#topnav-links {
+					display: none;
+					flex-direction: column;
+					position: absolute;
+					top: 3.5rem;
+					left: 0;
+					right: 0;
+					background: #ffffff;
+					border-bottom: 1px solid rgba(0,0,0,0.1);
+					padding: 0.5rem 0;
+				}
+				#topnav ul#topnav-links.open { display: flex; }
+				#topnav-links li {
+					border-left: none;
+					border-right: none;
+					border-top: 1px solid rgba(0,0,0,0.07);
+					padding: 0.8rem 2.5rem;
+				}
+				#topnav-links li:last-child { border-right: none; }
+				#topnav-burger { display: block; }
+			}
+		</style>
 
 
 	</head>
 	<body class="is-preload">
+		<nav id="topnav">
+			<a href="#" class="logo" data-content="intro.heading">DRONAUT</a>
+			<ul id="topnav-links">
+				<li><a href="#services" class="scrolly" data-content="nav.services">Služby</a></li>
+				<li><a href="#references" class="scrolly" data-content="nav.references">Reference</a></li>
+				<li><a href="#about" class="scrolly" data-content="nav.about">O nás</a></li>
+				<li><a href="#contact" class="scrolly" data-content="nav.contact">Kontakt</a></li>
+			</ul>
+			<button id="topnav-burger" aria-label="Menu">&#9776;</button>
+		</nav>
+
 		<div id="wrapper" class="divided">
 
 			<!-- Banner -->
@@ -123,6 +225,12 @@
 
 				document.title = c.meta.title;
 			});
+
+			// Hamburger menu
+			const burger = document.getElementById('topnav-burger');
+			const links = document.getElementById('topnav-links');
+			burger.addEventListener('click', () => links.classList.toggle('open'));
+			links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
 		</script>
 
 	</body>
