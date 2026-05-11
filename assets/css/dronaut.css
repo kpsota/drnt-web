@@ -101,5 +101,5 @@ body, input, select, textarea { font-size: 12.5pt; }
 
 /* Services — smaller images, spacing between items */
 .spotlights > section { min-height: 14em; }
-.spotlights > section > .image { width: 14em; }
+.spotlights > section > .image { width: 14em; height: 14em; align-self: center; }
 .spotlights > section + section { margin-top: 2em; }
