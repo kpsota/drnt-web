@@ -46,7 +46,7 @@ fetch('content.json')
 			const items = get(c, el.dataset.array);
 			const tmpl = templates[el.dataset.template];
 			if (!Array.isArray(items) || !tmpl) return;
-			el.innerHTML = items.map(tmpl).join('');
+			el.insertAdjacentHTML('beforeend', items.map(tmpl).join(''));
 		});
 
 		// Re-run spotlight image init that main.js missed (sections didn't exist yet)
