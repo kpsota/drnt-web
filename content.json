@@ -22,14 +22,14 @@
     "founders": [
       {
         "name": "Ondřej Slavík",
-        "role": "Chief Pilot & Business Development",
+        "role": "Business Development & Chief Pilot",
         "bio": "Certifikovaný pilot a stratég. Má na starosti bezpečné provedení leteckých operací a konzultace projektů tak, aby zvolená technologie přesně odpovídala vašim cílům.",
         "icon": "user-tie"
       },
       {
         "name": "Karel Psota",
-        "role": "Chief Data & GIS Officer",
-        "bio": "Expert na geoinformatiku a digitální zpracování leteckých dat. Zodpovídá za metodickou správnost výstupů a jejich bezproblémovou integraci do vašich CAD a GIS systémů.",
+        "role": "Chief Technical Officer",
+        "bio": "Expert na geoinformatiku, IT a automatizovaní zpracování leteckých dat. Zodpovídá za metodickou správnost výstupů a jejich bezproblémovou integraci do vašich systémů.",
         "icon": "database"
       }
     ],
@@ -53,31 +53,45 @@
   },
   "services": [
     {
-      "title": "Mapování a 3D digitalizace",
-      "text": "Tvorba ortofotomap, digitálních modelů povrchu a 3D modelů budov. Ideální podklad pro územní plánování, pasportizaci majetku a projekční činnost.",
-      "image": "images/pic01.jpg",
-      "alt": "Mapování",
+      "title": "Ortofoto",
+      "text": "Vytváříme georeferencované ortofotomapy s deklarovanou přesností. Díky leteckým snímkům z našich dronů získáte nezkreslený a věrný obraz sledovaného území. Výsledná data jsou ideálním podkladem pro projekční práce, hloubkové analýzy i prezentace. Vysoké rozlišení vám zajistí detailní podklad pro každé strategické rozhodnutí.",
+      "image": "images/sluzby_ortophoto.png",
+      "alt": "Ortofoto",
       "position": "center center"
     },
     {
-      "title": "Objemové analýzy",
-      "text": "Výpočty kubatur skládek a násypů s vysokou přesností. Pravidelný monitoring postupu prací na stavbách.",
-      "image": "images/pic02.jpg",
+      "title": "3D Modely",
+      "text": "Tvoříme detailní 3D modely objektů, které přesně zachycují jejich tvar, strukturu i výškové poměry. Jsou nepostradatelné pro vizualizace, posuzování aktuálního stavu budov nebo vzdálenostní a strukturální analýzy. Získejte realistický digitální dvojče svého objektu, které si prohlédnete z libovolného úhlu.",
+      "image": "images/sluzby_3D.png",
+      "alt": "3D Modely",
+      "position": "center center"
+    },
+    {
+      "title": "Kubatury",
+      "text": "Pomocí opakovaného snímkování precizně sledujeme změny v čase a určujeme úbytek či přírůstek materiálu. Porovnáním jednotlivých etap měření získáte spolehlivý přehled o objemech a skutečném postupu prací. Tato služba je klíčová pro stavebnictví, těžební průmysl a logistiku sypkých materiálů.",
+      "image": "images/sluzby_kubatury.png",
       "alt": "Kubatury",
-      "position": "top center"
+      "position": "center center"
     },
     {
-      "title": "Video dokumentace a monitoring staveb",
-      "text": "Pravidelný vizuální monitoring postupu výstavby a technických celků. Detailní dokumentace pro snadný reporting.",
-      "image": "images/pic03.jpg",
-      "alt": "Monitoring",
-      "position": "25% 25%"
+      "title": "Časosběr",
+      "text": "Zajišťujeme pravidelné snímkování v průběhu času prostřednictvím videí, fotografií a tematických map. To vám umožní zpětně sledovat vývoj projektu od prvního kopnutí až po finální dokončení. Je to atraktivní a přehledný nástroj pro kontrolu investic, archivaci postupu a reprezentativní prezentaci zakázky.",
+      "image": "images/sluzby_casosber.png",
+      "alt": "Časosběr",
+      "position": "center center"
     },
     {
-      "title": "Vizuální marketing a foto",
-      "text": "Profesionální letecké fotografie a videozáznamy v 4K/6K kvalitě. Reprezentativní záběry pro váš web, sociální sítě či realitní trh, které zvýrazní unikátnost vašeho projektu.",
-      "image": "images/pic04.jpg",
-      "alt": "Letecká fotografie",
+      "title": "Krizový management",
+      "text": "Nasazujeme drony tam, kde rozhoduje rychlost a okamžitý přehled – například při povodních či jiných mimořádných událostech. Poskytujeme operativní monitoring vodních toků i dopravní situace, včetně analýzy průjezdnosti pro složky IZS. Naše data pomáhají k rychlejšímu rozhodování a efektivnějšímu řízení v kritických momentech.",
+      "image": "images/sluzby_krizovy_managment.png",
+      "alt": "Krizový management",
+      "position": "center center"
+    },
+    {
+      "title": "Foto a Video",
+      "text": "Vytváříme špičkové letecké fotografie a videa, které posunou vaši prezentaci na novou úroveň. Obsah je optimalizovaný pro webové stránky, sociální sítě i marketingové kampaně. Zároveň nabízíme specializované záběry pro realitní makléře, které pomáhají nemovitosti prodat rychleji. Zaujměte unikátní perspektivou, která dodá vašemu podnikání charakter.",
+      "image": "images/sluzby_foto_video.png",
+      "alt": "Foto a Video",
       "position": "center center"
     }
   ],
@@ -119,6 +133,6 @@
     "phone": "+420 123 456 789"
   },
   "footer": {
-    "copyright": "&copy; 2026 Dronaut. Data, která dávají smysl."
+    "copyright": "&copy; 2026 Dronaut. Data z dronů, která pomáhají."
   }
 }
