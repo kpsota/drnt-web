@@ -92,3 +92,9 @@ a.button.primary:hover {
 /* Accent link colors */
 a { color: rgba(255,255,255,0.7); }
 a:hover { color: #ffffff; }
+
+/* Font size — reduced globally */
+body, input, select, textarea { font-size: 12.5pt; }
+@media screen and (max-width: 1680px) { body, input, select, textarea { font-size: 9pt; } }
+@media screen and (max-width: 1280px) { body, input, select, textarea { font-size: 8pt; } }
+@media screen and (max-width: 360px)  { body, input, select, textarea { font-size: 7pt; } }
