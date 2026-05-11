@@ -102,11 +102,11 @@ body, input, select, textarea { font-size: 12.5pt; }
 /* Services — image sizing and spacing */
 @media screen and (min-width: 981px) {
 	.spotlights > section { min-height: 14em; }
-	.spotlights > section > .image { width: 18.2em; height: 12.13em; align-self: center; }
+	.spotlights > section > .image { width: 26em; height: 17.33em; align-self: center; }
 	.spotlights > section + section { margin-top: 2em; }
 }
 @media screen and (max-width: 980px) {
-	.spotlights > section > .image { height: calc(100vw * 2 / 3); }
+	.spotlights > section > .image { width: 65vw; height: calc(65vw * 2 / 3); margin: 0 auto; }
 }
 
 /* Mobile nav — sidebar is display:none at ≤736px in main.css, restore as compact top bar */
