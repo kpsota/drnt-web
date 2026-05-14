@@ -1,115 +1,314 @@
 <!DOCTYPE HTML>
-<!--
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html lang="cs">
 	<head>
 		<title>Dronaut | Profesionální mapování a GIS analýzy</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="stylesheet" href="assets/css/dronaut.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="templates/story/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="templates/story/assets/css/noscript.css" /></noscript>
+		<style>
+			/* --- tmavé téma --- */
+			body { background-color: #12141c; }
+			#wrapper { background-color: #12141c; }
+			#wrapper.divided > * + * { border-color: rgba(255,255,255,0.06); }
+			body, p { color: rgba(255,255,255,0.78); }
+			h1, h2, h3, h4 { color: #ffffff; }
+			a { color: rgba(255,255,255,0.65); }
+			a:hover { color: #47D3E5; }
+
+			/* banner */
+			section.banner { background-color: #171a28; }
+			section.banner h1 { color: #47D3E5; }
+			section.banner p.major { color: rgba(71,211,229,0.8); }
+			section.banner p:not(.major) { color: rgba(255,255,255,0.7); }
+			section.banner .content p.major {
+				position: relative;
+				padding-bottom: 1.4em;
+			}
+			section.banner .content p.major::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 100%;
+				height: 2px;
+				background: #47D3E5;
+				border-radius: 2px;
+			}
+
+			/* topnav */
+			#topnav {
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				z-index: 1000;
+				background: #0d0f17;
+				border-bottom: 1px solid rgba(255,255,255,0.08);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 2.5rem;
+				height: 3.5rem;
+			}
+			#topnav .logo {
+				font-weight: 700;
+				font-size: 1em;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: #ffffff;
+				text-decoration: none;
+			}
+			#topnav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+			#topnav ul li {
+				border-left: 1px solid rgba(255,255,255,0.08);
+				padding: 0 1.5rem;
+			}
+			#topnav ul li:last-child { border-right: 1px solid rgba(255,255,255,0.08); }
+			#topnav ul a {
+				font-size: 0.8em;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: rgba(255,255,255,0.7);
+				text-decoration: none;
+				transition: color 0.2s;
+			}
+			#topnav ul a:hover { color: #47D3E5; }
+
+			#topnav-burger {
+				display: none;
+				background: none;
+				border: none;
+				outline: none;
+				-webkit-appearance: none;
+				font-size: 1.5em;
+				cursor: pointer;
+				color: #ffffff;
+				padding: 0;
+				line-height: 1;
+			}
+			#topnav-burger,
+			#topnav-burger:focus,
+			#topnav-burger:focus-visible,
+			#topnav-burger:hover { outline: none; box-shadow: none; }
+
+			@media (max-width: 768px) {
+				#topnav ul#topnav-links {
+					display: none;
+					flex-direction: column;
+					position: absolute;
+					top: 3.5rem; left: 0; right: 0;
+					background: #0d0f17;
+					border-bottom: 1px solid rgba(255,255,255,0.08);
+					padding: 0.5rem 0;
+				}
+				#topnav ul#topnav-links.open { display: flex; }
+				#topnav-links li {
+					border-left: none; border-right: none;
+					border-top: 1px solid rgba(255,255,255,0.06);
+					padding: 0.8rem 2.5rem;
+				}
+				#topnav-links li:last-child { border-right: none; }
+				#topnav-burger { display: block; }
+			}
+
+			/* spotlighty — střídající se tmavé tóny */
+			.spotlight:nth-child(odd)  { background-color: #1a1d2d; }
+			.spotlight:nth-child(even) { background-color: #1f2239; }
+			.spotlight .content h2,
+			.spotlight .content p { color: rgba(255,255,255,0.85); }
+			.spotlight .content h2 { color: #ffffff; }
+
+			/* wrapper sekce */
+			.wrapper.style1             { background-color: #171a27; }
+			.wrapper.style1 h2,
+			.wrapper.style1 h3          { color: #ffffff; }
+			.wrapper.style1 p,
+			.wrapper.style1 strong      { color: rgba(255,255,255,0.78); }
+			footer.wrapper.style1       { background-color: #0d0f17; }
+
+			/* dělicí čáry v items gridu */
+			.wrapper.style1 .items section { border-color: rgba(255,255,255,0.1); }
+			.wrapper.style1 .items         { border-color: rgba(255,255,255,0.1); }
+
+			/* kruhy */
+			.circle-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 0.75rem;
+				padding: 1.5rem 1rem;
+				align-self: center;
+				flex: 0 0 42%;
+				box-sizing: border-box;
+			}
+			.circle-grid img {
+				width: 100%;
+				aspect-ratio: 1;
+				border-radius: 50%;
+				object-fit: cover;
+				display: block;
+				box-shadow: 0 0 0 3px #47D3E5, 0 2px 14px rgba(0,0,0,0.5);
+			}
+			@media (max-width: 768px) {
+				.circle-grid {
+					flex: 0 0 100%;
+					grid-template-columns: repeat(2, 1fr);
+					padding: 1rem 1.5rem;
+				}
+			}
+
+			/* accent čára pod nadpisem */
+			.spotlight .content h2 {
+				position: relative;
+				padding-bottom: 0.65em;
+			}
+			.spotlight .content h2::after {
+				content: '';
+				position: absolute;
+				bottom: 0; left: 0;
+				width: 2.8em;
+				height: 3px;
+				background: #47D3E5;
+				border-radius: 2px;
+			}
+		</style>
+
+
 	</head>
 	<body class="is-preload">
+		<nav id="topnav">
+			<a href="#" class="logo" data-content="intro.heading">DRONAUT</a>
+			<ul id="topnav-links">
+				<li><a href="#services" class="scrolly" data-content="nav.services">Služby</a></li>
+				<li><a href="#references" class="scrolly" data-content="nav.references">Reference</a></li>
+				<li><a href="#about" class="scrolly" data-content="nav.about">O nás</a></li>
+				<li><a href="#contact" class="scrolly" data-content="nav.contact">Kontakt</a></li>
+			</ul>
+			<button id="topnav-burger" aria-label="Menu">&#9776;</button>
+		</nav>
 
-		<!-- Sidebar -->
-			<section id="sidebar">
-				<div class="inner">
-					<nav>
-						<ul>
-							<li><a href="#intro" data-content="nav.intro">Úvod</a></li>
-							<li><a href="#one" data-content="nav.services">Služby</a></li>
-								<li><a href="#references" data-content="nav.references">Reference</a></li>
-							<li><a href="#about" data-content="nav.about">O nás</a></li>
-							<li><a href="#three" data-content="nav.contact">Kontakt</a></li>
-						</ul>
-					</nav>
+		<div id="wrapper" class="divided">
+
+			<!-- Banner -->
+			<section class="banner style1 orient-center content-align-center fullscreen onload-content-fade-up">
+				<div class="content">
+					<h1 data-content="intro.heading" style="font-weight: 900;">DRONAUT</h1>
+					<p class="major" data-content="intro.subheading" style="font-weight: 700;"></p>
+					<p data-content="intro.text"></p>
 				</div>
 			</section>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+			<!-- Služby — spotlighty -->
+			<div id="services" data-array="services" data-template="spotlight"></div>
 
-				<!-- Intro -->
-					<section id="intro" class="wrapper style1 fullscreen fade-up">
-						<div class="inner">
-							<h1 data-content="intro.heading">DRONAUT</h1>
-							<p class="major" data-content="intro.subheading">Expertíza v leteckém snímkování a geoinformatice</p>
-							<p data-content="intro.text">Dodáváme přesná prostorová data pro projektování, průmysl a samosprávy. Propojujeme svět bezpilotních systémů s pokročilou GIS analýzou a IT infrastrukturou.</p>
-
-						</div>
-					</section>
-
-				<!-- One — Služby -->
-					<section id="one" class="wrapper style2 spotlights" data-array="services" data-template="service">
-						<div class="inner">
-							<h2 data-content="servicesHeading">Naše služby</h2>
-						</div>
-					</section>
-
-
-				<!-- References — Realizace -->
-					<section id="references" class="wrapper style3 fade-up">
-						<div class="inner">
-							<h2 data-content="references.heading">Naše realizace</h2>
-							<div class="features" data-array="references.projects" data-template="reference"></div>
-						</div>
-					</section>
-
-				<!-- About — O nás -->
-					<section id="about" class="wrapper style3 fade-up">
-						<div class="inner">
-							<h2 data-content="about.heading">Proč spolupracovat s námi?</h2>
-							<p data-content="about.text">Nejsme jen operátoři dronů. Jsme specialisté na sběr a interpretaci dat s hlubokým technickým zázemím.</p>
-							<div class="features founders" data-array="about.founders" data-template="founder"></div>
-							<div class="features" data-array="about.pillars" data-template="pillar"></div>
-						</div>
-					</section>
-
-				<!-- Three — Kontakt -->
-					<section id="three" class="wrapper style1 fade-up">
-						<div class="inner">
-							<h2 data-content="contact.heading">Pojďme se sejít</h2>
-							<p data-content="contact.intro">Rádi vám ukážeme ukázky našich dat a navrhneme optimální metodiku pro váš projekt.</p>
-							<ul class="contact">
-								<li>
-									<h3>E-mail</h3>
-									<a href="mailto:info@drnt.cz" data-content="contact.email">info@drnt.cz</a>
-								</li>
-								<li>
-									<h3>Telefon</h3>
-									<span data-content="contact.phone">+420 123 456 789</span>
-								</li>
-							</ul>
-						</div>
-					</section>
-
-			</div>
-
-		<!-- Footer -->
-			<footer id="footer" class="wrapper style1-alt">
+			<!-- Reference -->
+			<section class="wrapper style1 align-center" id="references">
 				<div class="inner">
-					<ul class="menu">
-						<li data-content="footer.copyright">&copy; 2026 Dronaut. Data z dronů, která pomáhají.</li>
+					<h2 data-content="references.heading">Naše realizace</h2>
+					<div class="items style1 medium onscroll-fade-in" data-array="references.projects" data-template="reference"></div>
+				</div>
+			</section>
+
+			<!-- O nás -->
+			<section class="wrapper style1 align-center" id="about">
+				<div class="inner">
+					<h2>O nás</h2>
+					<p data-content="about.text"></p>
+					<div class="items style1 medium onscroll-fade-in" data-array="about.founders" data-template="founder"></div>
+					<div class="items style1 medium onscroll-fade-in" data-array="about.pillars" data-template="pillar"></div>
+				</div>
+			</section>
+
+			<!-- Kontakt -->
+			<section class="wrapper style1 align-center" id="contact">
+				<div class="inner medium">
+					<h2 data-content="contact.heading">Pojďme se sejít</h2>
+					<p data-content="contact.intro"></p>
+					<ul class="actions special">
+						<li><a href="#" class="button primary large" data-content="contact.email">info@drnt.cz</a></li>
+						<li><a href="#" class="button large" data-content="contact.phone"></a></li>
 					</ul>
+				</div>
+			</section>
+
+			<!-- Footer -->
+			<footer class="wrapper style1 align-center">
+				<div class="inner">
+					<p data-content="footer.copyright"></p>
 				</div>
 			</footer>
 
+		</div>
+
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/content-loader.js"></script>
+		<script src="templates/story/assets/js/jquery.min.js"></script>
+		<script src="templates/story/assets/js/jquery.scrollex.min.js"></script>
+		<script src="templates/story/assets/js/jquery.scrolly.min.js"></script>
+		<script src="templates/story/assets/js/browser.min.js"></script>
+		<script src="templates/story/assets/js/breakpoints.min.js"></script>
+		<script src="templates/story/assets/js/util.js"></script>
+		<script src="templates/story/assets/js/main.js"></script>
+		<script>
+		fetch('content.json')
+			.then(r => r.json())
+			.then(c => {
+				const get = (obj, path) => path.split('.').reduce((o, k) => o?.[k], obj);
+
+				document.querySelectorAll('[data-content]').forEach(el => {
+					const val = get(c, el.dataset.content);
+					if (val !== undefined) el.innerHTML = Array.isArray(val) ? val.join(', ') : val;
+				});
+
+				const templates = {
+					spotlight: (item, i) => {
+						const imgSection = Array.isArray(item.images)
+							? `<div class="circle-grid">${item.images.map(src => `<img src="${src}" alt="" />`).join('')}</div>`
+							: `<div class="image"><img src="${item.image}" alt="${item.alt || ''}" /></div>`;
+						return `
+						<section class="spotlight style1 orient-${i % 2 === 0 ? 'right' : 'left'} content-align-left image-position-center onscroll-image-fade-in">
+							<div class="content">
+								<h2>${item.title}</h2>
+								<p>${item.text}</p>
+							</div>
+							${imgSection}
+						</section>`;
+					},
+					reference: item => `
+						<section>
+							<span class="icon solid style2 major fa-${item.icon}"></span>
+							<h3>${item.client}</h3>
+							<p>${item.task}</p>
+							<p><strong>${item.tag}</strong></p>
+						</section>`,
+					founder: item => `
+						<section>
+							<span class="icon solid style2 major fa-${item.icon}"></span>
+							<h3>${item.name}</h3>
+							<p><em>${item.role}</em></p>
+							<p>${item.bio}</p>
+						</section>`,
+					pillar: item => `
+						<section>
+							<span class="icon solid style2 major fa-${item.icon}"></span>
+							<h3>${item.title}</h3>
+							<p>${item.text}</p>
+						</section>`,
+				};
+
+				document.querySelectorAll('[data-array]').forEach(el => {
+					const items = get(c, el.dataset.array);
+					const tmpl = templates[el.dataset.template];
+					if (Array.isArray(items) && tmpl) el.insertAdjacentHTML('beforeend', items.map(tmpl).join(''));
+				});
+
+				document.title = c.meta.title;
+			});
+
+			// Hamburger menu
+			const burger = document.getElementById('topnav-burger');
+			const links = document.getElementById('topnav-links');
+			burger.addEventListener('click', () => links.classList.toggle('open'));
+			links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+		</script>
 
 	</body>
 </html>

@@ -10,16 +10,21 @@ fetch('content.json')
 		});
 
 		const templates = {
-			service: item => `
+			service: item => {
+				const imgSection = Array.isArray(item.images)
+					? `<div class="circle-grid">${item.images.map(src => `<img src="${src}" alt="" />`).join('')}</div>`
+					: `<a href="#" class="image"><img src="${item.image}" alt="${item.alt}" data-position="${item.position || 'center center'}" /></a>`;
+				return `
 				<section>
-					<a href="#" class="image"><img src="${item.image}" alt="${item.alt}" data-position="${item.position || 'center center'}" /></a>
+					${imgSection}
 					<div class="content">
 						<div class="inner">
 							<h2>${item.title}</h2>
 							<p>${item.text}</p>
 						</div>
 					</div>
-				</section>`,
+				</section>`;
+			},
 			founder: item => `
 				<section>
 					<span class="icon solid major fa-${item.icon}"></span>
