@@ -137,7 +137,9 @@
 				gap: 0.75rem;
 				padding: 1.5rem 1rem;
 				align-self: center;
-				flex: 0 0 42%;
+				flex: 0 0 auto;
+				width: 35%;
+				min-width: 22rem;
 				box-sizing: border-box;
 			}
 			.circle-grid img {
@@ -148,11 +150,16 @@
 				display: block;
 				box-shadow: 0 0 0 3px #47D3E5, 0 2px 14px rgba(0,0,0,0.5);
 			}
-			@media (max-width: 768px) {
+			@media screen and (max-width: 980px) {
 				.circle-grid {
-					flex: 0 0 100%;
-					grid-template-columns: repeat(2, 1fr);
-					padding: 1rem 1.5rem;
+					width: 50%;
+					min-width: 0;
+				}
+			}
+			@media screen and (max-width: 736px) {
+				.circle-grid {
+					width: 100%;
+					padding: 1rem 2rem 2rem;
 				}
 			}
 
