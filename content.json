@@ -56,14 +56,22 @@
     {
       "title": "Ortofoto",
       "text": "Vytváříme georeferencované ortofotomapy s deklarovanou přesností. Díky leteckým snímkům z našich dronů získáte nezkreslený a věrný obraz sledovaného území. Výsledná data jsou ideálním podkladem pro projekční práce, hloubkové analýzy i prezentace. Vysoké rozlišení vám zajistí detailní podklad pro každé strategické rozhodnutí.",
-      "image": "images/sluzby_ortophoto.png",
+      "images": [
+        "images/ortho_1_web.jpg",
+        "images/ortho_3_web.jpg",
+        "images/ortho_4_web.jpg"
+      ],
       "alt": "Ortofoto",
       "position": "center center"
     },
     {
       "title": "3D Modely",
       "text": "Tvoříme detailní 3D modely objektů, které přesně zachycují jejich tvar, strukturu i výškové poměry. Jsou nepostradatelné pro vizualizace, posuzování aktuálního stavu budov nebo vzdálenostní a strukturální analýzy. Získejte realistický digitální dvojče svého objektu, které si prohlédnete z libovolného úhlu.",
-      "image": "images/sluzby_3D.png",
+      "images": [
+        "images/3d_1_web.jpg",
+        "images/3d_2_web.jpg",
+        "images/3d_3_web.jpg"
+      ],
       "alt": "3D Modely",
       "position": "center center"
     },

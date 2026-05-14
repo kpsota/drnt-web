@@ -96,6 +96,31 @@
 				#topnav-links li:last-child { border-right: none; }
 				#topnav-burger { display: block; }
 			}
+
+			.circle-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 0.75rem;
+				padding: 1.5rem 1rem;
+				align-self: center;
+				flex: 0 0 42%;
+				box-sizing: border-box;
+			}
+			.circle-grid img {
+				width: 100%;
+				aspect-ratio: 1;
+				border-radius: 50%;
+				object-fit: cover;
+				display: block;
+				box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+			}
+			@media (max-width: 768px) {
+				.circle-grid {
+					flex: 0 0 100%;
+					grid-template-columns: repeat(2, 1fr);
+					padding: 1rem 1.5rem;
+				}
+			}
 		</style>
 
 
@@ -185,16 +210,19 @@
 				});
 
 				const templates = {
-					spotlight: (item, i) => `
+					spotlight: (item, i) => {
+						const imgSection = Array.isArray(item.images)
+							? `<div class="circle-grid">${item.images.map(src => `<img src="${src}" alt="" />`).join('')}</div>`
+							: `<div class="image"><img src="${item.image}" alt="${item.alt || ''}" /></div>`;
+						return `
 						<section class="spotlight style1 orient-${i % 2 === 0 ? 'right' : 'left'} content-align-left image-position-center onscroll-image-fade-in">
 							<div class="content">
 								<h2>${item.title}</h2>
 								<p>${item.text}</p>
 							</div>
-							<div class="image">
-								<img src="${item.image}" alt="${item.alt}" />
-							</div>
-						</section>`,
+							${imgSection}
+						</section>`;
+					},
 					reference: item => `
 						<section>
 							<span class="icon solid style2 major fa-${item.icon}"></span>
