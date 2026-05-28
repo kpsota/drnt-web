@@ -178,38 +178,41 @@
 
 			/* Reference – gallery dark téma */
 			#references { background-color: #191c2e; }
-			.gallery .ref-placeholder {
-				background: linear-gradient(160deg, #161929 0%, #1c2242 100%);
+			#references .gallery { gap: 1rem; padding: 0 2rem 2rem; }
+			#references .gallery article {
+				overflow: hidden;
+				display: flex;
+				flex-direction: column;
+				background: rgba(18, 21, 38, 0.95);
+				border-radius: 4px;
+			}
+			#references .gallery .ref-icon {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				min-height: 16rem;
-				text-decoration: none;
+				background: linear-gradient(160deg, #161929 0%, #1c2242 100%);
+				min-height: 11rem;
+				flex-shrink: 0;
 			}
-			.gallery .ref-placeholder .icon {
+			#references .gallery .ref-icon .icon {
 				font-size: 4rem;
 				color: #ffffff;
 				opacity: 0.65;
 			}
-			.gallery article {
+			#references .gallery .ref-body {
+				padding: 1.5rem;
+				flex: 1;
 				display: flex;
 				flex-direction: column;
 			}
-			.gallery article .caption {
-				position: static !important;
-				opacity: 1 !important;
-				pointer-events: auto !important;
-				background-color: rgba(12, 15, 30, 0.95);
-				padding: 1.5rem !important;
-			}
-			.gallery article .caption h3 { color: #ffffff; }
-			.gallery article .caption p { color: rgba(255,255,255,0.75); }
-			.gallery article .caption .button {
+			#references .gallery .ref-body h3 { color: #ffffff; margin-bottom: 0.5rem; }
+			#references .gallery .ref-body p { color: rgba(255,255,255,0.75); flex: 1; }
+			#references .gallery .ref-body .button {
 				color: #ffffff !important;
 				box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45) !important;
 				background: none !important;
 			}
-			.gallery article .caption .button:hover {
+			#references .gallery .ref-body .button:hover {
 				background-color: rgba(255,255,255,0.1) !important;
 			}
 
@@ -372,10 +375,10 @@
 					},
 					reference: item => `
 						<article>
-							<a class="image ref-placeholder">
+							<div class="ref-icon">
 								<span class="icon solid fa-${item.icon}"></span>
-							</a>
-							<div class="caption">
+							</div>
+							<div class="ref-body">
 								<h3>${item.client}</h3>
 								<p>${item.task}</p>
 								<ul class="actions fixed">
