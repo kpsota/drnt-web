@@ -191,8 +191,16 @@
 				color: #ffffff;
 				opacity: 0.65;
 			}
+			.gallery article {
+				display: flex;
+				flex-direction: column;
+			}
 			.gallery article .caption {
+				position: static !important;
+				opacity: 1 !important;
+				pointer-events: auto !important;
 				background-color: rgba(12, 15, 30, 0.95);
+				padding: 1.5rem !important;
 			}
 			.gallery article .caption h3 { color: #ffffff; }
 			.gallery article .caption p { color: rgba(255,255,255,0.75); }
