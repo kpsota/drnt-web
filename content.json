@@ -116,22 +116,50 @@
     "heading": "Naše realizace",
     "projects": [
       {
-        "client": "Dálnice D55",
-        "task": "Kompletní ortofotomapa dokončené výstavby úseku dálnice D55 s centimetrovou přesností pro účely kolaudace a dokumentace skutečného provedení.",
-        "tag": "Infrastruktura",
-        "icon": "road"
-      },
-      {
-        "client": "Rekultivace haldy Ostrava - Přívoz",
-        "task": "Letecké snímkování pro projekt rekultivace. Dodání digitálního modelu terénu (DMT) a odvozených mapových výstupů.",
+        "client": "Halda Jan Šverma – Ostrava",
+        "task": "Dronové skenování pro přesný výškový profil, polohopis a ortofoto. Podklady pro rekultivaci území a návrh tréninkových ploch pro HZS Ostrava.",
         "tag": "Ekologie a sanace",
-        "icon": "leaf"
+        "icon": "mountain",
+        "year": "2025"
       },
       {
-        "client": "3D digitalizace vodárenských objektů",
-        "task": "Detailní 3D skenování a tvorba mračna bodů a modelu jako podklad pro pasportizaci.",
-        "tag": "Průmyslová architektura",
-        "icon": "industry"
+        "client": "Dálnice D55 – Babice – Staré Město",
+        "task": "Podrobná ortofotomapa pro dokumentaci nově budované komunikace. Podklad pro zakreslení skutečného provedení stavby, kontrolu dopravního značení a technickou dokumentaci před uvedením do provozu.",
+        "tag": "Infrastruktura",
+        "icon": "road",
+        "year": "2025"
+      },
+      {
+        "client": "Silnice I/57 Semetín – Bystřička",
+        "task": "Průběžné zaměřování zemního tělesa, výškový profil a ortofoto pro kontrolu postupu prací a výpočet kubatur přemístěné zeminy.",
+        "tag": "Infrastruktura",
+        "icon": "road",
+        "year": "2025"
+      },
+      {
+        "client": "Voda a Kanalizace – vodárenské objekty",
+        "task": "Letecké snímkování vodárenských objektů v lokalitách Hřivínův Újezd, Lukoveček a Zlín – Jižní Svahy. Ortofoto a 3D model jako podklad pro technické posouzení a plánování oprav.",
+        "tag": "Vodohospodářství",
+        "icon": "water"
+      },
+      {
+        "client": "Průmyslový objekt Malenovice u Zlína",
+        "task": "Zaměření střešní konstrukce, ortofotomapa a 3D model jako podklad pro návrh, výpočet a rozmístění instalace solárních panelů.",
+        "tag": "Průmysl a energetika",
+        "icon": "industry",
+        "year": "2024"
+      },
+      {
+        "client": "Soukromé objekty a pozemky",
+        "task": "Ortofotomapy, polohopis a výškopis jako digitální podklady pro projektanty a architekty – návrhy staveb, úpravy pozemků a zpracování projektové dokumentace.",
+        "tag": "Projekce a architektura",
+        "icon": "drafting-compass"
+      },
+      {
+        "client": "Suchý důl – Zlín",
+        "task": "Průběžné zaměřování území sloužícího pro ukládání odpadu města Zlína. Sledování množství navezeného materiálu a pravidelný výpočet kubatur.",
+        "tag": "Odpadové hospodářství",
+        "icon": "recycle"
       }
     ]
   },
