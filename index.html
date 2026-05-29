@@ -9,30 +9,89 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Geo&display=swap" rel="stylesheet" />
+		<script>
+			(function () {
+				var pid = new URLSearchParams(window.location.search).get('palette');
+				if (!pid || !/^[0-9a-fA-F]{24}$/.test(pid)) return;
+				pid = pid.toLowerCase();
+
+				function toRgb(h) {
+					return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+				}
+				function toHex(r,g,b) {
+					return [r,g,b].map(function(v){
+						return Math.min(255,Math.max(0,Math.round(v))).toString(16).padStart(2,'0');
+					}).join('');
+				}
+				function darken(h,t) { var c=toRgb(h); return toHex(c[0]*(1-t),c[1]*(1-t),c[2]*(1-t)); }
+				function mix(h1,h2,t) {
+					var a=toRgb(h1),b=toRgb(h2);
+					return toHex(a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t);
+				}
+
+				/* paleta: c1=tmavé pozadí, c2=sekundární pozadí, c3=accent, c4=text */
+				var c1=pid.slice(0,6), c2=pid.slice(6,12), c3=pid.slice(12,18), c4=pid.slice(18,24);
+				var R = document.documentElement.style;
+				function set(k,v){ R.setProperty(k,v); }
+
+				set('--bg',            '#'+c1);
+				set('--bg-dark',       '#'+darken(c1,0.12));
+				set('--bg-banner',     '#'+mix(c1,c2,0.4));
+				set('--bg-spot-odd',   '#'+mix(c1,c2,0.55));
+				set('--bg-spot-even',  '#'+mix(c1,c2,0.7));
+				set('--bg-section',    '#'+mix(c1,c2,0.6));
+				set('--bg-ref',        '#'+darken(c1,0.06));
+				set('--bg-ref-card',   '#'+darken(c1,0.20));
+				set('--bg-grad-start', '#'+darken(c1,0.25));
+				set('--bg-grad-end',   '#'+c2);
+				set('--accent',        '#'+c3);
+				set('--text',          '#'+c4);
+				set('--text-rgb',      toRgb(c4).join(', '));
+				set('--accent-rgb',    toRgb(c3).join(', '));
+			})();
+		</script>
 		<style>
+			/* --- CSS proměnné – výchozí paleta --- */
+			:root {
+				--bg:             #1e2132;
+				--bg-dark:        #1a1c2a;
+				--bg-banner:      #252840;
+				--bg-spot-odd:    #272a3e;
+				--bg-spot-even:   #2c2f4a;
+				--bg-section:     #242738;
+				--bg-ref:         #191c2e;
+				--bg-ref-card:    #12141e;
+				--bg-grad-start:  #161929;
+				--bg-grad-end:    #1c2242;
+				--accent:         #FF4500;
+				--text:           #ffffff;
+				--text-rgb:       255, 255, 255;
+				--accent-rgb:     255, 69, 0;
+			}
+
 			/* --- písmo --- */
 			body, input, select, textarea, button {
 				font-family: 'Space Grotesk', sans-serif !important;
 			}
 
 			/* --- tmavé téma --- */
-			body { background-color: #1e2132; }
-			#wrapper { background-color: #1e2132; }
-			#wrapper.divided > * + * { border-color: rgba(255,255,255,0.06); }
-			body, p { color: rgba(255,255,255,0.78); }
-			h1, h2, h3, h4 { color: #ffffff; }
-			a { color: rgba(255,255,255,0.65); }
-			a:hover { color: #ffffff; }
+			body { background-color: var(--bg); }
+			#wrapper { background-color: var(--bg); }
+			#wrapper.divided > * + * { border-color: rgba(var(--text-rgb), 0.06); }
+			body, p { color: rgba(var(--text-rgb), 0.78); }
+			h1, h2, h3, h4 { color: var(--text); }
+			a { color: rgba(var(--text-rgb), 0.65); }
+			a:hover { color: var(--text); }
 
 			/* banner */
-			section.banner { background-color: #252840; }
+			section.banner { background-color: var(--bg-banner); }
 			section.banner h1 {
-				color: #ffffff;
+				color: var(--text);
 				font-family: 'Geo', sans-serif !important;
 				font-size: 6.5rem !important;
 			}
-			section.banner p.major { color: rgba(255,255,255,0.9); }
-			section.banner p:not(.major) { color: rgba(255,255,255,0.7); }
+			section.banner p.major { color: rgba(var(--text-rgb), 0.9); }
+			section.banner p:not(.major) { color: rgba(var(--text-rgb), 0.7); }
 			section.banner .content p.major {
 				position: relative;
 				padding-bottom: 1.4em;
@@ -45,7 +104,7 @@
 				transform: translateX(-50%);
 				width: 100%;
 				height: 2px;
-				background: #FF4500;
+				background: var(--accent);
 				border-radius: 2px;
 			}
 
@@ -54,8 +113,8 @@
 				position: fixed;
 				top: 0; left: 0; right: 0;
 				z-index: 1000;
-				background: #1a1c2a;
-				border-bottom: 1px solid rgba(255,255,255,0.08);
+				background: var(--bg-dark);
+				border-bottom: 1px solid rgba(var(--text-rgb), 0.08);
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -67,25 +126,25 @@
 				font-size: 1em;
 				letter-spacing: 0.15em;
 				text-transform: uppercase;
-				color: #ffffff;
+				color: var(--text);
 				text-decoration: none;
 			}
 			#topnav ul { list-style: none; margin: 0; padding: 0; display: flex; }
 			#topnav ul li {
-				border-left: 1px solid rgba(255,255,255,0.08);
+				border-left: 1px solid rgba(var(--text-rgb), 0.08);
 				padding: 0 1.5rem;
 			}
-			#topnav ul li:last-child { border-right: 1px solid rgba(255,255,255,0.08); }
+			#topnav ul li:last-child { border-right: 1px solid rgba(var(--text-rgb), 0.08); }
 			#topnav ul a {
 				font-size: 0.8em;
 				font-weight: 700;
 				letter-spacing: 0.1em;
 				text-transform: uppercase;
-				color: #ffffff !important;
+				color: var(--text) !important;
 				text-decoration: none;
 				transition: color 0.2s;
 			}
-			#topnav ul a:hover { color: #FF4500 !important; }
+			#topnav ul a:hover { color: var(--accent) !important; }
 
 			#topnav-burger {
 				display: none;
@@ -95,7 +154,7 @@
 				-webkit-appearance: none;
 				font-size: 1.5em;
 				cursor: pointer;
-				color: #ffffff !important;
+				color: var(--text) !important;
 				padding: 0;
 				line-height: 1;
 			}
@@ -110,14 +169,14 @@
 					flex-direction: column;
 					position: absolute;
 					top: 3.5rem; left: 0; right: 0;
-					background: #1a1c2a;
-					border-bottom: 1px solid rgba(255,255,255,0.08);
+					background: var(--bg-dark);
+					border-bottom: 1px solid rgba(var(--text-rgb), 0.08);
 					padding: 0.5rem 0;
 				}
 				#topnav ul#topnav-links.open { display: flex; }
 				#topnav-links li {
 					border-left: none; border-right: none;
-					border-top: 1px solid rgba(255,255,255,0.06);
+					border-top: 1px solid rgba(var(--text-rgb), 0.06);
 					padding: 0.8rem 2.5rem;
 				}
 				#topnav-links li:last-child { border-right: none; }
@@ -125,23 +184,23 @@
 			}
 
 			/* spotlighty — střídající se tmavé tóny */
-			.spotlight:nth-child(odd)  { background-color: #272a3e; }
-			.spotlight:nth-child(even) { background-color: #2c2f4a; }
+			.spotlight:nth-child(odd)  { background-color: var(--bg-spot-odd); }
+			.spotlight:nth-child(even) { background-color: var(--bg-spot-even); }
 			.spotlight .content h2,
-			.spotlight .content p { color: rgba(255,255,255,0.85); }
-			.spotlight .content h2 { color: #FF4500; }
+			.spotlight .content p { color: rgba(var(--text-rgb), 0.85); }
+			.spotlight .content h2 { color: var(--accent); }
 
 			/* wrapper sekce */
-			.wrapper.style1             { background-color: #242738; }
-			.wrapper.style1 h2          { color: #FF4500 !important; }
-			.wrapper.style1 h3          { color: #ffffff; }
+			.wrapper.style1             { background-color: var(--bg-section); }
+			.wrapper.style1 h2          { color: var(--accent) !important; }
+			.wrapper.style1 h3          { color: var(--text); }
 			.wrapper.style1 p,
-			.wrapper.style1 strong      { color: rgba(255,255,255,0.78); }
-			footer.wrapper.style1       { background-color: #1a1c2a; }
+			.wrapper.style1 strong      { color: rgba(var(--text-rgb), 0.78); }
+			footer.wrapper.style1       { background-color: var(--bg-dark); }
 
 			/* dělicí čáry v items gridu */
-			.wrapper.style1 .items section { border-color: rgba(255,255,255,0.1); }
-			.wrapper.style1 .items         { border-color: rgba(255,255,255,0.1); }
+			.wrapper.style1 .items section { border-color: rgba(var(--text-rgb), 0.1); }
+			.wrapper.style1 .items         { border-color: rgba(var(--text-rgb), 0.1); }
 
 			/* kruhy */
 			.circle-grid {
@@ -177,26 +236,26 @@
 			}
 
 			/* Reference – gallery dark téma */
-			#references { background-color: #191c2e; }
+			#references { background-color: var(--bg-ref); }
 			#references .gallery { gap: 1rem; padding: 0 2rem 2rem; }
 			#references .gallery article {
 				overflow: hidden;
 				display: flex;
 				flex-direction: column;
-				background: rgba(18, 21, 38, 0.95);
+				background: var(--bg-ref-card);
 				border-radius: 4px;
 			}
 			#references .gallery .ref-icon {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: linear-gradient(160deg, #161929 0%, #1c2242 100%);
+				background: linear-gradient(160deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
 				min-height: 11rem;
 				flex-shrink: 0;
 			}
 			#references .gallery .ref-icon .icon {
 				font-size: 4rem;
-				color: #ffffff;
+				color: var(--text);
 				opacity: 0.65;
 			}
 			#references .gallery .ref-body {
@@ -205,16 +264,16 @@
 				display: flex;
 				flex-direction: column;
 			}
-			#references .gallery .ref-body h3 { color: #ffffff; margin-bottom: 0.5rem; }
-			#references .gallery .ref-body p { color: rgba(255,255,255,0.75); flex: 1; }
+			#references .gallery .ref-body h3 { color: var(--text); margin-bottom: 0.5rem; }
+			#references .gallery .ref-body p { color: rgba(var(--text-rgb), 0.75); flex: 1; }
 			#references .gallery .ref-body .actions { justify-content: center; }
 			#references .gallery .ref-body .button {
-				color: #ffffff !important;
-				box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45) !important;
+				color: var(--text) !important;
+				box-shadow: inset 0 0 0 1px rgba(var(--text-rgb), 0.45) !important;
 				background: none !important;
 			}
 			#references .gallery .ref-body .button:hover {
-				background-color: rgba(255,255,255,0.1) !important;
+				background-color: rgba(var(--text-rgb), 0.1) !important;
 			}
 
 			/* accent čára pod nadpisem */
@@ -228,18 +287,18 @@
 				bottom: 0; left: 0;
 				width: 2.8em;
 				height: 3px;
-				background: #FF4500;
+				background: var(--accent);
 				border-radius: 2px;
 			}
 
 			/* kontakt – tlačítka outline s červenou */
 			#contact .button {
-				box-shadow: inset 0 0 0 1px #FF4500 !important;
-				color: #FF4500 !important;
+				box-shadow: inset 0 0 0 1px var(--accent) !important;
+				color: var(--accent) !important;
 				background: none !important;
 			}
 			#contact .button:hover {
-				background-color: rgba(255,69,0,0.1) !important;
+				background-color: rgba(var(--accent-rgb), 0.1) !important;
 			}
 
 			/* mobil – dropdown menu nad obsahem stránky */
