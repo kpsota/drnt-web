@@ -35,30 +35,46 @@
       var imgs = svc.images || (svc.image ? [svc.image] : []);
       var thumb = imgs[0] ? img(imgs[0]) : '';
 
-      var $item = $('<div class="col-lg-4 col-6 mb-4 shuffle-item">');
-      var $box = $('<div class="position-relative inner-box">');
-      var $imgWrap = $('<div class="image position-relative">');
+      var $item = $('<div class="col-lg-4 col-md-6 mb-4">');
+      var $card = $('<div class="svc-card position-relative overflow-hidden" style="min-height:280px;cursor:pointer;">');
 
+      // Ztlumená fotka v pozadí
       if (thumb) {
-        $imgWrap.append($('<img>').attr({ src: thumb, alt: svc.alt || svc.title, class: 'img-fluid w-100 d-block' }));
+        $card.append(
+          $('<img>').attr({ src: thumb, alt: '' }).css({
+            position: 'absolute', inset: '0', width: '100%', height: '100%',
+            objectFit: 'cover', filter: 'grayscale(100%) brightness(0.28)'
+          })
+        );
       }
 
-      var shortDesc = svc.text.length > 110 ? svc.text.substring(0, 110) + '…' : svc.text;
-      var $overlay = $('<div class="overlay-box"><div class="overlay-inner"><div class="overlay-content"><h5 class="mb-1">' + escHtml(svc.title) + '</h5><p class="mb-0 small">' + escHtml(shortDesc) + '</p></div></div></div>');
-      $imgWrap.append($overlay);
+      // Gradient přes fotku pro lepší čitelnost
+      $card.append($('<div>').css({
+        position: 'absolute', inset: '0',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.55))'
+      }));
 
+      // Text v popředí
+      var $text = $('<div>').css({
+        position: 'relative', zIndex: 1, padding: '1.5rem',
+        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', minHeight: '280px'
+      });
+      $text.append($('<h4>').css({ color: '#fff', marginBottom: '0.5rem' }).text(svc.title));
+      $text.append($('<p>').css({ color: 'rgba(255,255,255,0.82)', fontSize: '0.88rem', lineHeight: '1.5', marginBottom: 0 }).text(svc.text));
+      $card.append($text);
+
+      // Skryté linky pro lightbox
       var $gallery = $('<div class="service-gallery" style="display:none">');
       imgs.forEach(function (src) {
         $gallery.append($('<a>').addClass('popup-gallery').attr('href', img(src)));
       });
-      $imgWrap.append($gallery);
+      $card.append($gallery);
 
-      $overlay.css('cursor', 'pointer').on('click', function () {
+      $card.on('click', function () {
         $gallery.find('.popup-gallery').first().trigger('click');
       });
 
-      $box.append($imgWrap);
-      $item.append($box);
+      $item.append($card);
       $grid.append($item);
     });
 
