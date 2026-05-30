@@ -37,10 +37,11 @@
     document.getElementById('hero-subheading').textContent = intro.subheading;
     document.getElementById('hero-text').textContent = intro.text;
     document.getElementById('hero-button').textContent = intro.button;
-    // Use first ortho image as hero illustration
-    document.getElementById('hero-img').src = img('images/ortho_1_web.jpg');
-    document.getElementById('hero-img').style.objectFit = 'cover';
-    document.getElementById('hero-img').style.borderRadius = '4px';
+    var heroImg = document.getElementById('hero-img');
+    heroImg.src = img('images/ortho_2_web.jpg');
+    heroImg.style.objectFit = 'cover';
+    heroImg.style.borderRadius = '4px';
+    heroImg.style.filter = 'grayscale(100%)';
   }
 
   function fillServices(heading, aboutText, services) {
