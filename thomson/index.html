@@ -19,6 +19,25 @@
 
   <link href="css/style.css" rel="stylesheet">
   <link href="css/dronaut.css" rel="stylesheet">
+  <script>(function(){
+    var pid=new URLSearchParams(window.location.search).get('palette');
+    if(!pid||!/^[0-9a-fA-F]{24}$/.test(pid))return;
+    pid=pid.toLowerCase();
+    var ac='#'+pid.slice(12,18), dk='#'+pid.slice(0,6);
+    var s=document.createElement('style');
+    s.textContent=[
+      '.text-color{color:'+ac+' !important}',
+      '.btn-main{background:'+ac+' !important}',
+      '.btn-main:hover{background:'+dk+' !important}',
+      '.btn-black:hover{background:'+ac+' !important}',
+      'a:hover{color:'+ac+' !important}',
+      '.bg-primary{background:'+ac+' !important}',
+      '.ref-tag{background:'+ac+' !important}',
+      '.team-card{border-left-color:'+ac+' !important}',
+      '.dronaut-logo{color:'+dk+' !important}',
+    ].join('');
+    document.head.appendChild(s);
+  })();</script>
 </head>
 
 <body>
