@@ -1,11 +1,11 @@
 (function ($) {
   'use strict';
 
-  var IMG = '../';
+  var IMG = '../../';
 
   function img(p) { return p ? IMG + p : ''; }
 
-  fetch('../content.json')
+  fetch('../../content.json')
     .then(function (r) { return r.json(); })
     .then(function (d) {
       fillContent(d);

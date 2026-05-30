@@ -1,8 +1,8 @@
-fetch('../content.json')
+fetch('../../content.json')
 	.then(r => r.json())
 	.then(c => {
 		const get = (obj, path) => path.split('.').reduce((o, k) => o?.[k], obj);
-		const imgPath = p => p ? '../' + p : p;
+		const imgPath = p => p ? '../../' + p : p;
 
 		document.querySelectorAll('[data-content]').forEach(el => {
 			const val = get(c, el.dataset.content);
