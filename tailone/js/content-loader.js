@@ -17,7 +17,7 @@
       fillNav(d.nav);
       fillHero(d.intro);
       fillServices(d.servicesHeading, d.about.text, d.services);
-      fillPortfolio(d.references.heading, d.references.projects);
+      fillPortfolio(d.references.heading, d.references.projects, d.services);
       fillTeam(d.about.founders);
       fillContact(d.contact);
       document.getElementById('footer-copyright').innerHTML = d.footer.copyright;
@@ -61,26 +61,35 @@
     });
   }
 
-  function fillPortfolio(heading, projects) {
+  function fillPortfolio(heading, projects, services) {
     document.getElementById('portfolio-heading').textContent = heading;
     document.getElementById('portfolio-intro').textContent = '';
 
     var grid = document.getElementById('portfolio-grid');
-    grid.className = 'flex flex-wrap flex-row container xl:max-w-6xl mx-auto px-4';
 
-    projects.forEach(function (p) {
-      var col = document.createElement('div');
-      col.className = 'flex-shrink max-w-full w-full sm:w-1/2 lg:w-1/3 px-4 mb-6 wow fadeInUp';
-      col.innerHTML =
-        '<div class="h-full bg-gray-50 border-b border-gray-200 p-6 hover:shadow-md transition duration-200">' +
-          '<div class="flex items-center justify-between mb-3">' +
-            '<span class="inline-block text-xs font-bold tracking-widest uppercase bg-black text-white px-2 py-1">' + esc(p.tag) + '</span>' +
-            (p.year ? '<span class="text-xs text-gray-400">' + esc(p.year) + '</span>' : '') +
+    // Collect all service images into a flat list
+    var allImgs = [];
+    services.forEach(function (svc) {
+      var imgs = svc.images || (svc.image ? [svc.image] : []);
+      imgs.forEach(function (src) { allImgs.push(src); });
+    });
+
+    // Pair each project with one photo (cycle through images if needed)
+    projects.forEach(function (p, i) {
+      var src = allImgs[i % allImgs.length];
+      var figure = document.createElement('figure');
+      figure.className = 'flex-shrink max-w-full px-3 w-full sm:w-1/2 lg:w-1/5 group wow fadeInUp';
+      figure.innerHTML =
+        '<div class="relative overflow-hidden cursor-pointer mb-6">' +
+          '<img class="block w-full transform duration-500 grayscale group-hover:grayscale-0 group-hover:scale-105" ' +
+            'src="' + esc(img(src)) + '" alt="' + esc(p.client) + '" style="height:200px;object-fit:cover;">' +
+          '<div class="absolute inset-0 flex flex-col justify-end transition-opacity duration-300 ease-in opacity-0 group-hover:opacity-100 bg-gradient-to-t from-black via-black/60 to-transparent px-4 py-4 text-white">' +
+            '<span class="inline-block text-xs font-bold tracking-widest uppercase bg-white text-black px-2 py-0.5 mb-2 self-start">' + esc(p.tag) + '</span>' +
+            '<p class="text-sm font-semibold leading-tight mb-1">' + esc(p.client) + '</p>' +
+            '<p class="text-xs leading-snug opacity-90">' + esc(p.task.substring(0, 100)) + '…</p>' +
           '</div>' +
-          '<h3 class="text-base font-semibold text-black mb-2">' + esc(p.client) + '</h3>' +
-          '<p class="text-gray-500 text-sm leading-relaxed">' + esc(p.task) + '</p>' +
         '</div>';
-      grid.appendChild(col);
+      grid.appendChild(figure);
     });
   }
 
