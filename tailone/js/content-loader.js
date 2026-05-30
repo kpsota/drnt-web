@@ -17,7 +17,7 @@
       fillNav(d.nav);
       fillHero(d.intro);
       fillServices(d.servicesHeading, d.about.text, d.services);
-      fillPortfolio(d.references.heading, d.about.heading, d.services);
+      fillPortfolio(d.references.heading, d.references.projects);
       fillTeam(d.about.founders);
       fillContact(d.contact);
       document.getElementById('footer-copyright').innerHTML = d.footer.copyright;
@@ -61,35 +61,26 @@
     });
   }
 
-  function fillPortfolio(heading, subheading, services) {
+  function fillPortfolio(heading, projects) {
     document.getElementById('portfolio-heading').textContent = heading;
-    document.getElementById('portfolio-intro').textContent = subheading;
+    document.getElementById('portfolio-intro').textContent = '';
 
     var grid = document.getElementById('portfolio-grid');
+    grid.className = 'flex flex-wrap flex-row container xl:max-w-6xl mx-auto px-4';
 
-    // Collect all service images as portfolio items
-    var items = [];
-    services.forEach(function (svc) {
-      var imgs = svc.images || (svc.image ? [svc.image] : []);
-      imgs.forEach(function (src) {
-        items.push({ src: src, title: svc.title, tag: svc.alt || svc.title });
-      });
-    });
-
-    items.forEach(function (item, i) {
-      var figure = document.createElement('figure');
-      figure.className = 'flex-shrink max-w-full px-3 w-full sm:w-1/2 lg:w-1/5 group wow fadeInUp';
-      figure.innerHTML =
-        '<div class="relative overflow-hidden cursor-pointer mb-6">' +
-          '<a href="' + esc(img(item.src)) + '" data-gallery="gallery1" class="glightbox3">' +
-            '<img class="block w-full h-auto transform duration-500 grayscale hover:scale-125" ' +
-              'src="' + esc(img(item.src)) + '" alt="' + esc(item.title) + '" style="height:160px;object-fit:cover;">' +
-            '<div class="absolute inset-x-0 bottom-0 h-16 transition-opacity duration-500 ease-in opacity-0 group-hover:opacity-100 px-4 py-2 text-gray-100 bg-black text-center">' +
-              '<p class="text-sm font-semibold my-1 text-white">' + esc(item.title) + '</p>' +
-            '</div>' +
-          '</a>' +
+    projects.forEach(function (p) {
+      var col = document.createElement('div');
+      col.className = 'flex-shrink max-w-full w-full sm:w-1/2 lg:w-1/3 px-4 mb-6 wow fadeInUp';
+      col.innerHTML =
+        '<div class="h-full bg-gray-50 border-b border-gray-200 p-6 hover:shadow-md transition duration-200">' +
+          '<div class="flex items-center justify-between mb-3">' +
+            '<span class="inline-block text-xs font-bold tracking-widest uppercase bg-black text-white px-2 py-1">' + esc(p.tag) + '</span>' +
+            (p.year ? '<span class="text-xs text-gray-400">' + esc(p.year) + '</span>' : '') +
+          '</div>' +
+          '<h3 class="text-base font-semibold text-black mb-2">' + esc(p.client) + '</h3>' +
+          '<p class="text-gray-500 text-sm leading-relaxed">' + esc(p.task) + '</p>' +
         '</div>';
-      grid.appendChild(figure);
+      grid.appendChild(col);
     });
   }
 

@@ -43,7 +43,8 @@
         $imgWrap.append($('<img>').attr({ src: thumb, alt: svc.alt || svc.title, class: 'img-fluid w-100 d-block' }));
       }
 
-      var $overlay = $('<div class="overlay-box"><div class="overlay-inner"><div class="overlay-content"><h5 class="mb-0">' + escHtml(svc.title) + '</h5></div></div></div>');
+      var shortDesc = svc.text.length > 110 ? svc.text.substring(0, 110) + '…' : svc.text;
+      var $overlay = $('<div class="overlay-box"><div class="overlay-inner"><div class="overlay-content"><h5 class="mb-1">' + escHtml(svc.title) + '</h5><p class="mb-0 small">' + escHtml(shortDesc) + '</p></div></div></div>');
       $imgWrap.append($overlay);
 
       var $gallery = $('<div class="service-gallery" style="display:none">');
