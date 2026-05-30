@@ -38,29 +38,29 @@
       var $item = $('<div class="col-lg-4 col-md-6 mb-4">');
       var $card = $('<div class="svc-card position-relative overflow-hidden" style="min-height:280px;cursor:pointer;">');
 
-      // Ztlumená fotka v pozadí
+      // Fotka v pozadí – viditelná, lehce ztlumená
       if (thumb) {
         $card.append(
           $('<img>').attr({ src: thumb, alt: '' }).css({
             position: 'absolute', inset: '0', width: '100%', height: '100%',
-            objectFit: 'cover', filter: 'grayscale(100%) brightness(0.28)'
+            objectFit: 'cover', filter: 'grayscale(60%) brightness(0.62)'
           })
         );
       }
 
-      // Gradient přes fotku pro lepší čitelnost
+      // Jemný světlý overlay (stejný tón jako hero sekce)
       $card.append($('<div>').css({
         position: 'absolute', inset: '0',
-        background: 'linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.55))'
+        background: 'linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(0,0,0,0.32))'
       }));
 
-      // Text v popředí
+      // Text v popředí – tmavý pro čitelnost na světlejším pozadí
       var $text = $('<div>').css({
         position: 'relative', zIndex: 1, padding: '1.5rem',
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', minHeight: '280px'
       });
-      $text.append($('<h4>').css({ color: '#fff', marginBottom: '0.5rem' }).text(svc.title));
-      $text.append($('<p>').css({ color: 'rgba(255,255,255,0.82)', fontSize: '0.88rem', lineHeight: '1.5', marginBottom: 0 }).text(svc.text));
+      $text.append($('<h4>').css({ color: '#fff', marginBottom: '0.5rem', textShadow: '0 1px 4px rgba(0,0,0,0.6)' }).text(svc.title));
+      $text.append($('<p>').css({ color: 'rgba(255,255,255,0.9)', fontSize: '0.88rem', lineHeight: '1.5', marginBottom: 0, textShadow: '0 1px 3px rgba(0,0,0,0.5)' }).text(svc.text));
       $card.append($text);
 
       // Skryté linky pro lightbox
