@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Dronaut | Profesionální mapování drony a GIS</title>
+  <link rel="stylesheet" href="src/css/style.css">
+  <link rel="stylesheet" href="src/vendors/glightbox/dist/css/glightbox.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="text-gray-700">
+
+  <!-- preloader -->
+  <div class="preloader loaded-success fixed inset-0 z-50 bg-gray-50" style="display:none">
+    <div class="absolute left-1/2 top-1/2 transform -translate-y-1/2">
+      <div class="relative mx-auto my-12">
+        <div class="inline-block">
+          <svg class="animate-spin h-8 w-8 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="fixed top-0 left-0 right-0 z-40">
+    <nav class="main-nav">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <div class="lg:flex lg:justify-between">
+          <div class="flex justify-between">
+            <div class="text-2xl font-bold tracking-widest text-gray-900 flex items-center">DRONAUT</div>
+            <div class="flex flex-row items-center py-4 lg:py-0">
+              <div class="relative text-gray-900 block lg:hidden">
+                <button type="button" class="menu-mobile block py-3 px-6 border-b-2 border-transparent">
+                  <svg class="open h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="close bi bi-x-lg h-8 w-8" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-row">
+            <ul class="navbar bg-white lg:bg-transparent w-full hidden text-center lg:text-left lg:flex lg:flex-row text-gray-900 text-sm items-center font-bold">
+              <li class="relative hover:text-black"><a class="active block py-3 lg:py-7 px-6 border-b-2 border-transparent" href="#hero" id="nav-intro"></a></li>
+              <li class="relative hover:text-black"><a class="block py-3 lg:py-7 px-6 border-b-2 border-transparent" href="#services" id="nav-services"></a></li>
+              <li class="relative hover:text-black"><a class="block py-3 lg:py-7 px-6 border-b-2 border-transparent" href="#portfolio" id="nav-references"></a></li>
+              <li class="relative hover:text-black"><a class="block py-3 lg:py-7 px-6 border-b-2 border-transparent" href="#team" id="nav-about"></a></li>
+              <li class="relative hover:text-black"><a class="block py-3 lg:py-7 px-6 border-b-2 border-transparent" href="#contact" id="nav-contact"></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+
+    <!-- HERO -->
+    <div id="hero" class="section relative z-0 py-16 md:pt-32 md:pb-20 bg-gray-50">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <div class="flex flex-wrap flex-row -mx-4 justify-center">
+          <div class="flex-shrink max-w-full px-4 sm:px-12 lg:px-18 w-full sm:w-9/12 lg:w-1/2 self-center">
+            <img id="hero-img" src="src/img/dummy/hero.svg" class="w-full max-w-full h-auto" alt="Dronaut mapování">
+          </div>
+          <div class="flex-shrink max-w-full px-4 w-full md:w-9/12 lg:w-1/2 self-center lg:pr-12">
+            <div class="text-center lg:text-left mt-6 lg:mt-0">
+              <div class="mb-12">
+                <h1 class="text-4xl leading-normal text-black font-bold mb-4" id="hero-heading"></h1>
+                <p class="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2" id="hero-subheading"></p>
+                <p class="text-gray-500 leading-relaxed font-light mx-auto pb-2" id="hero-text"></p>
+              </div>
+              <a class="py-2.5 px-10 inline-block text-center leading-normal text-gray-100 bg-black border-b border-gray-800 hover:text-white focus:outline-none focus:ring-0" href="#contact" id="hero-button"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES (ikony + popis) -->
+    <div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 bg-white">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <header class="text-center mx-auto mb-12 lg:px-20">
+          <h2 class="text-2xl leading-normal mb-2 font-bold text-black" id="services-heading"></h2>
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 60" style="margin:0 auto;height:35px;">
+            <circle cx="50.1" cy="30.4" r="5" class="stroke-primary" style="fill:transparent;stroke-width:2;stroke-miterlimit:10;"></circle>
+            <line x1="55.1" y1="30.4" x2="100" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+            <line x1="45.1" y1="30.4" x2="0" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+          </svg>
+          <p class="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2" id="services-subheading"></p>
+        </header>
+        <div class="flex flex-wrap flex-row -mx-4 text-center" id="services-grid"></div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO (fotogalerie realizací) -->
+    <div id="portfolio" class="section relative z-0 py-12 md:py-16 bg-white">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <header class="text-center mx-auto mb-12 lg:px-20">
+          <h2 class="text-2xl leading-normal mb-2 font-bold text-black" id="portfolio-heading"></h2>
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 60" style="margin:0 auto;height:35px;">
+            <circle cx="50.1" cy="30.4" r="5" class="stroke-primary" style="fill:transparent;stroke-width:2;stroke-miterlimit:10;"></circle>
+            <line x1="55.1" y1="30.4" x2="100" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+            <line x1="45.1" y1="30.4" x2="0" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+          </svg>
+          <p class="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2" id="portfolio-intro"></p>
+        </header>
+      </div>
+      <div class="flex flex-wrap flex-row" id="portfolio-grid"></div>
+    </div>
+
+    <!-- TEAM -->
+    <div id="team" class="section relative pt-20 pb-8 md:pt-16 bg-white">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <header class="text-center mx-auto mb-12">
+          <h2 class="text-2xl leading-normal mb-2 font-bold text-gray-800">Kdo jsme</h2>
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 60" style="margin:0 auto;height:35px;">
+            <circle cx="50.1" cy="30.4" r="5" class="stroke-primary" style="fill:transparent;stroke-width:2;stroke-miterlimit:10;"></circle>
+            <line x1="55.1" y1="30.4" x2="100" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+            <line x1="45.1" y1="30.4" x2="0" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+          </svg>
+        </header>
+        <div class="flex flex-wrap flex-row -mx-4 justify-center" id="team-grid"></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" class="section relative pb-20 bg-gray-50">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <div class="flex flex-wrap flex-row -mx-4 justify-center">
+          <div class="max-w-full px-4 w-full lg:w-8/12">
+            <div class="bg-white border-b border-gray-100 w-full p-12">
+              <header class="text-center mx-auto mb-10 lg:px-20">
+                <h2 class="text-2xl leading-normal mb-2 font-bold text-black" id="contact-heading"></h2>
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 60" style="margin:0 auto;height:35px;">
+                  <circle cx="50.1" cy="30.4" r="5" class="stroke-primary" style="fill:transparent;stroke-width:2;stroke-miterlimit:10;"></circle>
+                  <line x1="55.1" y1="30.4" x2="100" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+                  <line x1="45.1" y1="30.4" x2="0" y2="30.4" class="stroke-primary" style="stroke-width:2;stroke-miterlimit:10;"></line>
+                </svg>
+                <p class="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2" id="contact-intro"></p>
+              </header>
+              <div class="text-center space-y-4">
+                <p class="text-lg"><i class="fas fa-envelope mr-3 text-blue-700"></i><a id="contact-email" href="#" class="hover:text-black"></a></p>
+                <p class="text-lg"><i class="fas fa-phone mr-3 text-blue-700"></i><a id="contact-phone" href="#" class="hover:text-black"></a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footer-content" class="relative pt-8 pb-6 bg-white">
+      <div class="container xl:max-w-6xl mx-auto px-4">
+        <div class="text-center">
+          <p class="text-gray-500 text-sm" id="footer-copyright"></p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- back to top -->
+  <a href="#" data-scroll class="scroll-top w-10 h-10 fixed bottom-4 right-4 rounded-full z-50 flex items-center justify-center bg-black text-white opacity-0 transition-opacity duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/>
+    </svg>
+  </a>
+
+  <script src="src/vendors/wow.js/dist/wow.min.js"></script>
+  <script src="src/vendors/glightbox/dist/js/glightbox.min.js"></script>
+  <script src="src/vendors/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+  <script src="src/js/theme.js"></script>
+  <script src="js/content-loader.js"></script>
+</body>
+</html>
