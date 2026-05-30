@@ -1,5 +1,9 @@
 /* Dronaut overrides & additions */
 
+section.portfolio {
+  padding-top: 100px;
+}
+
 .dronaut-logo {
   font-family: "Work Sans", sans-serif;
   font-weight: 800;
