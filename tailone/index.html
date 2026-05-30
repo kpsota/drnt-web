@@ -12,15 +12,33 @@
     var pid=new URLSearchParams(window.location.search).get('palette');
     if(!pid||!/^[0-9a-fA-F]{24}$/.test(pid))return;
     pid=pid.toLowerCase();
-    var ac='#'+pid.slice(12,18), dk='#'+pid.slice(0,6);
+    var ac='#'+pid.slice(12,18), dk='#'+pid.slice(0,6), lt='#'+pid.slice(18,24);
+    function rgba(h,a){var r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return'rgba('+r+','+g+','+b+','+a+')';}
+    var lt6=pid.slice(18,24);
     var s=document.createElement('style');
     s.textContent=[
+      /* accent */
       '.stroke-primary{stroke:'+ac+' !important}',
       '#contact .fa-envelope,#contact .fa-phone{color:'+ac+' !important}',
       '#hero a.bg-black{background-color:'+ac+' !important;border-color:'+ac+' !important}',
       '#portfolio figure .bg-black{background-color:'+ac+' !important}',
       '#services .border-b{border-bottom-color:'+ac+' !important}',
       '.scroll-top{background-color:'+ac+' !important}',
+      /* navbar */
+      'header nav.main-nav{background:'+lt+' !important}',
+      'header .text-gray-900{color:'+dk+' !important}',
+      'header ul.navbar a{color:'+dk+' !important}',
+      /* sekce – střídané tintování */
+      '#hero{background:'+rgba(lt6,0.4)+' !important}',
+      '#services{background:'+rgba(lt6,0.15)+' !important}',
+      '#services .bg-gray-50{background:'+rgba(lt6,0.3)+' !important}',
+      '#portfolio{background:'+rgba(lt6,0.08)+' !important}',
+      '#team{background:'+rgba(lt6,0.18)+' !important}',
+      '#contact{background:'+rgba(lt6,0.08)+' !important}',
+      '#contact .bg-white{background:'+rgba(lt6,0.5)+' !important}',
+      /* footer – tmavý */
+      '#footer-content{background:'+dk+' !important}',
+      '#footer-content p{color:'+rgba(lt6,0.75)+' !important}',
     ].join('');
     document.head.appendChild(s);
   })();</script>

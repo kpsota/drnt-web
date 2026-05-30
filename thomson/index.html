@@ -23,9 +23,12 @@
     var pid=new URLSearchParams(window.location.search).get('palette');
     if(!pid||!/^[0-9a-fA-F]{24}$/.test(pid))return;
     pid=pid.toLowerCase();
-    var ac='#'+pid.slice(12,18), dk='#'+pid.slice(0,6);
+    var ac='#'+pid.slice(12,18), dk='#'+pid.slice(0,6), lt='#'+pid.slice(18,24);
+    function rgba(h,a){var r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return'rgba('+r+','+g+','+b+','+a+')';}
+    var ac6=pid.slice(12,18), dk6=pid.slice(0,6), lt6=pid.slice(18,24);
     var s=document.createElement('style');
     s.textContent=[
+      /* accent */
       '.text-color{color:'+ac+' !important}',
       '.btn-main{background:'+ac+' !important}',
       '.btn-main:hover{background:'+dk+' !important}',
@@ -34,7 +37,21 @@
       '.bg-primary{background:'+ac+' !important}',
       '.ref-tag{background:'+ac+' !important}',
       '.team-card{border-left-color:'+ac+' !important}',
+      /* navbar */
+      'nav.main-nav{background:'+lt+' !important}',
       '.dronaut-logo{color:'+dk+' !important}',
+      '.navbar-nav .nav-link{color:'+dk+' !important}',
+      /* hero – světlý tint */
+      'section.banner{background:'+rgba(lt6,0.55)+' !important}',
+      /* sekce portfolio a about – střídané tintování */
+      'section.portfolio{background:'+rgba(lt6,0.25)+' !important}',
+      'section.service-home{background:'+rgba(lt6,0.12)+' !important}',
+      'section#about ~ section{background:'+rgba(lt6,0.2)+' !important}',
+      'section#references{background:'+rgba(lt6,0.08)+' !important}',
+      'section#contact{background:'+rgba(lt6,0.18)+' !important}',
+      /* footer – tmavý */
+      'section.footer{background:'+dk+' !important}',
+      'section.footer p,section.footer a{color:'+rgba(lt6,0.85)+' !important}',
     ].join('');
     document.head.appendChild(s);
   })();</script>
