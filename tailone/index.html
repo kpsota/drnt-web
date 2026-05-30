@@ -12,9 +12,11 @@
     var pid=new URLSearchParams(window.location.search).get('palette');
     if(!pid||!/^[0-9a-fA-F]{24}$/.test(pid))return;
     pid=pid.toLowerCase();
-    var ac='#'+pid.slice(12,18), dk='#'+pid.slice(0,6), lt='#'+pid.slice(18,24);
+    function lum(h){var r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255;return 0.2126*r+0.7152*g+0.0722*b;}
     function rgba(h,a){var r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return'rgba('+r+','+g+','+b+','+a+')';}
-    var lt6=pid.slice(18,24);
+    var cols=[pid.slice(0,6),pid.slice(6,12),pid.slice(12,18),pid.slice(18,24)];
+    cols.sort(function(a,b){return lum(a)-lum(b);}); // seřaď tmavá→světlá
+    var dk='#'+cols[0], ac='#'+cols[1], bg=cols[2], lt='#'+cols[3];
     var s=document.createElement('style');
     s.textContent=[
       /* accent */
@@ -24,21 +26,21 @@
       '#portfolio figure .bg-black{background-color:'+ac+' !important}',
       '#services .border-b{border-bottom-color:'+ac+' !important}',
       '.scroll-top{background-color:'+ac+' !important}',
-      /* navbar */
+      /* navbar – světlá */
       'header nav.main-nav{background:'+lt+' !important}',
       'header .text-gray-900{color:'+dk+' !important}',
       'header ul.navbar a{color:'+dk+' !important}',
-      /* sekce – střídané tintování */
-      '#hero{background:'+rgba(lt6,0.4)+' !important}',
-      '#services{background:'+rgba(lt6,0.15)+' !important}',
-      '#services .bg-gray-50{background:'+rgba(lt6,0.3)+' !important}',
-      '#portfolio{background:'+rgba(lt6,0.08)+' !important}',
-      '#team{background:'+rgba(lt6,0.18)+' !important}',
-      '#contact{background:'+rgba(lt6,0.08)+' !important}',
-      '#contact .bg-white{background:'+rgba(lt6,0.5)+' !important}',
-      /* footer – tmavý */
+      /* sekce – tintování 2. nejsvětlejší barvou */
+      '#hero{background:'+rgba(bg,0.25)+' !important}',
+      '#services{background:'+rgba(bg,0.1)+' !important}',
+      '#services .bg-gray-50{background:'+rgba(bg,0.2)+' !important}',
+      '#portfolio{background:'+rgba(bg,0.06)+' !important}',
+      '#team{background:'+rgba(bg,0.12)+' !important}',
+      '#contact{background:'+rgba(bg,0.06)+' !important}',
+      '#contact .bg-white{background:'+rgba(bg,0.25)+' !important}',
+      /* footer – nejtmavší */
       '#footer-content{background:'+dk+' !important}',
-      '#footer-content p{color:'+rgba(lt6,0.75)+' !important}',
+      '#footer-content p{color:'+rgba(cols[3],0.75)+' !important}',
     ].join('');
     document.head.appendChild(s);
   })();</script>
