@@ -31,50 +31,42 @@
 
     // Services grid
     var $grid = $('#services-grid');
-    d.services.forEach(function (svc) {
+    d.services.forEach(function (svc, i) {
       var imgs = svc.images || (svc.image ? [svc.image] : []);
       var thumb = imgs[0] ? img(imgs[0]) : '';
+      var imgRight = i % 2 === 1;
 
-      var $item = $('<div class="col-lg-4 col-md-6 mb-4">');
-      var $card = $('<div class="svc-card position-relative overflow-hidden" style="min-height:280px;cursor:pointer;">');
+      var $item = $('<div class="col-12 mb-5">');
+      var $row = $('<div class="row align-items-center">');
 
-      // Fotka v pozadí – viditelná, lehce ztlumená
+      // Sloupec s obrázkem
+      var $imgCol = $('<div>').addClass('col-md-6 mb-3 mb-md-0').addClass(imgRight ? 'order-md-2' : '');
       if (thumb) {
-        $card.append(
-          $('<img>').attr({ src: thumb, alt: '' }).css({
-            position: 'absolute', inset: '0', width: '100%', height: '100%',
-            objectFit: 'cover', filter: 'grayscale(60%) brightness(0.62)'
-          })
-        );
+        var $gallery = $('<div class="service-gallery" style="display:none">');
+        imgs.forEach(function (src) {
+          $gallery.append($('<a>').addClass('popup-gallery').attr('href', img(src)));
+        });
+        var $img = $('<img>').attr({ src: thumb, alt: svc.alt || svc.title }).css({
+          width: '100%', height: '280px', objectFit: 'cover',
+          borderRadius: '6px', cursor: imgs.length ? 'pointer' : 'default',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.18)'
+        });
+        $img.on('click', function () {
+          $gallery.find('.popup-gallery').first().trigger('click');
+        });
+        $imgCol.append($img).append($gallery);
       }
 
-      // Jemný světlý overlay (stejný tón jako hero sekce)
-      $card.append($('<div>').css({
-        position: 'absolute', inset: '0',
-        background: 'linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(0,0,0,0.32))'
-      }));
+      // Sloupec s textem
+      var $textCol = $('<div>').addClass('col-md-6').addClass(imgRight ? 'order-md-1' : '');
+      var padding = imgRight ? 'pr-md-4' : 'pl-md-4';
+      var $inner = $('<div>').addClass(padding);
+      $inner.append($('<h4 class="mb-3">').text(svc.title));
+      $inner.append($('<p class="mb-0">').css({ lineHeight: '1.7' }).text(svc.text));
+      $textCol.append($inner);
 
-      // Text v popředí – tmavý pro čitelnost na světlejším pozadí
-      var $text = $('<div>').css({
-        position: 'relative', zIndex: 1, padding: '1.5rem',
-        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', minHeight: '280px'
-      });
-      $text.append($('<h4>').css({ color: '#fff', marginBottom: '0.5rem', textShadow: '0 1px 4px rgba(0,0,0,0.6)' }).text(svc.title));
-      $text.append($('<p>').css({ color: 'rgba(255,255,255,0.9)', fontSize: '0.88rem', lineHeight: '1.5', marginBottom: 0, textShadow: '0 1px 3px rgba(0,0,0,0.5)' }).text(svc.text));
-      $card.append($text);
-
-      // Skryté linky pro lightbox
-      var $gallery = $('<div class="service-gallery" style="display:none">');
-      imgs.forEach(function (src) {
-        $gallery.append($('<a>').addClass('popup-gallery').attr('href', img(src)));
-      });
-      $card.append($gallery);
-
-      $card.on('click', function () {
-        $gallery.find('.popup-gallery').first().trigger('click');
-      });
-
-      $item.append($card);
+      $row.append($imgCol).append($textCol);
+      $item.append($row);
       $grid.append($item);
     });
 
