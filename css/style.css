@@ -14,7 +14,7 @@ VERSION:	1.0
 /*------------------------------------------------------------------
 [TABLE OF CONTENTS]
 -------------------------------------------------------------------*/
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Chakra+Petch:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap");
 html {
   overflow-x: hidden;
 }
@@ -42,18 +42,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 h1, .h1 {
   font-size: 45px;
   text-transform: none;
-}
-
-#intro-heading {
-  font-family: "Chakra Petch", sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: #4382DF;
-  margin-bottom: 2rem !important;
-  border-top: 4px solid #4382DF;
-  border-bottom: 4px solid #4382DF;
-  padding: 0.6rem 0;
-  display: inline-block;
 }
 
 h2, .h2 {

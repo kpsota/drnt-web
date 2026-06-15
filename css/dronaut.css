@@ -1,36 +1,7 @@
 /* Dronaut overrides & additions */
 
-/* Hero heading — PNG logo variant */
-#intro-heading {
-  border: none;
-  background: none;
-  padding: 0;
-  position: static;
-}
-
-#intro-heading::before,
-#intro-heading::after {
-  display: none;
-}
-
-.dronaut-hero-logo {
-  max-width: 340px;
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
 section.portfolio {
   padding-top: 100px;
-}
-
-.dronaut-logo {
-  font-family: "Barlow Condensed", sans-serif;
-  font-weight: 800;
-  font-size: 1.4rem;
-  letter-spacing: 0.15em;
-  color: #000;
 }
 
 .dronaut-nav-logo {
