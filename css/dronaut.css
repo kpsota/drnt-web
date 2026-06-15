@@ -33,6 +33,12 @@ section.portfolio {
   color: #000;
 }
 
+.dronaut-nav-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
 /* Team */
 .team-icon {
   min-width: 50px;

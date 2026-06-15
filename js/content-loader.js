@@ -21,7 +21,7 @@
     $('#nav-contact').text(d.nav.contact);
 
     // Intro / Hero
-    $('#intro-heading').html('<img src="images/logo-variants/lv-gugi-steel-upper.png" alt="' + d.intro.heading + '" class="dronaut-hero-logo">');
+    $('#intro-heading').html('<img src="images/logo-variants/lv-rajdhani300-mint.png" alt="' + d.intro.heading + '" class="dronaut-hero-logo">');
     $('#intro-subheading').text(d.intro.subheading);
     $('#intro-text').text(d.intro.text);
     $('#intro-button').text(d.intro.button);
