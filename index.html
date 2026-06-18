@@ -22,7 +22,12 @@
     #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:1000; align-items:center; justify-content:center; }
     #lightbox.open { display:flex; }
     #lightbox img { max-width:90vw; max-height:88vh; border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,.6); }
-    #lightbox button { position:absolute; top:1rem; right:1.25rem; color:#fff; font-size:2rem; background:none; border:none; cursor:pointer; line-height:1; }
+    #lb-close { position:absolute; top:1rem; right:1.25rem; color:#fff; font-size:2rem; background:none; border:none; cursor:pointer; line-height:1; }
+    #lb-prev, #lb-next { position:absolute; top:50%; transform:translateY(-50%); color:#fff; font-size:2.5rem; background:rgba(0,0,0,.35); border:none; cursor:pointer; padding:0.5rem 1rem; border-radius:8px; line-height:1; transition:background .2s; }
+    #lb-prev { left:1rem; }
+    #lb-next { right:1rem; }
+    #lb-prev:hover, #lb-next:hover { background:rgba(0,0,0,.6); }
+    #lb-prev.hidden, #lb-next.hidden { display:none; }
   </style>
 </head>
 
@@ -303,23 +308,50 @@
 
   <!-- Lightbox -->
   <div id="lightbox">
-    <button onclick="closeLightbox()" title="Zavřít">&times;</button>
+    <button id="lb-close" onclick="closeLightbox()" title="Zavřít">&times;</button>
+    <button id="lb-prev" onclick="lbNav(-1)">&#8249;</button>
     <img id="lb-img" src="" alt="">
+    <button id="lb-next" onclick="lbNav(1)">&#8250;</button>
   </div>
 
   <script>
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
+    const lbPrev = document.getElementById('lb-prev');
+    const lbNext = document.getElementById('lb-next');
+    let lbGallery = [], lbIndex = 0;
+
     document.querySelectorAll('.lb-thumb').forEach(img => {
       img.addEventListener('click', () => {
-        lbImg.src = img.src;
-        lbImg.alt = img.alt;
-        lb.classList.add('open');
-        document.body.style.overflow = 'hidden';
+        const group = img.closest('.grid');
+        lbGallery = Array.from(group.querySelectorAll('.lb-thumb'));
+        lbIndex = lbGallery.indexOf(img);
+        openLightbox();
       });
     });
+
+    function openLightbox() {
+      lbImg.src = lbGallery[lbIndex].src;
+      lbImg.alt = lbGallery[lbIndex].alt;
+      lbPrev.classList.toggle('hidden', lbIndex === 0);
+      lbNext.classList.toggle('hidden', lbIndex === lbGallery.length - 1);
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function lbNav(dir) {
+      lbIndex = Math.max(0, Math.min(lbGallery.length - 1, lbIndex + dir));
+      openLightbox();
+    }
+
     lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lbNav(-1);
+      if (e.key === 'ArrowRight') lbNav(1);
+    });
+
     function closeLightbox() {
       lb.classList.remove('open');
       document.body.style.overflow = '';
