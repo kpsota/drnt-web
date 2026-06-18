@@ -2,188 +2,305 @@
 <html lang="cs">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dronaut | Profesionální mapování drony a GIS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <!-- Plugins -->
-  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="plugins/themify/css/themify-icons.css">
-  <link rel="stylesheet" href="plugins/counto/animate.css">
-  <link rel="stylesheet" href="plugins/aos/aos.css">
-  <link rel="stylesheet" href="plugins/owl-carousel/owl.carousel.min.css">
-  <link rel="stylesheet" href="plugins/owl-carousel/owl.theme.default.min.css">
-  <link rel="stylesheet" href="plugins/magnific-popup/magnific-popup.css">
-  <link rel="stylesheet" href="plugins/animated-text/animated-text.css">
-  <link rel="stylesheet" href="plugins/fontawesome/css/all.css">
-
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/dronaut.css" rel="stylesheet">
-  <script>(function(){
-    var DEFAULT='f0f5f9c9d6df52616b1e2022';
-    var pid=new URLSearchParams(window.location.search).get('palette')||DEFAULT;
-    if(!/^[0-9a-fA-F]{24}$/.test(pid))pid=DEFAULT;
-    pid=pid.toLowerCase();
-    function lum(h){var r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255;return 0.2126*r+0.7152*g+0.0722*b;}
-    function rgba(h,a){var r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return'rgba('+r+','+g+','+b+','+a+')';}
-    var cols=[pid.slice(0,6),pid.slice(6,12),pid.slice(12,18),pid.slice(18,24)];
-    cols.sort(function(a,b){return lum(a)-lum(b);});
-    var dk='#'+cols[0], ac='#'+cols[1], bg=cols[2], lt='#'+cols[3];
-    var s=document.createElement('style');
-    s.textContent=[
-      '.text-color{color:'+ac+' !important}',
-      '.btn-main{background:'+ac+' !important}',
-      '.btn-main:hover{background:'+dk+' !important}',
-      '.btn-black:hover{background:'+ac+' !important}',
-      'a:hover{color:'+ac+' !important}',
-      '.bg-primary{background:'+ac+' !important}',
-      '.ref-tag{background:'+ac+' !important}',
-      '.team-card{border-left-color:'+ac+' !important}',
-      'nav.main-nav{background:'+dk+' !important}',
-      '.navbar-nav .nav-link{color:'+lt+' !important}',
-      '.navbar-toggler{border-color:'+lt+' !important;color:'+lt+' !important}',
-      '.navbar-toggler span{color:'+lt+' !important}',
-      'section.banner{background:'+rgba(bg,0.35)+' !important}',
-      'section.portfolio{background:'+rgba(bg,0.18)+' !important}',
-      'section.service-home{background:'+rgba(bg,0.1)+' !important}',
-      'section#references{background:'+rgba(bg,0.14)+' !important}',
-      'section#contact{background:'+rgba(bg,0.22)+' !important}',
-      'section.footer{background:'+dk+' !important}',
-      'section.footer p,section.footer a{color:'+rgba(cols[3],0.85)+' !important}',
-    ].join('');
-    document.head.appendChild(s);
-  })();</script>
+  <meta name="description" content="Profesionální letecké mapování, fotogrammetrie a 3D digitalizace. Přesná geodata pro váš projekt.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <style>
+    .inter {
+      font-family: "Inter", serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+    .lb-thumb { cursor: zoom-in; transition: transform 0.2s; }
+    .lb-thumb:hover { transform: scale(1.02); }
+    #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:1000; align-items:center; justify-content:center; }
+    #lightbox.open { display:flex; }
+    #lightbox img { max-width:90vw; max-height:88vh; border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,.6); }
+    #lightbox button { position:absolute; top:1rem; right:1.25rem; color:#fff; font-size:2rem; background:none; border:none; cursor:pointer; line-height:1; }
+  </style>
 </head>
 
-<body>
+<body class="inter antialiased bg-[#0d0e11]">
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg main-nav" id="navbar">
-  <div class="container">
-    <a class="navbar-brand" href="#intro">
-      <img src="images/logos/logo-mint.png" alt="DRONAUT" class="dronaut-nav-logo">
-    </a>
-    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarMain"
-      aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="ti-align-justify"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="#intro" id="nav-intro"></a></li>
-        <li class="nav-item"><a class="nav-link" href="#services" id="nav-services"></a></li>
-        <li class="nav-item"><a class="nav-link" href="#about" id="nav-about"></a></li>
-        <li class="nav-item"><a class="nav-link" href="#references" id="nav-references"></a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact" id="nav-contact"></a></li>
-      </ul>
+  <!-- Header -->
+  <header class="px-8 py-4 bg-[#0d0e11] border-b border-gray-800 sticky top-0 z-50">
+    <div class="flex items-center text-white justify-between mx-auto w-full max-w-7xl">
+      <a href="#" class="flex items-center gap-2">
+        <i class="bi bi-send-fill text-xl text-[#cff245]"></i>
+        <span class="font-bold text-lg tracking-tight">DRONAUT</span>
+      </a>
+      <nav class="hidden md:flex text-sm gap-8">
+        <a href="#sluzby" class="hover:text-[#cff245] transition">Služby</a>
+        <a href="#onas" class="hover:text-[#cff245] transition">O nás</a>
+        <a href="#reference" class="hover:text-[#cff245] transition">Reference</a>
+        <a href="#kontakt" class="hover:text-[#cff245] transition">Kontakt</a>
+      </nav>
+      <a href="#kontakt" class="text-sm py-1.5 px-4 bg-[#cff245] text-black rounded-xl font-semibold hover:opacity-90 transition">
+        Konzultovat projekt
+      </a>
     </div>
-  </div>
-</nav>
+  </header>
 
-<!-- Hero / Intro -->
-<section id="intro" class="section banner">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-10 offset-lg-1 text-center">
-        <h1 class="mb-3" id="intro-heading"></h1>
-        <h3 class="text-color mb-4" id="intro-subheading"></h3>
-        <p id="intro-text"></p>
-        <a href="#contact" class="btn btn-main mt-4" id="intro-button"></a>
+  <!-- Hero -->
+  <section class="px-8 py-24 bg-[#0d0e11] relative overflow-hidden">
+    <div class="flex flex-col gap-8 items-center text-white mx-auto w-full max-w-5xl">
+      <h1 class="text-5xl md:text-6xl font-semibold tracking-tighter text-center leading-tight">
+        Profesionální letecké<br>mapování z výšky.
+      </h1>
+      <p class="font-normal text-xl text-center text-gray-300 max-w-2xl">
+        Specializujeme se na precizní fotogrammetrii, 3D digitalizaci a pokročilé zpracování prostorových dat.
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="#kontakt" class="bg-[#cff245] text-black px-6 py-2.5 rounded-xl font-semibold hover:opacity-90 transition">
+          Konzultovat projekt
+        </a>
+        <a href="#sluzby" class="border border-gray-700 text-white px-6 py-2.5 rounded-xl hover:border-gray-500 transition">
+          Naše služby
+        </a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Services as portfolio grid -->
-<section id="services" class="portfolio">
-  <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <h2 class="mb-2" id="services-heading"></h2>
+  <!-- Services -->
+  <section class="px-8 py-20 bg-[#f6f7fa] rounded-3xl" id="sluzby">
+    <div class="flex flex-col gap-12 mx-auto w-full max-w-5xl">
+      <div class="flex flex-col gap-4 text-center">
+        <h2 class="text-5xl font-semibold tracking-tighter">Naše služby</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Od sběru dat po finální výstupy — pokrýváme celý proces profesionálního leteckého mapování.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+          <img src="images/photos/OF_1_web.jpg" class="w-full rounded-2xl lb-thumb" alt="Ortofoto">
+          <h3 class="text-xl font-bold">Ortofoto</h3>
+          <p class="text-sm text-gray-600">Georeferencované ortofotomapy s deklarovanou přesností. Ideální podklad pro projekční práce, analýzy i prezentace.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+          <img src="images/photos/3D_1_web.jpg" class="w-full rounded-2xl lb-thumb" alt="3D Modely">
+          <h3 class="text-xl font-bold">3D Modely</h3>
+          <p class="text-sm text-gray-600">Detailní 3D modely objektů — tvar, struktura i výškové poměry. Nepostradatelné pro vizualizace a analýzy.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+          <img src="images/photos/KBTR_1_web.jpg" class="w-full rounded-2xl lb-thumb" alt="Kubatury">
+          <h3 class="text-xl font-bold">Kubatury</h3>
+          <p class="text-sm text-gray-600">Precizní sledování změn v čase — úbytek či přírůstek materiálu. Klíčové pro stavebnictví, těžbu a logistiku sypkých materiálů.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+          <img src="images/photos/TL_1_web.jpg" class="w-full rounded-2xl lb-thumb" alt="Časosběr">
+          <h3 class="text-xl font-bold">Časosběr</h3>
+          <p class="text-sm text-gray-600">Pravidelné snímkování průběhu projektu — videa, fotografie a tematické mapy od prvního kopnutí po dokončení.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+          <img src="images/photos/KM_1_web.jpg" class="w-full rounded-2xl lb-thumb" alt="Krizový management">
+          <h3 class="text-xl font-bold">Krizový management</h3>
+          <p class="text-sm text-gray-600">Operativní monitoring při povodních a mimořádných událostech. Data pro rychlé rozhodování složek IZS.</p>
+        </div>
+        <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+          <img src="images/photos/FV_1_web.jpg" class="w-full rounded-2xl lb-thumb" alt="Foto a Video">
+          <h3 class="text-xl font-bold">Foto a Video</h3>
+          <p class="text-sm text-gray-600">Letecké fotografie a videa pro web, marketing, sociální sítě nebo prodej nemovitostí. Unikátní perspektiva, která zaujme.</p>
+        </div>
       </div>
     </div>
-    <div class="row" id="services-grid">
-      <!-- filled by content-loader.js -->
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- About: pillars -->
-<section id="about" class="section service-home border-top">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8">
-        <h2 class="mb-2" id="about-heading"></h2>
-        <p class="mb-5" id="about-text"></p>
+  <!-- About / Proč my -->
+  <section class="px-8 py-20" id="onas">
+    <div class="flex flex-col gap-12 mx-auto w-full max-w-5xl">
+      <div class="text-center">
+        <h2 class="text-5xl font-semibold tracking-tighter text-white">Proč spolupracovat<br>s námi?</h2>
+        <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Propojujeme svět bezpilotních systémů, geoinformatiky a moderního IT.</p>
+      </div>
+
+      <!-- 3 pillars -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-gray-700">
+          <i class="bi bi-shield-check text-4xl text-[#cff245]"></i>
+          <h3 class="text-white font-bold text-lg">Letecká zkušenost a licence</h3>
+          <p class="text-gray-400 text-sm">Disponujeme všemi potřebnými pilotními licencemi pro specifickou kategorii. Bezpečný a legální provoz v souladu s předpisy ÚCL.</p>
+        </div>
+        <div class="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-gray-700">
+          <i class="bi bi-globe text-4xl text-[#cff245]"></i>
+          <h3 class="text-white font-bold text-lg">GIS a precizní geodata</h3>
+          <p class="text-gray-400 text-sm">Výstupy dodáváme ve standardních souřadnicových systémech plně kompatibilních s vaším GIS, CAD nebo BIM softwarem.</p>
+        </div>
+        <div class="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-gray-700">
+          <i class="bi bi-cpu text-4xl text-[#cff245]"></i>
+          <h3 class="text-white font-bold text-lg">IT a Moderní nástroje</h3>
+          <p class="text-gray-400 text-sm">Moderní software a výpočetní technologie pro zpracování leteckých dat. Rozumíme automatizaci a zpracování velkých dat.</p>
+        </div>
+      </div>
+
+      <!-- Founders -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white/5 rounded-3xl p-6 flex items-start gap-4 border border-gray-700">
+          <i class="bi bi-person-circle text-3xl text-[#cff245] mt-1 flex-shrink-0"></i>
+          <div class="flex flex-col gap-1">
+            <span class="text-white font-semibold">Ondřej Slavík</span>
+            <span class="text-gray-400 text-sm">Business Development & Chief Pilot</span>
+            <p class="text-gray-300 text-sm mt-1">Certifikovaný pilot a stratég. Má na starosti bezpečné provedení leteckých operací a konzultace projektů.</p>
+          </div>
+        </div>
+        <div class="bg-white/5 rounded-3xl p-6 flex items-start gap-4 border border-gray-700">
+          <i class="bi bi-person-circle text-3xl text-[#cff245] mt-1 flex-shrink-0"></i>
+          <div class="flex flex-col gap-1">
+            <span class="text-white font-semibold">Karel Psota</span>
+            <span class="text-gray-400 text-sm">Chief Data Officer</span>
+            <p class="text-gray-300 text-sm mt-1">Expert na geoinformatiku a data engineering. Zodpovídá za metodickou správnost výstupů a jejich integraci do vašich systémů.</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row" id="pillars-grid">
-      <!-- filled by content-loader.js -->
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Team -->
-<section class="section border-top">
-  <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <h2 class="mb-2">Kdo jsme</h2>
+  <!-- References -->
+  <section class="px-8 py-20 bg-[#f6f7fa] rounded-3xl" id="reference">
+    <div class="flex flex-col gap-12 mx-auto w-full max-w-5xl">
+      <div class="text-center">
+        <h2 class="text-5xl font-semibold tracking-tighter">Naše realizace</h2>
+        <p class="mt-4 text-gray-600">Vybrané projekty z různých odvětví</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Ekologie a sanace</span>
+            <span class="text-gray-400 text-sm">2025</span>
+          </div>
+          <p class="font-bold text-gray-900">Halda Jan Šverma – Ostrava</p>
+          <p class="text-sm text-gray-600">Dronové skenování pro přesný výškový profil, polohopis a ortofoto. Podklady pro rekultivaci území a návrh tréninkových ploch pro HZS Ostrava.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Infrastruktura</span>
+            <span class="text-gray-400 text-sm">2025</span>
+          </div>
+          <p class="font-bold text-gray-900">Dálnice D55 – Babice – Staré Město</p>
+          <p class="text-sm text-gray-600">Podrobná ortofotomapa pro dokumentaci nově budované komunikace. Podklad pro zakreslení skutečného provedení stavby a technickou dokumentaci.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Infrastruktura</span>
+            <span class="text-gray-400 text-sm">2025</span>
+          </div>
+          <p class="font-bold text-gray-900">Silnice I/57 Semetín – Bystřička</p>
+          <p class="text-sm text-gray-600">Průběžné zaměřování zemního tělesa, výškový profil a ortofoto pro kontrolu postupu prací a výpočet kubatur přemístěné zeminy.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Vodohospodářství</span>
+          </div>
+          <p class="font-bold text-gray-900">Voda a Kanalizace – vodárenské objekty</p>
+          <p class="text-sm text-gray-600">Letecké snímkování vodárenských objektů v lokalitách Hřivínův Újezd, Lukoveček a Zlín – Jižní Svahy. Ortofoto a 3D model pro technické posouzení.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Průmysl a energetika</span>
+            <span class="text-gray-400 text-sm">2024</span>
+          </div>
+          <p class="font-bold text-gray-900">Průmyslový objekt Malenovice u Zlína</p>
+          <p class="text-sm text-gray-600">Zaměření střešní konstrukce, ortofotomapa a 3D model jako podklad pro návrh a rozmístění instalace solárních panelů.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Projekce a architektura</span>
+          </div>
+          <p class="font-bold text-gray-900">Soukromé objekty a pozemky</p>
+          <p class="text-sm text-gray-600">Ortofotomapy, polohopis a výškopis jako digitální podklady pro projektanty a architekty — návrhy staveb, úpravy pozemků a projektová dokumentace.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm md:col-span-2 lg:col-span-1">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Odpadové hospodářství</span>
+          </div>
+          <p class="font-bold text-gray-900">Suchý důl – Zlín</p>
+          <p class="text-sm text-gray-600">Průběžné zaměřování území sloužícího pro ukládání odpadu města Zlína. Sledování množství navezeného materiálu a pravidelný výpočet kubatur.</p>
+        </div>
+
       </div>
     </div>
-    <div class="row" id="team-grid">
-      <!-- filled by content-loader.js -->
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- References -->
-<section id="references" class="section border-top">
-  <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <h2 class="mb-2" id="references-heading"></h2>
+  <!-- Contact -->
+  <section class="px-8 py-24" id="kontakt">
+    <div class="flex flex-col gap-8 items-center text-white mx-auto w-full max-w-2xl text-center">
+      <h2 class="text-5xl font-semibold tracking-tighter">Pojďme se sejít</h2>
+      <p class="text-xl text-gray-300">
+        Rádi vám ukážeme ukázky našich dat a navrhneme optimální metodiku pro váš projekt.
+      </p>
+      <div class="flex flex-col gap-3 items-center">
+        <div class="flex items-center gap-3 text-gray-300">
+          <i class="bi bi-envelope text-[#cff245] text-xl"></i>
+          <a href="mailto:info@drnt.cz" class="hover:text-[#cff245] transition">info@drnt.cz</a>
+        </div>
+        <div class="flex items-center gap-3 text-gray-300">
+          <i class="bi bi-telephone text-[#cff245] text-xl"></i>
+          <span>+420 123 456 789</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="mailto:info@drnt.cz" class="bg-[#cff245] text-black px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition">
+          Napsat email
+        </a>
+        <a href="tel:+420123456789" class="border border-gray-700 text-white px-8 py-3 rounded-xl hover:border-gray-500 transition">
+          Zavolat nám
+        </a>
       </div>
     </div>
-    <div class="row" id="references-grid">
-      <!-- filled by content-loader.js -->
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Contact -->
-<section id="contact" class="section border-top">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <h2 class="mb-2" id="contact-heading"></h2>
-        <p class="mb-4" id="contact-intro"></p>
-        <p><i class="fas fa-envelope mr-2 text-color"></i> <a id="contact-email" href="#"></a></p>
-        <p><i class="fas fa-phone mr-2 text-color"></i> <a id="contact-phone" href="#"></a></p>
+  <!-- Footer -->
+  <footer class="px-8 py-12 border-t border-gray-800">
+    <div class="mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2 text-white">
+        <i class="bi bi-send-fill text-xl text-[#cff245]"></i>
+        <span class="text-xl font-bold">DRONAUT</span>
       </div>
+      <nav class="flex gap-6 text-sm text-gray-400">
+        <a href="#sluzby" class="hover:text-[#cff245] transition">Služby</a>
+        <a href="#onas" class="hover:text-[#cff245] transition">O nás</a>
+        <a href="#reference" class="hover:text-[#cff245] transition">Reference</a>
+        <a href="#kontakt" class="hover:text-[#cff245] transition">Kontakt</a>
+      </nav>
+      <span class="text-xs text-gray-500">&copy; 2026 Dronaut. Data z dronů, která pomáhají.</span>
     </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <button onclick="closeLightbox()" title="Zavřít">&times;</button>
+    <img id="lb-img" src="" alt="">
   </div>
-</section>
 
-<!-- Footer -->
-<section class="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <p class="mb-0" id="footer-copyright"></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Scripts -->
-<script src="plugins/jQuery/jquery.min.js"></script>
-<script src="plugins/bootstrap/bootstrap.min.js"></script>
-<script src="plugins/aos/aos.js"></script>
-<script src="plugins/owl-carousel/owl.carousel.min.js"></script>
-<script src="plugins/shuffle/shuffle.min.js"></script>
-<script src="plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
-<script src="plugins/animated-text/animated-text.js"></script>
-<script src="js/content-loader.js"></script>
-
+  <script>
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    document.querySelectorAll('.lb-thumb').forEach(img => {
+      img.addEventListener('click', () => {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
 </body>
+
 </html>
