@@ -11,61 +11,209 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <style>
-    .inter {
-      font-family: "Inter", serif;
-      font-weight: 400;
-      font-style: normal;
-    }
-    .lb-thumb { cursor: zoom-in; transition: transform 0.2s; }
-    .lb-thumb:hover { transform: scale(1.02); }
-    #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:1000; align-items:center; justify-content:center; }
-    #lightbox.open { display:flex; }
-    #lightbox img { max-width:90vw; max-height:88vh; border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,.6); }
-    #lb-close { position:absolute; top:1rem; right:1.25rem; color:#fff; font-size:2rem; background:none; border:none; cursor:pointer; line-height:1; }
-    #lb-prev, #lb-next { position:absolute; top:50%; transform:translateY(-50%); color:#fff; font-size:2.5rem; background:rgba(0,0,0,.35); border:none; cursor:pointer; padding:0.5rem 1rem; border-radius:8px; line-height:1; transition:background .2s; }
-    #lb-prev { left:1rem; }
-    #lb-next { right:1rem; }
-    #lb-prev:hover, #lb-next:hover { background:rgba(0,0,0,.6); }
-    #lb-prev.hidden, #lb-next.hidden { display:none; }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="inter antialiased bg-[#0d0e11]">
 
   <!-- Header -->
-  <header class="px-8 py-4 bg-[#0d0e11] border-b border-gray-800 sticky top-0 z-50">
+  <header class="px-8 py-4 premium-header sticky top-0 z-50">
     <div class="flex items-center text-white justify-between mx-auto w-full max-w-7xl">
-      <a href="#" class="flex items-center gap-2">
-        <i class="bi bi-send-fill text-xl text-[#cff245]"></i>
-        <span class="font-bold text-lg tracking-tight">DRONAUT</span>
+      <!-- Left Logo & Tech Subtitle -->
+      <a href="#" class="flex items-center gap-3.5 group">
+        <i class="bi bi-send-fill text-xl text-[#cff245] transition-transform duration-300 group-hover:rotate-12"></i>
+        <div class="flex items-center gap-3">
+          <span class="font-bold text-lg tracking-tight leading-none">DRONAUT</span>
+          <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
+          <span class="text-[9px] text-gray-500 tracking-[0.18em] font-mono uppercase hidden sm:inline">GIS &amp; Mapping &amp; Foto</span>
+          <!-- Visitor Counter -->
+          <span id="visitor-counter" class="hidden items-center text-[9px] text-[#cff245]/90 font-mono ml-2 border border-[#cff245]/20 bg-[#cff245]/5 px-1.5 py-0.5 rounded shadow-[0_0_8px_rgba(207,242,69,0.1)] leading-none select-none">
+            <i class="bi bi-eye-fill mr-1 text-[8px]"></i><span id="visitor-count-val">0</span>
+          </span>
+        </div>
       </a>
-      <nav class="hidden md:flex text-sm gap-8">
-        <a href="#sluzby" class="hover:text-[#cff245] transition">Služby</a>
-        <a href="#onas" class="hover:text-[#cff245] transition">O nás</a>
-        <a href="#reference" class="hover:text-[#cff245] transition">Reference</a>
-        <a href="#kontakt" class="hover:text-[#cff245] transition">Kontakt</a>
-      </nav>
+
+      <!-- Center Telemetry Display (Simulated GPS measurement data) -->
+      <div id="header-telemetry" class="hidden md:flex items-center gap-6 font-mono text-[9px] text-gray-500 tracking-wider select-none border-l border-r border-white/5 px-6 mx-4">
+        <!-- Column 1: Coordinates -->
+        <div class="flex flex-col gap-0.5 min-w-[125px]">
+          <div>LAT: <span id="tel-lat" class="text-gray-300">50.075531° N</span></div>
+          <div>LON: <span id="tel-lon" class="text-gray-300">14.437802° E</span></div>
+        </div>
+        <!-- Column 2: Satellites -->
+        <div class="flex flex-col gap-0.5 min-w-[85px]">
+          <div>SATS: <span id="tel-sats" class="text-[#cff245] font-semibold">18</span> <span class="text-[8px] text-[#cff245]/70">FIX</span></div>
+          <div>PDOP: <span id="tel-pdop" class="text-gray-300">1.12</span></div>
+        </div>
+        <!-- Column 3: Precision -->
+        <div class="flex flex-col gap-0.5 min-w-[65px] hidden lg:flex">
+          <div>H: <span id="tel-hacc" class="text-gray-300">0.009m</span></div>
+          <div>V: <span id="tel-vacc" class="text-gray-300">0.014m</span></div>
+        </div>
+      </div>
+
+      <!-- Right Nav Links & Language Switcher -->
+      <div class="flex items-center gap-6">
+        <nav class="hidden md:flex text-sm gap-8">
+          <a href="#sluzby" class="hover:text-[#cff245] transition">Služby</a>
+          <a href="#onas" class="hover:text-[#cff245] transition">O nás</a>
+          <a href="#reference" class="hover:text-[#cff245] transition">Reference</a>
+          <a href="#kontakt" class="hover:text-[#cff245] transition">Kontakt</a>
+        </nav>
+        
+        <!-- Language Switcher Flags -->
+        <div class="flex items-center gap-3 md:border-l md:border-white/10 md:pl-6 h-5">
+          <button onclick="setLanguage('cs')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" id="btn-lang-cs" title="Čeština">
+            <img src="images/flags/cz.svg" alt="CZ" class="w-6 h-4 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
+          </button>
+          <button onclick="setLanguage('en')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" id="btn-lang-en" title="English">
+            <img src="images/flags/gb.svg" alt="EN" class="w-6 h-4 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
+          </button>
+          <button onclick="setLanguage('de')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" id="btn-lang-de" title="Deutsch">
+            <img src="images/flags/de.svg" alt="DE" class="w-6 h-4 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
+          </button>
+          <span onclick="toggleGisAdmin()" class="text-white/20 hover:text-white/60 cursor-pointer transition text-xs select-none ml-2" id="gis-admin-lock" title="Administrace (Správa)"><i class="bi bi-shield-lock"></i></span>
+        </div>
+        <!-- Mobile Menu Hamburger Button -->
+        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-white/80 hover:text-white focus:outline-none transition p-1 flex items-center justify-center" title="Menu">
+          <i class="bi bi-list text-2xl"></i>
+        </button>
+      </div>
     </div>
   </header>
 
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-[#0d0e11]/95 backdrop-blur-md z-[1200] hidden flex-col transition-all duration-300 transform -translate-y-full opacity-0">
+    <!-- Header inside Overlay (For logo and close button) -->
+    <div class="flex items-center justify-between px-8 py-4 border-b border-white/5">
+      <a href="#" onclick="closeMobileMenu()" class="flex items-center gap-3.5">
+        <i class="bi bi-send-fill text-xl text-[#cff245]"></i>
+        <span class="font-bold text-lg text-white tracking-tight">DRONAUT</span>
+      </a>
+      <button onclick="closeMobileMenu()" class="text-white/80 hover:text-white transition text-3xl font-light leading-none" title="Zavřít">&times;</button>
+    </div>
+    <!-- Menu Links -->
+    <nav id="mobile-nav" class="flex flex-col gap-8 items-center justify-center flex-1 text-lg font-bold">
+      <a href="#sluzby" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">Služby</a>
+      <a href="#onas" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">O nás</a>
+      <a href="#reference" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">Reference</a>
+      <a href="#kontakt" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">Kontakt</a>
+      
+      <!-- Interactive Client Zone / GIS Trigger for Mobile -->
+      <button onclick="openMobileGisFromNav()" class="bg-[#cff245] text-black px-8 py-3 rounded-xl hover:opacity-90 transition font-bold shadow-lg flex items-center gap-2 mt-4 text-sm">
+        <i class="bi bi-ruler"></i>
+        <span>Interaktivní zóna</span>
+      </button>
+    </nav>
+  </div>
+
   <!-- Hero -->
-  <section class="px-8 py-24 bg-[#0d0e11] relative overflow-hidden">
-    <div class="flex flex-col gap-8 items-center text-white mx-auto w-full max-w-5xl">
-      <h1 class="text-5xl md:text-6xl font-semibold tracking-tighter text-center leading-tight text-[#cff245]">
-        Profesionální letecké<br>mapování z výšky.
-      </h1>
-      <p class="font-normal text-xl text-center text-gray-300 max-w-2xl">
-        Specializujeme se na precizní fotogrammetrii, 3D digitalizaci a pokročilé zpracování prostorových dat.
-      </p>
+  <section class="relative px-8 py-12 md:py-16 bg-[#0d0e11] overflow-hidden bg-cover bg-center bg-no-repeat" style="background-image: url('images/hero_bg.png');">
+    <!-- Overlay for better text readability -->
+    <div class="absolute inset-0 bg-[#0d0e11]/55 z-0"></div>
+    
+    <!-- Cinematic radial gradient overlay -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#0d0e11_90%)] z-0"></div>
+
+    <!-- Mapping Grid Overlay -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(207,242,69,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(207,242,69,0.03)_1px,transparent_1px)] bg-[size:40px_40px] z-0 pointer-events-none"></div>
+
+    <!-- Tiny Flying Drone Canvas -->
+    <canvas id="hero-drone-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-5"></canvas>
+
+    <div class="relative z-10 flex flex-col gap-5 items-center text-white mx-auto w-full max-w-5xl">
+      <!-- Title & Subtitle (Centered) -->
+      <div class="flex flex-col gap-3 items-center text-center">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tighter leading-tight">
+          <span class="text-[#cff245] drop-shadow-[0_0_15px_rgba(207,242,69,0.3)]">Přesná data.</span><br>
+          <span class="text-white">Lepší rozhodnutí.</span>
+        </h1>
+        <p class="font-normal text-base md:text-lg text-gray-300 max-w-xl leading-relaxed mt-1">
+          Poskytujeme špičková data a analýzy z dronu,<br class="hidden md:inline">
+          které vám pomohou plánovat, řídit a posouvat vaše projekty kupředu.
+        </p>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-3 w-full max-w-xs my-0.5">
+        <div class="h-[1px] bg-[#cff245]/20 flex-1"></div>
+        <svg class="w-3.5 h-3.5 text-[#cff245]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+        </svg>
+        <div class="h-[1px] bg-[#cff245]/20 flex-1"></div>
+      </div>
+
+      <!-- 4 Columns / Features -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mt-4">
+        <!-- Col 1 -->
+        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+          <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
+            <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+              <line x1="9" y1="3" x2="9" y2="18"></line>
+              <line x1="15" y1="6" x2="15" y2="21"></line>
+            </svg>
+          </div>
+          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">Přesná data</h3>
+          <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Získáváme přesná a spolehlivá data pro vaše projekty.</p>
+        </div>
+        <!-- Col 2 -->
+        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+          <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
+            <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="2"></circle>
+              <path d="M8.5 8.5L5 5"></path>
+              <path d="M15.5 8.5L19 5"></path>
+              <path d="M8.5 15.5L5 19"></path>
+              <path d="M15.5 15.5L19 19"></path>
+              <circle cx="5" cy="5" r="1.5"></circle>
+              <line x1="3" y1="5" x2="7" y2="5"></line>
+              <circle cx="19" cy="5" r="1.5"></circle>
+              <line x1="17" y1="5" x2="21" y2="5"></line>
+              <circle cx="5" cy="19" r="1.5"></circle>
+              <line x1="3" y1="19" x2="7" y2="19"></line>
+              <circle cx="19" cy="19" r="1.5"></circle>
+              <line x1="17" y1="19" x2="21" y2="19"></line>
+            </svg>
+          </div>
+          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">Moderní technologie</h3>
+          <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Využíváme špičkové drony a nejnovější technologie.</p>
+        </div>
+        <!-- Col 3 -->
+        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+          <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
+            <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <line x1="1" y1="12" x2="23" y2="12"></line>
+            </svg>
+          </div>
+          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">Vysoká přesnost</h3>
+          <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Centimetrová přesnost díky RTK/PPK a pokročilé fotogrammetrii.</p>
+        </div>
+        <!-- Col 4 -->
+        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+          <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
+            <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">3D výstupy</h3>
+          <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Ortofoto, 3D modely, mračna bodů a další výstupy na míru.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Services -->
-  <section class="px-8 py-20 bg-[#f6f7fa] rounded-3xl" id="sluzby">
+  <section class="px-8 py-12 md:py-20 bg-[#f6f7fa] rounded-3xl" id="sluzby">
     <div class="flex flex-col gap-12 mx-auto w-full max-w-5xl">
       <div class="flex flex-col gap-4 text-center">
-        <h2 class="text-5xl font-semibold tracking-tighter">Služby</h2>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter">Služby</h2>
       </div>
 
       <div class="flex flex-col gap-4">
@@ -77,14 +225,65 @@
             <img src="images/photos/OF_2_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Ortofoto">
             <img src="images/photos/OF_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Ortofoto">
           </div>
+          <!-- Podsekce Ortofoto -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <!-- Podsekce 1: Srovnávač rozlišení -->
+            <div class="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-3 justify-between">
+              <div>
+                <h4 class="text-gray-900 font-bold text-sm tracking-tight compare-sub-title-res">Interaktivní srovnávač rozlišení</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed compare-sub-desc-res">Porovnejte detail standardních satelitních map a našeho přesného snímkování z různých výšek letu.</p>
+              </div>
+              <button onclick="openCompareModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-4 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold w-full mt-2 shadow-sm">
+                <i class="bi bi-bezier2 text-sm"></i>
+                <span class="compare-btn-text-res">Kvalitativní srovnávač</span>
+              </button>
+            </div>
+            
+            <!-- Podsekce 2: Zdraví rostlin -->
+            <div class="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-3 justify-between">
+              <div>
+                <h4 class="text-gray-900 font-bold text-sm tracking-tight compare-sub-title-health">Analýza zdraví rostlin</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed compare-sub-desc-health">Vizualizace vitality porostu pro včasnou detekci suchých ložisek, oslabení plodin nebo zaplevelení.</p>
+              </div>
+              <button onclick="openHealthModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-4 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold w-full mt-2 shadow-sm">
+                <i class="bi bi-patch-check text-sm"></i>
+                <span class="compare-btn-text-health">Analýza zdraví</span>
+              </button>
+            </div>
+
+            <!-- Podsekce 3: Kontrola sečení -->
+            <div class="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-3 justify-between">
+              <div>
+                <h4 class="text-gray-900 font-bold text-sm tracking-tight compare-sub-title-mowing">Kontrola sečení</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed compare-sub-desc-mowing">Porovnání a vizuální kontrola provedení seče luk a polí v časovém odstupu.</p>
+              </div>
+              <button onclick="openMowingModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-4 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold w-full mt-2 shadow-sm">
+                <i class="bi bi-calendar-check text-sm"></i>
+                <span class="compare-btn-text-mowing">Kontrola sečení</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
           <h3 class="text-xl font-bold">3D Modely</h3>
           <p class="text-sm text-gray-600">Tvoříme detailní 3D modely objektů, které přesně zachycují jejich tvar, strukturu i výškové poměry. Jsou nepostradatelné pro vizualizace, posuzování aktuálního stavu budov nebo vzdálenostní a strukturální analýzy. Získejte realistický digitální dvojče svého objektu, které si prohlédnete z libovolného úhlu.</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-            <img src="images/photos/3D_1_web.jpg" class="w-full rounded-xl lb-thumb" alt="3D Modely">
-            <img src="images/photos/3D_2_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D Modely">
-            <img src="images/photos/3D_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D Modely">
+            <img src="images/photos/3D_1_web.jpg?v=2" class="w-full rounded-xl lb-thumb" alt="3D Modely">
+            <img src="images/photos/3D_2_web.jpg?v=2" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D Modely">
+            <img src="images/photos/3D_3_web.jpg?v=2" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D Modely">
+          </div>
+          <!-- Podsekce 3D model -->
+          <div class="mt-6">
+            <div class="bg-[#f6f7fa] border border-gray-100 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div class="flex-1">
+                <h4 class="text-gray-900 font-bold text-sm tracking-tight model3d-sub-title">Interaktivní 3D prohlížeč</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed model3d-sub-desc">Prohlédněte si detailní 3D digitální dvojče pozemku s rodinným domem. Model můžete libovolně otáčet, přibližovat a zkoumat z libovolného úhlu.</p>
+              </div>
+              <button onclick="openModel3DModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-6 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold shrink-0 shadow-sm w-full md:w-auto">
+                <i class="bi bi-box-seam text-sm"></i>
+                <span class="model3d-btn-text">Otevřít 3D model</span>
+              </button>
+            </div>
           </div>
         </div>
         <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
@@ -104,14 +303,27 @@
             <img src="images/photos/TL_2_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Časosběr">
             <img src="images/photos/TL_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Časosběr">
           </div>
+          <!-- Podsekce Časosběr -->
+          <div class="mt-6">
+            <div class="bg-[#f6f7fa] border border-gray-100 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div class="flex-1">
+                <h4 class="text-gray-900 font-bold text-sm tracking-tight villa-timelapse-sub-title">Interaktivní časosběrný přehrávač</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed villa-timelapse-sub-desc">Sledujte postupný vývoj stavby luxusní vily na mořském pobřeží od začištění pozemku až po finální zahradní úpravy.</p>
+              </div>
+              <button onclick="openVillaTimelapseModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-6 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold shrink-0 shadow-sm w-full md:w-auto">
+                <i class="bi bi-clock-history text-sm"></i>
+                <span class="villa-timelapse-btn-text">Spustit časosběr</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
           <h3 class="text-xl font-bold">Krizový management</h3>
           <p class="text-sm text-gray-600">Nasazujeme drony tam, kde rozhoduje rychlost a okamžitý přehled – například při povodních či jiných mimořádných událostech. Poskytujeme operativní monitoring vodních toků i dopravní situace, včetně analýzy průjezdnosti pro složky IZS. Naše data pomáhají k rychlejšímu rozhodování a efektivnějšímu řízení v kritických momentech.</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-            <img src="images/photos/KM_1_web.jpg" class="w-full rounded-xl lb-thumb" alt="Krizový management">
-            <img src="images/photos/KM_2_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Krizový management">
-            <img src="images/photos/KM_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Krizový management">
+            <img src="images/photos/KM_1_web.jpg" class="w-full rounded-xl lb-thumb" alt="Modelová analýza hloubky záplavy">
+            <img src="images/photos/KM_2_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Operativní řízení dopravy v reálném čase">
+            <img src="images/photos/KM_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Detekce zablokované silnice a objem suti">
           </div>
         </div>
         <div class="bg-white rounded-3xl p-8 flex flex-col gap-4">
@@ -122,16 +334,572 @@
             <img src="images/photos/FV_2_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Foto a Video">
             <img src="images/photos/FV_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Foto a Video">
           </div>
+          <!-- Interactive Simulator Trigger Button -->
+          <div class="mt-4 flex justify-end">
+            <button type="button" onclick="openPhotoVideoModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-6 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold shadow-sm">
+              <i class="bi bi-camera-reels-fill text-sm"></i>
+              <span>Spustit trenažér kamery</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+
+
+  <!-- Floating Sidebar Dock -->
+  <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3.5 items-end pointer-events-none">
+    
+    <!-- Button 1: Case Studies (Případové studie) -->
+    <button type="button" onclick="openCasesModal()" class="pointer-events-auto bg-gradient-to-l from-[#0f1117]/95 to-[#151821]/95 backdrop-blur-md hover:from-[#13161e] hover:to-[#1a1e2a] text-white border-l-2 border-[#23d8ff] border-t border-b border-white/10 px-3 py-7 rounded-l-2xl shadow-[0_10px_45px_rgba(0,0,0,0.65),0_0_15px_rgba(35,216,255,0.12)] hover:shadow-[0_12px_55px_rgba(0,0,0,0.75),0_0_30px_rgba(35,216,255,0.4)] transition-all duration-300 flex flex-col items-center gap-4 group select-none hover:-translate-x-2">
+      <!-- Pulsing indicator (blue) -->
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#23d8ff] opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#23d8ff]"></span>
+      </span>
+      <!-- Icon with soft blue glow -->
+      <i class="bi bi-journal-text text-[#23d8ff] text-base drop-shadow-[0_0_4px_rgba(35,216,255,0.4)] group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(35,216,255,0.8)] transition duration-300"></i>
+      <!-- Rotated text (vertical text) with soft hover glow -->
+      <span class="text-[10px] font-black uppercase tracking-[0.28em] font-sans antialiased [writing-mode:vertical-lr] text-gray-300 group-hover:text-[#23d8ff] group-hover:drop-shadow-[0_0_6px_rgba(35,216,255,0.5)] transition-all duration-300">Případové studie</span>
+    </button>
+
+    <!-- Button 2: Interactive Client Zone (Interaktivní zóna) -->
+    <button type="button" onclick="openGisModal()" class="pointer-events-auto bg-gradient-to-l from-[#0f1117]/95 to-[#151821]/95 backdrop-blur-md hover:from-[#13161e] hover:to-[#1a1e2a] text-white border-l-2 border-[#cff245] border-t border-b border-white/10 px-3 py-7 rounded-l-2xl shadow-[0_10px_45px_rgba(0,0,0,0.65),0_0_15px_rgba(207,242,69,0.12)] hover:shadow-[0_12px_55px_rgba(0,0,0,0.75),0_0_30px_rgba(207,242,69,0.4)] transition-all duration-300 flex flex-col items-center gap-4 group select-none hover:-translate-x-2">
+      <!-- Pulsing indicator (green) -->
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#cff245] opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#cff245]"></span>
+      </span>
+      <!-- Icon with soft neon glow -->
+      <i class="bi bi-ruler text-[#cff245] text-base drop-shadow-[0_0_4px_rgba(207,242,69,0.4)] group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(207,242,69,0.8)] transition duration-300"></i>
+      <!-- Rotated text (vertical text) with soft hover glow -->
+      <span class="text-[10px] font-black uppercase tracking-[0.28em] font-sans antialiased [writing-mode:vertical-lr] text-gray-300 group-hover:text-[#cff245] group-hover:drop-shadow-[0_0_6px_rgba(207,242,69,0.5)] transition-all duration-300">Interaktivní zóna</span>
+    </button>
+
+  </div>
+
+  <!-- Client Portal Demo Modal -->
+  <div id="gis-modal" class="fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] hidden items-center justify-center p-4 animate-fade-in">
+    <div id="gis-modal-content" class="relative w-full max-w-5xl bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[95vh]">
+      <div class="flex items-center justify-between px-6 py-3.5 border-b border-white/5 bg-[#0f1013] flex-none">
+        <div class="flex items-center gap-2">
+          <h3 class="text-white font-bold text-lg tracking-tight text-shadow-sm">Interaktivní zóna</h3>
+        </div>
+        
+        <!-- Header Controls (Close button only) -->
+        <div class="flex items-center gap-6">
+          <button type="button" onclick="closeGisModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none" title="Zavřít">&times;</button>
+        </div>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-4">
+        <!-- Mock GIS App Container -->
+        <div id="gis-app-container" class="relative bg-[#12141a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col lg:flex-row h-[560px] max-md:h-[70vh]">
+          <!-- Left Sidebar: Tools -->
+          <div id="gis-sidebar" class="absolute lg:relative inset-y-0 left-0 z-50 lg:z-auto w-64 h-full lg:h-auto bg-[#0f1013] border-r border-white/5 p-5 flex flex-col gap-5 justify-between select-none transform -translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-2xl lg:shadow-none">
+            <div class="flex flex-col gap-3">
+              <span class="text-gray-500 font-mono text-[9px] tracking-widest uppercase">GIS Měřicí nástroje</span>
+              
+              <button type="button" onclick="setGisTool('measure')" id="gis-tool-measure" class="flex items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-ruler text-[#cff245]"></i>
+                <span>Měření vzdálenosti</span>
+              </button>
+
+              <button type="button" onclick="setGisTool('height')" id="gis-tool-height" class="flex items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-geo text-[#23d8ff]"></i>
+                <span>Výšková sonda (Z-sonda)</span>
+              </button>
+
+              <button type="button" onclick="setGisTool('area')" id="gis-tool-area" class="flex items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-pentagon text-[#cff245]"></i>
+                <span>Měření plochy</span>
+              </button>
+
+              <button type="button" onclick="setGisTool('profile')" id="gis-tool-profile" class="flex items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-graph-up text-[#23d8ff]"></i>
+                <span>Výškový profil</span>
+              </button>
+
+              <button type="button" onclick="setGisTool('slope')" id="gis-tool-slope" class="flex items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-activity text-[#cff245]"></i>
+                <span>Měření sklonu</span>
+              </button>
+
+              <button type="button" onclick="setGisTool('flood')" id="gis-tool-flood" class="flex items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-water text-[#23d8ff]"></i>
+                <span>Simulace záplav</span>
+              </button>
+
+              <button type="button" onclick="setGisTool('calib')" id="gis-tool-calib" class="hidden items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-gear-fill text-[#fbbf24]"></i>
+                <span>Kalibrace výšek</span>
+              </button>
+              
+              <button type="button" onclick="setGisTool('flood-calib')" id="gis-tool-flood-calib" class="hidden items-center gap-3 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 text-xs font-bold transition w-full text-left">
+                <i class="bi bi-droplet-fill text-[#23d8ff]"></i>
+                <span>Kalibrace záplav</span>
+              </button>
+              
+              <button type="button" onclick="clearGisData()" id="gis-tool-clear" class="flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 text-[10px] font-mono transition w-full mt-1.5">
+                <i class="bi bi-trash"></i>
+                <span>Vymazat měření</span>
+              </button>
+            </div>
+
+            <div class="flex flex-col gap-3">
+              <span class="text-gray-500 font-mono text-[9px] tracking-widest uppercase">Export Datových Vrstev</span>
+              
+              <div class="relative">
+                <button type="button" onclick="toggleGisExportDropdown()" id="gis-export-btn" class="flex items-center justify-between gap-2 bg-[#cff245] text-black px-4 py-2.5 rounded-xl font-bold text-xs w-full shadow-[0_4px_12px_rgba(207,242,69,0.15)] hover:opacity-90 transition">
+                  <span>Stáhnout formáty</span>
+                  <i class="bi bi-download"></i>
+                </button>
+                
+                <!-- Dropdown -->
+                <div id="gis-export-dropdown" class="absolute bottom-12 left-0 right-0 bg-[#16181e] border border-white/10 rounded-xl overflow-hidden shadow-xl hidden flex-col z-20">
+                  <button type="button" onclick="triggerGisDownload('.dxf (CAD/BIM)')" class="px-4 py-2 text-[10px] font-mono text-gray-300 hover:bg-white/5 hover:text-white transition text-left border-b border-white/5">AutoCAD Dxf (vektor)</button>
+                  <button type="button" onclick="triggerGisDownload('.shp (GIS)')" class="px-4 py-2 text-[10px] font-mono text-gray-300 hover:bg-white/5 hover:text-white transition text-left border-b border-white/5">Esri Shapefile (SHP)</button>
+                  <button type="button" onclick="triggerGisDownload('.tif (GeoTIFF)')" class="px-4 py-2 text-[10px] font-mono text-gray-300 hover:bg-white/5 hover:text-white transition text-left">Ortofoto GeoTIFF (TIF)</button>
+                </div>
+              </div>
+
+              <!-- Export Progress Loader -->
+              <div id="gis-export-loader" class="hidden flex-col gap-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/5 mt-1">
+                <div class="flex justify-between text-[8px] font-mono text-gray-400">
+                  <span id="gis-loader-status">Příprava dat...</span>
+                  <span id="gis-loader-pct">0%</span>
+                </div>
+                <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                  <div id="gis-loader-bar" class="bg-gradient-to-r from-[#cff245] to-[#23d8ff] h-full rounded-full transition-all duration-100" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tools Sidebar Backdrop (Mobile only) -->
+          <div id="gis-sidebar-backdrop" onclick="toggleGisMobileSidebar(false)" class="absolute inset-0 bg-black/60 z-40 hidden transition-opacity duration-300 opacity-0 lg:hidden"></div>
+
+          <!-- Right: Map Viewport & Right Sidebar -->
+          <div class="flex-1 min-w-0 relative flex flex-row bg-[#07080a]">
+            <div id="gis-canvas" class="flex-1 w-full h-full relative overflow-hidden select-none cursor-grab" oncontextmenu="return false;" onmousedown="handleGisCanvasMouseDown(event)" onmousemove="handleGisCanvasMouseMove(event)" onmouseup="handleGisCanvasMouseUp(event)" onclick="handleGisCanvasClick(event)" ondblclick="handleGisCanvasDblClick(event)" onwheel="handleGisCanvasWheel(event)">
+              
+              <!-- Floating Tools Trigger Button (Mobile only) -->
+              <button type="button" id="gis-mobile-tools-btn" onclick="toggleGisMobileSidebar(true)" class="lg:hidden absolute bottom-4 left-4 z-30 bg-[#cff245] text-black px-4 py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                <i class="bi bi-tools"></i>
+                <span>Nástroje</span>
+              </button>
+              
+              <!-- Map Viewport Wrapper (Zoom & Pan Container) -->
+              <div id="gis-map-viewport" class="absolute inset-0 w-full h-full select-none" style="transform-origin: top left; transform: translate(0px, 0px) scale(1);">
+                <!-- Background Orthophoto -->
+                <img id="gis-bg-image" src="images/photos/gis_mockup_ortho.jpg" class="absolute inset-0 w-full h-full object-fill opacity-75 pointer-events-none select-none">
+                <!-- Dynamic Flood Canvas Overlay for flow simulation propagation -->
+                <canvas id="gis-flood-canvas" width="1024" height="768" class="absolute inset-0 w-full h-full pointer-events-none opacity-80 mix-blend-multiply z-10" style="filter: blur(3.5px);"></canvas>
+                <canvas id="gis-flood-outline-canvas" width="1024" height="768" class="absolute inset-0 w-full h-full pointer-events-none z-10" style="filter: none;"></canvas>
+                
+                <!-- Grid Lines overlay for tech aesthetic -->
+                <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
+
+                <!-- SVG layer for lines and markers -->
+                <svg id="gis-svg-overlay" class="absolute inset-0 w-full h-full pointer-events-none">
+                  <!-- Flood simulation overlays -->
+                  </g>
+                  
+                  <!-- Flood Calibration overlays group -->
+                  <g id="gis-flood-calib-overlays" class="hidden">
+                    <g id="gis-flood-calib-paths"></g>
+                    <g id="gis-flood-calib-markers"></g>
+                  </g>
+
+                  <!-- Measured line -->
+                  <line id="gis-svg-line" x1="0" y1="0" x2="0" y2="0" stroke="#cff245" stroke-width="2" class="gis-measure-line hidden" filter="drop-shadow(0 0 4px rgba(207,242,69,0.6))"/>
+                  
+                  <!-- Polygon measurement area -->
+                  <polygon id="gis-svg-polygon" points="" fill="rgba(207, 242, 69, 0.15)" stroke="#cff245" stroke-width="2" stroke-dasharray="4 2" class="hidden" style="transition: fill 0.3s ease, stroke-width 0.3s ease;" filter="drop-shadow(0 0 4px rgba(207,242,69,0.4))"/>
+                  
+                  <!-- Dashed helper lines for active drawing -->
+                  <line id="gis-svg-temp-line" x1="0" y1="0" x2="0" y2="0" stroke="#cff245" stroke-width="1.5" stroke-dasharray="4 4" class="hidden" />
+                  <line id="gis-svg-close-line" x1="0" y1="0" x2="0" y2="0" stroke="rgba(35, 216, 255, 0.6)" stroke-width="1.5" stroke-dasharray="4 4" class="hidden" />
+                  
+                  <!-- Dynamic markers group -->
+                  <g id="gis-svg-markers"></g>
+
+                  <!-- Calibration markers group -->
+                  <g id="gis-calib-overlays" class="hidden"></g>
+                </svg>
+
+                <!-- Dynamic Markers (Point A, Point B) -->
+                <div id="gis-marker-a" class="absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-white bg-[#cff245] shadow-[0_0_8px_#cff245] hidden z-10">
+                  <span class="absolute top-5 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm border border-white/10 text-[8px] font-mono px-1 py-0.5 rounded text-white whitespace-nowrap">Bod A</span>
+                </div>
+                <div id="gis-marker-b" class="absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-white bg-[#23d8ff] shadow-[0_0_8px_#23d8ff] hidden z-10">
+                  <span class="absolute top-5 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm border border-white/10 text-[8px] font-mono px-1 py-0.5 rounded text-white whitespace-nowrap">Bod B</span>
+                </div>
+
+                <!-- Elevation probe crosshair -->
+                <div id="gis-probe-crosshair" class="absolute -translate-x-1/2 -translate-y-1/2 w-6 h-6 hidden z-10 flex items-center justify-center pointer-events-none">
+                  <div class="absolute w-[1px] h-full bg-[#23d8ff] opacity-80"></div>
+                  <div class="absolute h-[1px] w-full bg-[#23d8ff] opacity-80"></div>
+                  <div class="w-3.5 h-3.5 border border-[#23d8ff] rounded-full animate-ping"></div>
+                </div>
+
+                <!-- Calibration Markers (Point 1, Point 2) - Hidden after calibration -->
+                <div id="gis-calib-1" class="absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full border-2 border-yellow-400 bg-yellow-500 shadow-[0_0_12px_#fbbf24] z-10 flex items-center justify-center cursor-help hidden" style="left: 582px; top: 196px; transform: translate(-50%, -50%) scale(1);">
+                  <span class="text-[8px] font-bold text-black font-mono">1</span>
+                  <span class="absolute top-6 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-sm border border-yellow-400 text-[8px] font-mono px-1.5 py-0.5 rounded text-yellow-400 whitespace-nowrap shadow-xl">Kalibrační bod 1</span>
+                </div>
+                <div id="gis-calib-2" class="absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full border-2 border-yellow-400 bg-yellow-500 shadow-[0_0_12px_#fbbf24] z-10 flex items-center justify-center cursor-help hidden" style="left: 593px; top: 198px; transform: translate(-50%, -50%) scale(1);">
+                  <span class="text-[8px] font-bold text-black font-mono">2</span>
+                  <span class="absolute top-6 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-sm border border-yellow-400 text-[8px] font-mono px-1.5 py-0.5 rounded text-yellow-400 whitespace-nowrap shadow-xl">Kalibrační bod 2</span>
+                </div>
+              </div>
+
+              <!-- HUD Display: Instructions & dynamic tooltips -->
+              <div class="absolute top-4 left-4 right-4 flex flex-wrap gap-2 justify-between pointer-events-none select-none">
+                <div class="flex gap-2 flex-wrap">
+                  <div class="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[9px] font-mono text-gray-400">
+                    Aktivní nástroj: <span id="gis-hud-tool" class="text-white">Žádný (Prohlížení)</span>
+                  </div>
+                  <div class="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[9px] font-mono text-gray-400">
+                    Výška pohledu: <span id="gis-hud-altitude" class="text-[#cff245] font-bold">150 m</span>
+                  </div>
+                </div>
+                <div class="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[9px] font-mono text-gray-400">
+                  Poloha: <span id="gis-hud-coords" class="text-[#cff245]">---</span>
+                </div>
+              </div>
+
+
+
+              <!-- Slope Badge -->
+              <div id="gis-slope-badge" class="absolute -translate-x-1/2 -translate-y-1/2 bg-black/90 border border-white/20 text-white font-mono text-[9px] font-bold px-2 py-0.5 rounded-lg shadow-xl hidden z-20 flex items-center gap-1 select-none pointer-events-none">
+                <i class="bi bi-activity text-[#cff245]"></i>
+                <span id="gis-slope-badge-val">0% / 0°</span>
+              </div>
+
+              <!-- Elevation Profile Card -->
+              <div id="gis-profile-card" class="absolute bottom-4 left-4 right-4 md:right-auto bg-[#0f1013]/95 backdrop-blur-md border border-white/10 p-4 rounded-2xl hidden flex-col gap-2 w-[350px] md:w-[380px] shadow-2xl z-10">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1.5 text-[#23d8ff] font-bold text-xs uppercase tracking-wider">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Výškový profil terénu</span>
+                  </div>
+                  <button type="button" onclick="clearGisData()" class="text-gray-400 hover:text-white text-base leading-none">&times;</button>
+                </div>
+                <div class="flex justify-between text-[10px] text-gray-400 font-mono mt-1">
+                  <span>Délka profilu: <strong id="gis-profile-dist" class="text-white">---</strong></span>
+                  <span>Převýšení: <strong id="gis-profile-diff" class="text-white">---</strong></span>
+                </div>
+                <!-- SVG Elevation Chart -->
+                <div class="relative w-full h-[75px] bg-black/40 border border-white/5 rounded-xl overflow-hidden mt-1.5 select-none" onmousemove="handleProfileChartMouseMove(event)" onmouseleave="handleProfileChartMouseLeave()">
+                  <svg id="gis-profile-svg-chart" class="w-full h-full">
+                    <defs>
+                      <linearGradient id="profile-chart-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#23d8ff" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#23d8ff" stop-opacity="0.0"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <!-- Interactive tooltip marker line -->
+                  <div id="gis-profile-chart-marker" class="absolute top-0 bottom-0 w-[1px] bg-white/30 hidden pointer-events-none"></div>
+                  <div id="gis-profile-chart-tooltip" class="absolute bg-black/90 border border-white/10 text-white text-[8px] font-mono p-1 rounded shadow-md hidden pointer-events-none whitespace-nowrap"></div>
+                </div>
+                <p class="text-[8px] text-gray-500 leading-tight font-mono mt-1">Přejeďte myší přes graf pro inspekci výšky v libovolném bodě profilu.</p>
+              </div>
+
+              <!-- GIS Canvas Hint -->
+              <div id="gis-canvas-hint" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#12141a]/95 border border-white/10 p-6 rounded-2xl flex flex-col items-center gap-3 text-center max-w-xs pointer-events-auto z-20 shadow-2xl">
+                <i class="bi bi-mouse text-3xl text-[#cff245] animate-bounce"></i>
+                <h4 class="text-white font-bold text-sm">Spustit interaktivní demo</h4>
+                <p class="text-gray-400 text-[10px] leading-relaxed">Vyberte v levém sloupci libovolný nástroj (např. měření vzdálenosti) a klikněte na mapu.</p>
+                <button type="button" onclick="dismissGisHint()" class="bg-[#cff245] hover:opacity-90 text-black font-bold text-[10px] uppercase px-4 py-2 rounded-lg transition mt-1">Rozumím</button>
+              </div>
+            </div>
+            
+            <!-- Right Sidebar: Image Switcher -->
+            <div class="w-64 bg-[#0f1013] border-l border-white/5 p-5 flex flex-col gap-5 select-none flex-none">
+              <div class="flex flex-col gap-3">
+                <span class="text-gray-500 font-mono text-[9px] tracking-widest uppercase">Lokalita (Snímky)</span>
+                
+                <button id="gis-btn-img1" onclick="switchGisImage(1)" class="px-3 py-2.5 rounded-xl border text-[10px] font-bold font-sans tracking-wide transition-all duration-300 w-full text-left flex items-center gap-2 bg-[#cff245] text-black border-[#cff245] shadow-[0_0_12px_rgba(207,242,69,0.2)]">
+                  <i class="bi bi-house-door-fill text-base"></i>
+                  <span>Koridor obce</span>
+                </button>
+                
+                <button id="gis-btn-img2" onclick="switchGisImage(2)" class="px-3 py-2.5 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 text-[10px] font-bold font-sans tracking-wide transition-all duration-300 bg-transparent w-full text-left flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi inline-block" viewBox="0 0 16 16">
+                    <path d="M1 2v3h1v9h12V5h1V2h-3v2H9V2H7v2H4V2H1zm2 4h10v7H3V6zm4 2v4h2V8H7z"/>
+                  </svg>
+                  <span>Zřícenina hradu</span>
+                </button>
+                
+                <button id="gis-btn-img3" onclick="switchGisImage(3)" class="px-3 py-2.5 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 text-[10px] font-bold font-sans tracking-wide transition-all duration-300 bg-transparent w-full text-left flex items-center gap-2">
+                  <i class="bi bi-buildings text-base"></i>
+                  <span>Průmyslový areál</span>
+                </button>
+                
+                <button id="gis-btn-img4" onclick="switchGisImage(4)" class="px-3 py-2.5 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 text-[10px] font-bold font-sans tracking-wide transition-all duration-300 bg-transparent w-full text-left flex items-center gap-2">
+                  <i class="bi bi-signpost-split text-base"></i>
+                  <span>Křižovatka dálnic</span>
+                </button>
+                
+                <button id="gis-btn-img5" onclick="switchGisImage(5)" class="px-3 py-2.5 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 text-[10px] font-bold font-sans tracking-wide transition-all duration-300 bg-transparent w-full text-left flex items-center gap-2">
+                  <i class="bi bi-water text-base"></i>
+                  <span>Lom s jezerem</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Measurement / Elevation Card (Full Width Bottom Bar) -->
+        <div id="gis-result-card" class="bg-[#0f1013]/95 backdrop-blur-md border border-white/10 px-6 py-3.5 rounded-2xl flex items-center justify-between gap-4 shadow-2xl z-10 w-full flex-row flex-wrap md:flex-nowrap">
+          <div class="flex items-center gap-3 flex-none">
+            <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm flex-none">
+              <i id="gis-card-icon" class="bi bi-info-circle text-[#fbbf24]"></i>
+            </div>
+            <div class="flex flex-col">
+              <span id="gis-card-title" class="text-gray-500 font-bold text-[9px] uppercase tracking-wider block font-sans">Interaktivní GIS Nástroje</span>
+              <p id="gis-card-value" class="text-sm text-white font-bold font-mono whitespace-nowrap">Vyberte nástroj vlevo</p>
+            </div>
+          </div>
+          
+          <div class="h-6 w-[1px] bg-white/10 hidden md:block flex-none"></div>
+          
+          <div class="flex-1 min-w-[200px] text-left">
+            <p id="gis-card-desc" class="text-[10px] text-gray-400 font-mono leading-relaxed">Kliknutím aktivujte měření vzdáleností, plochy, sklonu, výšek nebo simulaci záplav. Najeďte myší na tlačítko pro popis funkce.</p>
+          </div>
+          
+          <!-- Dynamic Actions Section for Save/Clear buttons -->
+          <div id="gis-card-actions" class="flex items-center gap-2 hidden flex-none"></div>
+        </div>
+
+        <!-- Flood Simulation Card (Full Width Bottom Bar) -->
+        <div id="gis-flood-card" class="bg-[#0f1013]/95 backdrop-blur-md border border-white/10 px-6 py-3.5 rounded-2xl hidden items-center justify-between gap-4 shadow-2xl z-10 w-full flex-row flex-wrap md:flex-nowrap">
+          <div class="flex items-center gap-3 flex-none">
+            <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm flex-none">
+              <i class="bi bi-water text-[#23d8ff]"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-gray-500 font-bold text-[9px] uppercase tracking-wider block font-sans">Simulace záplavové vlny</span>
+              <p id="gis-flood-level-text" class="text-sm text-white font-bold font-mono whitespace-nowrap">+0.0 m</p>
+            </div>
+          </div>
+          
+          <div class="h-6 w-[1px] bg-white/10 hidden md:block flex-none"></div>
+          
+          <div class="flex-1 min-w-[200px] flex flex-col gap-1">
+            <input type="range" id="gis-flood-range" min="0" max="10" step="0.001" value="0" oninput="updateGisFlood(this.value)" class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#23d8ff] outline-none">
+            <div class="flex justify-between text-[8px] text-gray-500 font-mono">
+              <span>Normální stav</span>
+              <span>Záplava (+4m)</span>
+            </div>
+          </div>
+
+          <div class="h-6 w-[1px] bg-white/10 hidden md:block flex-none"></div>
+
+          <div class="flex items-center gap-2 flex-none">
+            <span class="text-gray-500 font-bold text-[9px] uppercase tracking-wider font-sans">Zatopená plocha:</span>
+            <span id="gis-flood-area-text" class="text-sm text-[#23d8ff] font-bold font-mono">0 m²</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Case Studies Modal -->
+  <div id="cases-modal" class="fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] hidden items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-5xl bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#0f1013] flex-none">
+        <h3 class="text-white font-bold text-lg tracking-tight">Případové studie</h3>
+        <button type="button" onclick="closeCasesModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none" title="Zavřít">&times;</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-8 bg-[#0d0e11] text-white">
+        <div class="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+          <div class="flex flex-col gap-3 text-center">
+            <p class="text-gray-400 text-sm max-w-2xl mx-auto">Detailní rozbor konkrétních zakázek, kde drony nahradily starší postupy a ušetřily čas i finance.</p>
+          </div>
+
+          <!-- Tab Switcher -->
+          <div class="flex justify-center border-b border-white/5 pb-2">
+            <div class="flex gap-2 bg-[#12141a] p-1.5 border border-white/10 rounded-2xl">
+              <button type="button" onclick="setCaseStudy(1)" id="case-tab-1" class="px-5 py-2.5 rounded-xl font-bold text-xs transition duration-200 bg-[#cff245] text-black shadow-lg">
+                Sanace Halda Jan Šverma
+              </button>
+              <button type="button" onclick="setCaseStudy(2)" id="case-tab-2" class="px-5 py-2.5 rounded-xl font-bold text-xs transition duration-200 text-gray-400 hover:text-white bg-transparent">
+                FVE Projekt Malenovice
+              </button>
+            </div>
+          </div>
+
+          <!-- Case Content Container -->
+          <div class="bg-[#12141a]/50 border border-white/5 rounded-3xl p-8 backdrop-blur-md">
+            <!-- Study 1 -->
+            <div id="case-content-1" class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div class="flex flex-col gap-5 text-left">
+                <span class="text-[#cff245] font-mono text-[9px] tracking-widest uppercase">Ekologie a sanace – případová studie</span>
+                <h3 class="text-2xl font-bold leading-tight text-white">Sanace haldy Jan Šverma Ostrava</h3>
+                
+                <div class="flex flex-col gap-3 text-sm text-gray-300">
+                  <p><strong>Výzva:</strong> Tradiční pozemní zaměření nestabilního a částečně doutnajícího odvalu trvalo běžně 2-3 týdny, přičemž geodetické přístroje byly ohroženy vysokými teplotami a nestabilním podložím.</p>
+                  <p><strong>Řešení:</strong> Použili jsme plně autonomní UAV fotogrammetrický nálet s RTK přesností s termální inspekcí v infračerveném pásmu pro lokalizaci vnitřních ohnisek požárů.</p>
+                  <p><strong>Výsledek:</strong> Kompletní data byla naměřena za **1 letový den** a dodána do 48 hodin v centimetrové přesnosti. Náklady klesly o více než **65 %**.</p>
+                </div>
+                
+                <div class="flex items-center gap-3 mt-2">
+                  <i class="bi bi-clock-history text-2xl text-[#cff245]"></i>
+                  <div class="flex flex-col">
+                    <span class="text-xs text-gray-500 font-mono">Doba realizace</span>
+                    <span class="text-sm font-bold text-white">24 hodin (místo 14 dnů)</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Visual Metrics & comparison charts -->
+              <div class="bg-[#0f1013] border border-white/5 p-6 rounded-2xl flex flex-col gap-5 text-left">
+                <span class="text-gray-400 font-mono text-[9px] uppercase tracking-widest">Srovnání: Drony vs. Tradiční geodetické měření</span>
+                
+                <!-- Metric 1: Cost -->
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-400">Finanční náklady</span>
+                    <span class="text-white font-bold font-mono">Úspora 65%</span>
+                  </div>
+                  <div class="w-full bg-white/5 h-3 rounded-lg overflow-hidden flex">
+                    <div class="bg-[#cff245] h-full" style="width: 35%;"></div>
+                    <div class="bg-red-500/25 h-full" style="width: 65%;"></div>
+                  </div>
+                  <div class="flex justify-between text-[9px] text-gray-500 font-mono">
+                    <span>Dronaut (35%)</span>
+                    <span>Tradiční geodet (100%)</span>
+                  </div>
+                </div>
+
+                <!-- Metric 2: Time -->
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-400">Časová náročnost</span>
+                    <span class="text-[#23d8ff] font-bold font-mono">93% Rychlejší</span>
+                  </div>
+                  <div class="w-full bg-white/5 h-3 rounded-lg overflow-hidden flex">
+                    <div class="bg-[#23d8ff] h-full" style="width: 7%;"></div>
+                    <div class="bg-red-500/25 h-full" style="width: 93%;"></div>
+                  </div>
+                  <div class="flex justify-between text-[9px] text-gray-500 font-mono">
+                    <span>Dronaut (1 den)</span>
+                    <span>Tradiční geodet (14 dnů)</span>
+                  </div>
+                </div>
+
+                <!-- Metric 3: Safety -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-xs text-gray-400">Bezpečnostní riziko při měření</span>
+                  <div class="grid grid-cols-2 gap-2 mt-1">
+                    <div class="bg-green-500/10 border border-green-500/30 p-2 rounded-xl text-center">
+                      <span class="text-green-400 text-[8px] uppercase tracking-wider font-mono">Dronaut</span>
+                      <p class="text-xs font-bold text-white">NULOVÉ</p>
+                      <span class="text-[8px] text-gray-400">(bezkontaktní z výšky)</span>
+                    </div>
+                    <div class="bg-red-500/10 border border-red-500/30 p-2 rounded-xl text-center">
+                      <span class="text-red-400 text-[8px] uppercase tracking-wider font-mono">Pozemní geodet</span>
+                      <p class="text-xs font-bold text-white">VYSOKÉ</p>
+                      <span class="text-[8px] text-gray-400">(pohyb na haldě)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Study 2 -->
+            <div id="case-content-2" class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center hidden">
+              <div class="flex flex-col gap-5 text-left">
+                <span class="text-[#23d8ff] font-mono text-[9px] tracking-widest uppercase">Průmysl a energetika – případová studie</span>
+                <h3 class="text-2xl font-bold leading-tight text-white">FVE Projekt Malenovice</h3>
+                
+                <div class="flex flex-col gap-3 text-sm text-gray-300">
+                  <p><strong>Výzva:</strong> Vytvoření podkladů pro střešní instalaci fotovoltaické elektrárny na členité střeše průmyslové haly plné vzduchotechniky a světlíků. Ruční zaměření a zakreslení by bylo nepřesné a vyžadovalo práci ve výškách.</p>
+                  <p><strong>Řešení:</strong> Použili jsme 3D laser-accurate flight modelování. Dron nalétal sérii podrobných snímků, ze kterých byl složen přesný 3D model (digitální dvojče) celé střechy.</p>
+                  <p><strong>Výsledek:</strong> Projektanti obdrželi kompletní 3D model a polohopis do **3 hodin** od náletu. Rozmístění panelů tak bylo naplánováno s maximální efektivitou a bez kolizí se stávající infrastrukturou.</p>
+                </div>
+                
+                <div class="flex items-center gap-3 mt-2">
+                  <i class="bi bi-shield-check text-2xl text-[#23d8ff]"></i>
+                  <div class="flex flex-col">
+                    <span class="text-xs text-gray-500 font-mono">Bezpečnost práce (BOZP)</span>
+                    <span class="text-sm font-bold text-white">100% Bezpečnost (žádný geodet na střeše)</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Visual Metrics & comparison charts -->
+              <div class="bg-[#0f1013] border border-white/5 p-6 rounded-2xl flex flex-col gap-5 text-left">
+                <span class="text-gray-400 font-mono text-[9px] uppercase tracking-widest">Srovnání: Drony vs. Tradiční geodetické měření</span>
+                
+                <!-- Metric 1: Cost -->
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-400">Příprava podkladů (čas)</span>
+                    <span class="text-[#cff245] font-bold font-mono">Ušetřeno 90% času</span>
+                  </div>
+                  <div class="w-full bg-white/5 h-3 rounded-lg overflow-hidden flex">
+                    <div class="bg-[#cff245] h-full" style="width: 10%;"></div>
+                    <div class="bg-red-500/25 h-full" style="width: 90%;"></div>
+                  </div>
+                  <div class="flex justify-between text-[9px] text-gray-500 font-mono">
+                    <span>Dronaut (3 hodiny)</span>
+                    <span>Tradiční geodet (2 dny)</span>
+                  </div>
+                </div>
+
+                <!-- Metric 2: Density -->
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-400">Hustota naměřených dat</span>
+                    <span class="text-[#23d8ff] font-bold font-mono">Miliony bodů (vs. desítky)</span>
+                  </div>
+                  <div class="w-full bg-white/5 h-3 rounded-lg overflow-hidden flex">
+                    <div class="bg-[#23d8ff] h-full" style="width: 100%;"></div>
+                    <div class="bg-red-500/25 h-full" style="width: 5%;"></div>
+                  </div>
+                  <div class="flex justify-between text-[9px] text-gray-500 font-mono">
+                    <span>Dronaut (Miliony bodů)</span>
+                    <span>Tradiční geodet (Desítky bodů)</span>
+                  </div>
+                </div>
+
+                <!-- Metric 3: Safety -->
+                <div class="flex flex-col gap-1">
+                  <span class="text-xs text-gray-400">Kompatibilita s CAD/BIM softwarem</span>
+                  <div class="grid grid-cols-2 gap-2 mt-1">
+                    <div class="bg-green-500/10 border border-green-500/30 p-2 rounded-xl text-center">
+                      <span class="text-green-400 text-[8px] uppercase tracking-wider font-mono">Dronaut</span>
+                      <p class="text-xs font-bold text-white">100% IMPORTOVATELNÉ</p>
+                      <span class="text-[8px] text-gray-400">(.dxf, .dwg, .obj, .las)</span>
+                    </div>
+                    <div class="bg-red-500/10 border border-red-500/30 p-2 rounded-xl text-center">
+                      <span class="text-red-400 text-[8px] uppercase tracking-wider font-mono">Pozemní geodet</span>
+                      <p class="text-xs font-bold text-white">NUTNÁ ÚPRAVA</p>
+                      <span class="text-[8px] text-gray-400">(ruční překreslení bodů)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- About / Proč my -->
-  <section class="px-8 py-20" id="onas">
+  <section class="px-8 py-12 md:py-20" id="onas">
     <div class="flex flex-col gap-12 mx-auto w-full max-w-5xl">
       <div class="text-center">
-        <h2 class="text-5xl font-semibold tracking-tighter text-white">O nás</h2>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white">O nás</h2>
         <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Propojujeme svět bezpilotních systémů, geoinformatiky a moderního IT.</p>
       </div>
 
@@ -161,7 +929,7 @@
           <div class="flex flex-col gap-1">
             <span class="text-white font-semibold">Ondřej Slavík</span>
             <span class="text-gray-400 text-sm">Business Development & Chief Pilot</span>
-            <p class="text-gray-300 text-sm mt-1">Certifikovaný pilot a stratég. Má na starosti bezpečné provedení leteckých operací a konzultace projektů.</p>
+            <p class="text-gray-300 text-sm mt-1">Garant řízení projektů a Chief Pilot. Zajišťuje komunikaci s klienty, návrh řešení, koordinaci realizace a bezpečný průběh leteckých operací.</p>
           </div>
         </div>
         <div class="bg-white/5 rounded-3xl p-6 flex items-start gap-4 border border-gray-700">
@@ -176,11 +944,13 @@
     </div>
   </section>
 
+
+
   <!-- References -->
-  <section class="px-8 py-20 bg-[#f6f7fa] rounded-3xl" id="reference">
+  <section class="px-8 py-12 md:py-20 bg-[#f6f7fa] rounded-3xl" id="reference">
     <div class="flex flex-col gap-12 mx-auto w-full max-w-5xl">
       <div class="text-center">
-        <h2 class="text-5xl font-semibold tracking-tighter">Reference</h2>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter">Reference</h2>
         <p class="mt-4 text-gray-600">Vybrané projekty z různých odvětví</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -237,7 +1007,7 @@
           <p class="text-sm text-gray-600">Ortofotomapy, polohopis a výškopis jako digitální podklady pro projektanty a architekty — návrhy staveb, úpravy pozemků a projektová dokumentace.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm md:col-span-2 lg:col-span-1">
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
           <div class="flex items-center justify-between">
             <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Odpadové hospodářství</span>
           </div>
@@ -245,14 +1015,25 @@
           <p class="text-sm text-gray-600">Průběžné zaměřování území sloužícího pro ukládání odpadu města Zlína. Sledování množství navezeného materiálu a pravidelný výpočet kubatur.</p>
         </div>
 
+        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Časosběr</span>
+            <span class="text-gray-400 text-sm">2025 – ?</span>
+          </div>
+          <p class="font-bold text-gray-900">Sídliště Nové Malenovice – Zlín</p>
+          <p class="text-sm text-gray-600">Pravidelným snímkováním z totožných tras a pozic dokumentujeme průběh výstavby sídliště Nové Malenovice od zahájení prací až po dokončení objektů. Výsledkem je časosběrné video, které přehledně zachycuje proměnu území a celý průběh realizace projektu.</p>
+        </div>
+
       </div>
     </div>
   </section>
 
+
+
   <!-- Contact -->
-  <section class="px-8 py-24" id="kontakt">
+  <section class="px-8 py-12 md:py-24" id="kontakt">
     <div class="flex flex-col gap-8 items-center text-white mx-auto w-full max-w-2xl text-center">
-      <h2 class="text-5xl font-semibold tracking-tighter">Kontakt</h2>
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter">Kontakt</h2>
       <p class="text-xl text-gray-300">
         Rádi vám ukážeme ukázky našich dat a navrhneme optimální metodiku pro váš projekt.
       </p>
@@ -263,36 +1044,896 @@
         </div>
         <div class="flex items-center gap-3 text-gray-300">
           <i class="bi bi-telephone text-[#cff245] text-xl"></i>
-          <span>+420 123 456 789</span>
+          <span>+420 731 456 272</span>
         </div>
       </div>
-      <div class="flex flex-wrap gap-4 justify-center">
-        <a href="mailto:info@drnt.cz" class="bg-[#cff245] text-black px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition">
-          Napsat email
-        </a>
-        <a href="tel:+420123456789" class="border border-gray-700 text-white px-8 py-3 rounded-xl hover:border-gray-500 transition">
-          Zavolat nám
-        </a>
+      <div class="flex flex-col gap-4 items-center justify-center w-full">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="mailto:info@drnt.cz" class="border border-gray-700 text-white px-8 py-3 rounded-xl hover:border-gray-500 transition">
+            Napsat email
+          </a>
+          <a href="tel:+420731456272" class="border border-gray-700 text-white px-8 py-3 rounded-xl hover:border-gray-500 transition">
+            Zavolat nám
+          </a>
+        </div>
+        <button onclick="openConsultationModal()" class="bg-[#cff245] text-black px-10 py-3.5 rounded-xl font-bold hover:opacity-90 transition mt-2 shadow-[0_4px_20px_rgba(207,242,69,0.25)]">
+          Konzultovat projekt
+        </button>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="px-8 py-12 border-t border-gray-800">
-    <div class="mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="flex items-center gap-2 text-white">
-        <i class="bi bi-send-fill text-xl text-[#cff245]"></i>
-        <span class="text-xl font-bold">DRONAUT</span>
+  <footer class="bg-[#07080a] text-gray-300 border-t border-gray-900 pt-10 pb-6 px-8">
+    <div class="max-w-7xl mx-auto flex flex-col gap-8">
+      
+      <!-- Top Row: 3 Columns Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 pb-8 border-b border-gray-900">
+        
+        <!-- Column 1: Naše specializace -->
+        <div class="flex flex-col gap-4">
+          <h3 class="text-[#cff245] font-bold text-xs tracking-wider uppercase">Naše specializace</h3>
+          <ul class="flex flex-col gap-2.5">
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-map text-base text-[#cff245]"></i>
+              <span>Mapování a 3D modelování</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-buildings text-base text-[#cff245]"></i>
+              <span>Inspekce a technická kontrola</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-tree text-base text-[#cff245]"></i>
+              <span>Zemědělství a monitoring</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-shield text-base text-[#cff245]"></i>
+              <span>Krizový management</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-camera text-base text-[#cff245]"></i>
+              <span>Foto a video z dronu</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Proč spolupracovat s námi? -->
+        <div class="flex flex-col gap-4">
+          <h3 class="text-[#cff245] font-bold text-xs tracking-wider uppercase">Proč spolupracovat s námi?</h3>
+          <ul class="flex flex-col gap-2.5">
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-check-circle text-base text-[#cff245]"></i>
+              <span>Moderní technologie a přesná data</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-check-circle text-base text-[#cff245]"></i>
+              <span>Zkušený tým pilotů a analytiků</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-check-circle text-base text-[#cff245]"></i>
+              <span>Individuální přístup ke každému projektu</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-check-circle text-base text-[#cff245]"></i>
+              <span>Rychlé dodání výsledků</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-[13px] hover:text-white transition duration-200">
+              <i class="bi bi-check-circle text-base text-[#cff245]"></i>
+              <span>Bezpečný a profesionální přístup</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Informace -->
+        <div class="flex flex-col gap-4">
+          <h3 class="text-[#cff245] font-bold text-xs tracking-wider uppercase">Informace</h3>
+          <div class="flex flex-col gap-4">
+            
+            <!-- Info 1 -->
+            <div class="flex items-start gap-3">
+              <i class="bi bi-shield text-lg text-[#cff245] mt-0.5 shrink-0"></i>
+              <div class="flex flex-col">
+                <span class="text-white font-semibold text-[13px]">Bezpečnost především</span>
+                <p class="text-gray-400 text-[11px] leading-relaxed">Všechny lety provádíme v souladu s platnou legislativou a pravidly.</p>
+              </div>
+            </div>
+
+            <!-- Info 2 -->
+            <div class="flex items-start gap-3">
+              <i class="bi bi-lock text-lg text-[#cff245] mt-0.5 shrink-0"></i>
+              <div class="flex flex-col">
+                <span class="text-white font-semibold text-[13px]">Ochrana dat</span>
+                <p class="text-gray-400 text-[11px] leading-relaxed">Vaše data jsou u nás v bezpečí. Zachováváme důvěrnost a soukromí.</p>
+              </div>
+            </div>
+
+            <!-- Info 3 -->
+            <div class="flex items-start gap-3">
+              <i class="bi bi-cloud text-lg text-[#cff245] mt-0.5 shrink-0"></i>
+              <div class="flex flex-col">
+                <span class="text-white font-semibold text-[13px]">Pracujeme v celé ČR</span>
+                <p class="text-gray-400 text-[11px] leading-relaxed">Působíme po celé České republice a přizpůsobíme se vašim potřebám.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
-      <nav class="flex gap-6 text-sm text-gray-400">
-        <a href="#sluzby" class="hover:text-[#cff245] transition">Služby</a>
-        <a href="#onas" class="hover:text-[#cff245] transition">O nás</a>
-        <a href="#reference" class="hover:text-[#cff245] transition">Reference</a>
-        <a href="#kontakt" class="hover:text-[#cff245] transition">Kontakt</a>
-      </nav>
-      <span class="text-xs text-gray-500">&copy; 2026 Dronaut. Data z dronů, která pomáhají.</span>
+
+      <!-- Middle Row: Highlights with vertical separators -->
+      <div class="flex flex-col md:flex-row items-center justify-around gap-4 md:gap-2 py-4 border-b border-gray-950">
+        
+        <!-- Highlight 1 -->
+        <div class="flex items-center gap-2.5 text-[13px] text-white">
+          <i class="bi bi-clock text-base text-[#cff245]"></i>
+          <span>Rychlá reakce a flexibilita</span>
+        </div>
+
+        <div class="h-5 w-[1px] bg-gray-800 hidden md:block"></div>
+
+        <!-- Highlight 2 -->
+        <div class="flex items-center gap-2.5 text-[13px] text-white">
+          <i class="bi bi-award text-base text-[#cff245]"></i>
+          <span>Špičková kvalita výstupů</span>
+        </div>
+
+        <div class="h-5 w-[1px] bg-gray-800 hidden md:block"></div>
+
+        <!-- Highlight 3 -->
+        <div class="flex items-center gap-2.5 text-[13px] text-white">
+          <i class="bi bi-people text-base text-[#cff245]"></i>
+          <span>Spolehlivost a dlouhodobá spolupráce</span>
+        </div>
+
+      </div>
+
+      <!-- Bottom Row: Copyright -->
+      <div class="text-center text-xs text-gray-500">
+        &copy; 2026 Dronaut. Data z dronů, která pomáhají.
+      </div>
+
     </div>
   </footer>
+
+    </div>
+  </footer>
+
+  <!-- Client Login Modal -->
+  <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[1500] hidden items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-sm bg-[#13151a]/95 border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col gap-5 select-none">
+      <!-- Close button -->
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition">
+        <i class="bi bi-x-lg text-sm"></i>
+      </button>
+
+      <!-- Logo & Header -->
+      <div class="text-center flex flex-col items-center gap-2 mt-2">
+        <div class="w-12 h-12 rounded-full bg-[#cff245]/10 border border-[#cff245]/30 flex items-center justify-center text-[#cff245] text-xl shadow-[0_0_15px_rgba(207,242,69,0.15)] animate-pulse">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg font-sans tracking-tight">Klientský portál Dronaut</h3>
+        <p class="text-[10px] text-gray-400 font-sans">Pro přístup ke svým projektům a financím se přihlaste.</p>
+      </div>
+
+      <!-- Form -->
+      <form id="login-form" onsubmit="handleLoginSubmit(event)" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left font-sans">Uživatelské jméno</label>
+          <div class="relative">
+            <i class="bi bi-person absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="login-username" required placeholder="Napište 'demo'" class="w-full bg-black/40 border border-white/10 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs outline-none focus:border-[#cff245] focus:ring-1 focus:ring-[#cff245] transition font-sans">
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left font-sans">Heslo</label>
+          <div class="relative">
+            <i class="bi bi-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="password" id="login-password" required placeholder="Napište 'demo'" class="w-full bg-black/40 border border-white/10 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs outline-none focus:border-[#cff245] focus:ring-1 focus:ring-[#cff245] transition font-sans">
+          </div>
+        </div>
+        
+        <div id="login-error-msg" class="text-[10px] text-red-500 text-left font-sans hidden font-semibold">
+          Nesprávné jméno nebo heslo. Zkuste zadat 'demo'.
+        </div>
+
+        <button type="submit" class="w-full bg-[#cff245] hover:opacity-90 text-black font-bold text-xs uppercase py-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-[#cff245]/15 font-sans mt-2">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Přihlásit se</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Client Dashboard Modal -->
+  <div id="client-dashboard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[1400] hidden items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-5xl h-[530px] max-h-[85vh] bg-[#0f1115] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+      <!-- Close button -->
+      <button onclick="closeClientDashboard()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition z-10">
+        <i class="bi bi-x-lg text-sm"></i>
+      </button>
+
+      <!-- Dashboard Header -->
+      <div class="flex items-center justify-between px-8 py-5 border-b border-white/5 bg-[#0a0b0d] flex-none">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#cff245]/10 border border-[#cff245]/20 flex items-center justify-center text-[#cff245] text-lg">
+            <i class="bi bi-speedometer2"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-bold text-base tracking-tight font-sans text-left">Klientský portál Dronaut</h3>
+            <p class="text-[10px] text-gray-500 font-sans text-left">Vítejte zpět, <span class="text-[#cff245] font-semibold">Jan Novák (Stavební správa s.r.o.)</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Layout -->
+      <div class="flex flex-1 flex-col md:flex-row overflow-hidden min-h-0">
+        <!-- Left Sidebar Navigation -->
+        <div class="w-full md:w-56 bg-[#0a0b0d]/50 border-r border-white/5 p-4 flex flex-col gap-1.5 flex-none overflow-y-auto">
+          <button id="dash-tab-btn-projects" onclick="switchDashboardTab('projects')" class="flex items-center gap-3 px-4 py-2.5 rounded-xl border transition text-left text-xs font-bold border-[#cff245] bg-[#cff245]/5 text-[#cff245] font-sans w-full">
+            <i class="bi bi-folder2-open text-sm"></i>
+            <span>Moje Projekty</span>
+          </button>
+          <button id="dash-tab-btn-finances" onclick="switchDashboardTab('finances')" class="flex items-center gap-3 px-4 py-2.5 rounded-xl border transition text-left text-xs font-bold border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 font-sans w-full">
+            <i class="bi bi-credit-card text-sm"></i>
+            <span>Finance & Faktury</span>
+          </button>
+          <button id="dash-tab-btn-media" onclick="switchDashboardTab('media')" class="flex items-center gap-3 px-4 py-2.5 rounded-xl border transition text-left text-xs font-bold border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 font-sans w-full">
+            <i class="bi bi-cloud-download text-sm"></i>
+            <span>Ke stažení & Data</span>
+          </button>
+          <button id="dash-tab-btn-order" onclick="switchDashboardTab('order')" class="flex items-center gap-3 px-4 py-2.5 rounded-xl border transition text-left text-xs font-bold border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 font-sans w-full">
+            <i class="bi bi-send-plus text-sm"></i>
+            <span>Nová Poptávka letu</span>
+          </button>
+          <button id="dash-tab-btn-stats" onclick="switchDashboardTab('stats')" class="flex items-center gap-3 px-4 py-2.5 rounded-xl border transition text-left text-xs font-bold border-white/5 bg-white/[0.01] hover:border-white/20 text-gray-300 font-sans w-full">
+            <i class="bi bi-bar-chart-line text-sm"></i>
+            <span>Statistiky skenů</span>
+          </button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-1 p-6 overflow-y-auto bg-[#0f1115]">
+          <!-- TAB 1: Projects -->
+          <div id="dash-tab-projects" class="flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-gray-400 font-sans text-left">Realizované projekty dronového skenování</h4>
+              <span class="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full font-mono text-gray-400">Celkem: 4</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex flex-col justify-between hover:border-[#cff245]/20 transition duration-300">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[9px] bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Hotovo</span>
+                    <span class="text-[9px] text-gray-500 font-mono">15. 5. 2026</span>
+                  </div>
+                  <h5 class="text-white font-bold text-xs font-sans mt-3 text-left">Koridor obce a údolí (Ortofoto)</h5>
+                  <p class="text-[10px] text-gray-400 font-sans text-left mt-1">Dronové skenování koryta řeky pro účely simulace povodňových rizik.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t border-white/5 text-[9px] font-mono text-gray-400">
+                  <span>Plocha: 45 ha</span>
+                  <button onclick="openGisFromDashboard(1)" class="text-[#cff245] hover:underline font-bold transition flex items-center gap-1">
+                    <span>Otevřít v GIS</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex flex-col justify-between hover:border-[#cff245]/20 transition duration-300">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[9px] bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Hotovo</span>
+                    <span class="text-[9px] text-gray-500 font-mono">28. 5. 2026</span>
+                  </div>
+                  <h5 class="text-white font-bold text-xs font-sans mt-3 text-left">Zřícenina hradu a okolí</h5>
+                  <p class="text-[10px] text-gray-400 font-sans text-left mt-1">Fotogrammetrie a 3D rekonstrukce historických zdí s výškovým zaměřením.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t border-white/5 text-[9px] font-mono text-gray-400">
+                  <span>Plocha: 12 ha</span>
+                  <button onclick="openGisFromDashboard(2)" class="text-[#cff245] hover:underline font-bold transition flex items-center gap-1">
+                    <span>Otevřít v GIS</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex flex-col justify-between hover:border-[#cff245]/20 transition duration-300">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[9px] bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Hotovo</span>
+                    <span class="text-[9px] text-gray-500 font-mono">10. 6. 2026</span>
+                  </div>
+                  <h5 class="text-white font-bold text-xs font-sans mt-3 text-left">Průmyslový areál Ostrava</h5>
+                  <p class="text-[10px] text-gray-400 font-sans text-left mt-1">Digitální model terénu (DTM) a výpočet objemů skladovaných surovin.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t border-white/5 text-[9px] font-mono text-gray-400">
+                  <span>Plocha: 38 ha</span>
+                  <button onclick="openGisFromDashboard(3)" class="text-[#cff245] hover:underline font-bold transition flex items-center gap-1">
+                    <span>Otevřít v GIS</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex flex-col justify-between hover:border-[#cff245]/20 transition duration-300">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[9px] bg-[#fbbf24]/10 text-[#fbbf24] border border-[#fbbf24]/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Zpracovává se</span>
+                    <span class="text-[9px] text-gray-500 font-mono">Dnes (14:30)</span>
+                  </div>
+                  <h5 class="text-white font-bold text-xs font-sans mt-3 text-left">Dálniční křižovatka D55</h5>
+                  <p class="text-[10px] text-gray-400 font-sans text-left mt-1">Měření dokončených mostních pilířů a svahů náspu dálničního tělesa.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t border-white/5 text-[9px] font-mono text-gray-400">
+                  <span>Plocha: 15 ha</span>
+                  <button onclick="openGisFromDashboard(4)" class="text-[#cff245] hover:underline font-bold transition flex items-center gap-1">
+                    <span>Otevřít v GIS</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Finances -->
+          <div id="dash-tab-finances" class="flex flex-col gap-4 hidden">
+            <div class="flex justify-between items-center">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-gray-400 font-sans text-left">Finanční přehled a fakturace</h4>
+              <span class="text-[10px] bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-3 py-0.5 rounded-full font-bold">Kredit: Bez limitu</span>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-4">
+              <div class="bg-[#13161c] border border-white/5 p-3 rounded-xl text-left">
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Celkem fakturováno</div>
+                <div class="text-white font-bold text-base font-sans mt-0.5">142 500 Kč</div>
+              </div>
+              <div class="bg-[#13161c] border border-white/5 p-3 rounded-xl text-left">
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Uhrazeno</div>
+                <div class="text-[#cff245] font-bold text-base font-sans mt-0.5">112 500 Kč</div>
+              </div>
+              <div class="bg-[#13161c] border border-white/5 p-3 rounded-xl text-left">
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">K úhradě</div>
+                <div class="text-[#fbbf24] font-bold text-base font-sans mt-0.5">30 000 Kč</div>
+              </div>
+            </div>
+
+            <div class="border border-white/5 bg-[#12141a]/60 rounded-xl mt-1 overflow-x-auto">
+              <table class="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr class="text-gray-500 border-b border-white/5 bg-[#12141a]">
+                    <th class="py-2.5 px-4 uppercase text-[10px] font-bold font-sans">Číslo faktury</th>
+                    <th class="py-2.5 px-4 uppercase text-[10px] font-bold font-sans">Datum splatnosti</th>
+                    <th class="py-2.5 px-4 uppercase text-[10px] font-bold font-sans">Projekt</th>
+                    <th class="py-2.5 px-4 text-right uppercase text-[10px] font-bold font-sans">Částka</th>
+                    <th class="py-2.5 px-4 text-center uppercase text-[10px] font-bold font-sans">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-white/[0.04]">
+                    <td class="py-2.5 px-4 font-bold text-gray-300">FA-2026-042</td>
+                    <td class="py-2.5 px-4 text-gray-400 text-left">15. 7. 2026</td>
+                    <td class="py-2.5 px-4 text-gray-400 text-left">Dálnice D55</td>
+                    <td class="py-2.5 px-4 text-right text-white font-bold">30 000 Kč</td>
+                    <td class="py-2.5 px-4 text-center"><span class="bg-[#fbbf24]/10 text-[#fbbf24] border border-[#fbbf24]/20 px-2 py-0.5 rounded text-[9px] font-sans font-bold">Nezaplaceno</span></td>
+                  </tr>
+                  <tr class="border-b border-white/[0.04]">
+                    <td class="py-2.5 px-4 font-bold text-gray-300">FA-2026-038</td>
+                    <td class="py-2.5 px-4 text-gray-400 text-left">12. 6. 2026</td>
+                    <td class="py-2.5 px-4 text-gray-400 text-left">Průmyslový areál</td>
+                    <td class="py-2.5 px-4 text-right text-white font-bold">42 500 Kč</td>
+                    <td class="py-2.5 px-4 text-center"><span class="bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2 py-0.5 rounded text-[9px] font-sans font-bold">Zaplaceno</span></td>
+                  </tr>
+                  <tr class="border-b border-white/[0.04]">
+                    <td class="py-2.5 px-4 font-bold text-gray-300">FA-2026-031</td>
+                    <td class="py-2.5 px-4 text-gray-400 text-left">28. 5. 2026</td>
+                    <td class="py-2.5 px-4 text-gray-400 text-left">Zřícenina hradu</td>
+                    <td class="py-2.5 px-4 text-right text-white font-bold">35 000 Kč</td>
+                    <td class="py-2.5 px-4 text-center"><span class="bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2 py-0.5 rounded text-[9px] font-sans font-bold">Zaplaceno</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: Downloads & Gallery -->
+          <div id="dash-tab-media" class="flex flex-col gap-4 hidden">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-gray-400 font-sans text-left">Výstupní data a soubory ke stažení</h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 text-lg">
+                    <i class="bi bi-file-pdf"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-white font-bold text-xs font-sans text-left">Výškový profil & Zpráva PDF</h5>
+                    <p class="text-[8px] text-gray-500 font-mono text-left">PDF (12.4 MB)</p>
+                  </div>
+                </div>
+                <a href="#" onclick="alert('Stahování kompletní zprávy spuštěno.'); return false;" class="text-gray-400 hover:text-white transition text-base"><i class="bi bi-download"></i></a>
+              </div>
+
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-[#23d8ff]/10 border border-[#23d8ff]/20 flex items-center justify-center text-[#23d8ff] text-lg">
+                    <i class="bi bi-map"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-white font-bold text-xs font-sans text-left">Ortofotomapa vysoké rozlišení</h5>
+                    <p class="text-[8px] text-gray-500 font-mono text-left">GeoTIFF (185.0 MB)</p>
+                  </div>
+                </div>
+                <a href="#" onclick="alert('Stahování GeoTIFF souboru spuštěno.'); return false;" class="text-gray-400 hover:text-white transition text-base"><i class="bi bi-download"></i></a>
+              </div>
+
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-[#fbbf24]/10 border border-[#fbbf24]/20 flex items-center justify-center text-[#fbbf24] text-lg">
+                    <i class="bi bi-box"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-white font-bold text-xs font-sans text-left">3D mesh model zříceniny hradu</h5>
+                    <p class="text-[8px] text-gray-500 font-mono text-left">OBJ / FBX (320.0 MB)</p>
+                  </div>
+                </div>
+                <a href="#" onclick="alert('Stahování 3D mesh modelů spuštěno.'); return false;" class="text-gray-400 hover:text-white transition text-base"><i class="bi bi-download"></i></a>
+              </div>
+
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-500 text-lg">
+                    <i class="bi bi-cpu"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-white font-bold text-xs font-sans text-left">Mračno bodů LiDAR (LAS)</h5>
+                    <p class="text-[8px] text-gray-500 font-mono text-left">LAS Cloud (1.2 GB)</p>
+                  </div>
+                </div>
+                <a href="#" onclick="alert('Stahování LiDAR mračna bodů spuštěno.'); return false;" class="text-gray-400 hover:text-white transition text-base"><i class="bi bi-download"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: New Flight Order Form -->
+          <div id="dash-tab-order" class="flex flex-col gap-4 hidden">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-gray-400 font-sans text-left">Objednávka nového skenování (Poptávka letu)</h4>
+            
+            <form onsubmit="handleNewOrderSubmit(event)" class="bg-[#13161c] border border-white/5 p-5 rounded-2xl flex flex-col gap-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left">Název lokality / Projektu</label>
+                  <input type="text" required placeholder="Např. Staveniště Hlučín" class="w-full bg-black/40 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs outline-none focus:border-[#cff245] focus:ring-1 focus:ring-[#cff245] transition font-sans">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left">Rozloha území (ha)</label>
+                  <input type="number" step="0.1" required placeholder="Např. 12" class="w-full bg-black/40 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs outline-none focus:border-[#cff245] focus:ring-1 focus:ring-[#cff245] transition font-sans">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left">Typ požadovaného skenu</label>
+                  <select class="w-full bg-black/40 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs outline-none focus:border-[#cff245] transition font-sans cursor-pointer">
+                    <option class="bg-[#13151a]">Ortofotomapa (2D)</option>
+                    <option class="bg-[#13151a]">LiDAR přesné výšky (DTM)</option>
+                    <option class="bg-[#13151a]">3D rekonstrukce budov / staveb</option>
+                    <option class="bg-[#13151a]">Multispektrální analýza (NDVI)</option>
+                  </select>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left">Požadovaný termín letu</label>
+                  <input type="date" required class="w-full bg-black/40 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs outline-none focus:border-[#cff245] focus:ring-1 focus:ring-[#cff245] transition font-sans">
+                </div>
+              </div>
+              
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left">Poznámky k realizaci / Zvláštní požadavky</label>
+                <textarea rows="3" placeholder="Uveďte překážky v území, blízkost letiště, typ výstupního formátu..." class="w-full bg-black/40 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs outline-none focus:border-[#cff245] focus:ring-1 focus:ring-[#cff245] transition font-sans resize-none"></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-[#cff245] hover:opacity-90 text-black font-bold text-xs uppercase py-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-[#cff245]/15 font-sans mt-2">
+                <i class="bi bi-calendar-plus-fill"></i>
+                <span>Odeslat poptávku pilotovi</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- TAB 5: Stats & Logs -->
+          <div id="dash-tab-stats" class="flex flex-col gap-4 hidden">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-gray-400 font-sans text-left">Historické statistiky nalétaných dat</h4>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl text-center">
+                <i class="bi bi-clock-history text-2xl text-[#cff245] mb-2 block"></i>
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Celkový letový čas</div>
+                <div class="text-white font-bold text-lg font-sans mt-1">34,8 hod</div>
+              </div>
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl text-center">
+                <i class="bi bi-compass text-2xl text-[#23d8ff] mb-2 block"></i>
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Nalétaná rozloha</div>
+                <div class="text-white font-bold text-lg font-sans mt-1">142,5 ha</div>
+              </div>
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl text-center">
+                <i class="bi bi-database-check text-2xl text-green-500 mb-2 block"></i>
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Počet snímků</div>
+                <div class="text-white font-bold text-lg font-sans mt-1">12 450</div>
+              </div>
+              <div class="bg-[#13161c] border border-white/5 p-4 rounded-xl text-center">
+                <i class="bi bi-bullseye text-2xl text-[#fbbf24] mb-2 block"></i>
+                <div class="text-[9px] text-gray-500 font-semibold uppercase tracking-wider">Průměrná přesnost</div>
+                <div class="text-white font-bold text-lg font-sans mt-1">1,2 cm</div>
+              </div>
+            </div>
+
+            <div class="border border-white/5 bg-[#12141a]/60 rounded-xl p-4 flex flex-col gap-3">
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider font-sans text-left border-b border-white/5 pb-2">Systémové logy a záznamy letů</div>
+              <div class="flex items-center gap-3 text-[10px] font-mono text-gray-500">
+                <span class="text-green-500 font-bold">[15.06.26]</span>
+                <span class="text-gray-300 text-left">Generování 3D modelu paláce zříceniny hradu dokončeno (přesnost 1.4cm).</span>
+              </div>
+              <div class="flex items-center gap-3 text-[10px] font-mono text-gray-500">
+                <span class="text-green-500 font-bold">[10.06.26]</span>
+                <span class="text-gray-300 text-left">Měření objemu skladových hal v průmyslovém areálu (DMT model hotov).</span>
+              </div>
+              <div class="flex items-center gap-3 text-[10px] font-mono text-gray-500">
+                <span class="text-green-500 font-bold">[28.05.26]</span>
+                <span class="text-gray-300 text-left">Letová mise 'Ruins mapping' úspěšně dokončena (doba letu 45min, DJI Matrice 300 RTK).</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- Interactive Drone Camera Simulator Modal -->
+  <div id="foto-video-modal" class="fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1200] hidden items-center justify-center p-4 animate-fade-in select-none">
+    <div class="relative w-full max-w-5xl bg-[#0d0f12] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <!-- Close button -->
+      <button onclick="closePhotoVideoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition z-20">
+        <i class="bi bi-x-lg text-sm"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-8 py-5 border-b border-white/5 bg-[#07080a] flex-none">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#cff245]/10 border border-[#cff245]/20 flex items-center justify-center text-[#cff245] text-lg animate-pulse">
+            <i class="bi bi-camera-reels-fill"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-bold text-base tracking-tight font-sans text-left">Trenažér letecké kamery a senzorů</h3>
+            <p class="text-[10px] text-gray-500 font-sans text-left">Simulátor vlivu výšky letu (GSD), ohniska objektivu a optických filtrů dronu</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator Layout -->
+      <div class="flex flex-1 flex-col lg:flex-row overflow-hidden min-h-0">
+        <!-- Left Column: Camera Viewport -->
+        <div class="flex-1 bg-black relative flex items-center justify-center overflow-hidden min-h-[300px] lg:min-h-0">
+          
+          <!-- Image Viewport Container -->
+          <div id="sim-viewport" onclick="handleSimViewportClick(event)" onmousedown="startSimViewportDrag(event)" onmousemove="handleSimViewportDrag(event)" onmouseup="endSimViewportDrag(event)" class="w-full h-full relative overflow-hidden flex items-center justify-center cursor-crosshair pointer-events-auto">
+
+            <!-- Sensor Noise Grain Overlay -->
+            <div id="sim-noise-overlay" class="absolute inset-0 pointer-events-none z-10 mix-blend-overlay opacity-0 animate-noise" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);"></div>
+
+            <img id="sim-camera-img" src="images/photos/gis_mockup_castle.jpg" class="w-full h-full object-cover transition-all duration-300 transform origin-center" style="transform: scale(1); filter: blur(0px); transform-origin: 50% 50%;">
+            
+            <!-- Crosshair Center HUD (Absolute positioning relative to viewport, not centered inside flex HUD) -->
+            <div id="sim-crosshair" class="absolute w-16 h-16 border border-[#cff245]/50 rounded-full flex items-center justify-center pointer-events-none transition-all duration-100 ease-out z-20" style="left: 50%; top: 50%; transform: translate(-50%, -50%);">
+              <div class="w-2 h-2 bg-[#cff245] rounded-full"></div>
+              <div class="absolute w-6 h-[1px] bg-[#cff245]/85"></div>
+              <div class="absolute h-6 w-[1px] bg-[#cff245]/85"></div>
+            </div>
+
+            <!-- Simulated Telemetry Overlay HUD (Green/Lime) -->
+            <div class="absolute inset-0 p-5 flex flex-col justify-between pointer-events-none font-mono text-[9px] text-[#cff245] drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] z-10">
+              <!-- Top Row HUD -->
+              <div class="flex justify-between items-start">
+                <div class="flex flex-col gap-0.5 text-left">
+                  <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span><span>REC [RAW]</span></div>
+                  <div>FPS: <span class="text-white">60.00</span></div>
+                  <div>RES: <span class="text-white">5.4K UHD</span></div>
+                </div>
+                <div class="flex flex-col gap-0.5 text-center">
+                  <div>YAW: <span id="hud-yaw" class="text-white">124.5°</span></div>
+                  <div>PITCH: <span id="hud-pitch" class="text-white">-45.0°</span></div>
+                </div>
+                <div class="flex flex-col gap-0.5 text-right">
+                  <div class="flex items-center gap-1 justify-end"><i class="bi bi-battery-charging text-xs"></i><span>82%</span></div>
+                  <div>TEMP: <span class="text-white">32.4 °C</span></div>
+                  <div>ISO: <span id="hud-iso" class="text-white">100</span></div>
+                </div>
+              </div>
+              
+              <!-- Center area is blank, crosshair is placed absolutely below image -->
+
+              <!-- Bottom Row HUD -->
+              <div class="flex justify-between items-end">
+                <div class="flex flex-col gap-0.5 text-left">
+                  <div>ALTITUDE: <span id="hud-altitude" class="text-white font-bold">150 m</span></div>
+                  <div>GSD (PŘESNOST): <span id="hud-gsd" class="text-white font-bold">3.8 cm/px</span></div>
+                </div>
+                <div class="flex flex-col gap-0.5 text-center">
+                  <div>FOCUS: <span id="hud-lens" class="text-white font-bold">100%</span></div>
+                  <div>FILTER: <span id="hud-filter" class="text-white font-bold">NONE</span></div>
+                </div>
+                <div class="flex flex-col gap-0.5 text-right">
+                  <div>GPS: <span id="hud-lat-val" class="text-white font-bold">50.075500° N</span></div>
+                  <div>LON: <span id="hud-lon-val" class="text-white font-bold">14.437800° E</span></div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+        <!-- Right Column: Control Panel -->
+        <div class="w-full lg:w-96 bg-[#07080a] border-t lg:border-t-0 lg:border-l border-white/5 p-6 flex flex-col gap-5 flex-none overflow-y-auto">
+          
+          <!-- Location selection -->
+          <div class="flex flex-col gap-2">
+            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left whitespace-nowrap">Zkušební scéna</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setSimLocation('castle')" id="btn-sim-loc-castle" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border transition border-[#cff245] bg-[#cff245]/5 text-[#cff245]">Zřícenina hradu</button>
+              <button onclick="setSimLocation('village')" id="btn-sim-loc-village" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300">Střed obce</button>
+            </div>
+          </div>
+
+          <div class="h-[1px] bg-white/5"></div>
+
+          <!-- Altitude slider (simulates GSD & zoom) -->
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center text-[10px] font-sans">
+              <label class="text-gray-500 font-bold uppercase tracking-wider whitespace-nowrap">Výška letu dronu (Měřítko / Zoom)</label>
+              <span id="lbl-sim-alt" class="text-white font-bold whitespace-nowrap">150 m</span>
+            </div>
+            <input type="range" id="sim-altitude-range" min="20" max="150" value="20" oninput="updateSimAltitude(this.value)" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#cff245]">
+            <div class="flex justify-between text-[8px] text-gray-500 font-mono">
+              <span class="whitespace-nowrap">150 m (Oddálení)</span>
+              <span class="whitespace-nowrap">20 m (Přiblížení)</span>
+            </div>
+          </div>
+
+          <div class="h-[1px] bg-white/5"></div>
+
+          <!-- Lens Focus Slider (simulates optical focus/blur) -->
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center text-[10px] font-sans">
+              <label class="text-gray-500 font-bold uppercase tracking-wider whitespace-nowrap">Ostření objektivu (Ohnisko)</label>
+              <span id="lbl-sim-focus" class="text-white font-bold whitespace-nowrap">Ostré</span>
+            </div>
+            <input type="range" id="sim-focus-range" min="0" max="100" value="0" oninput="updateSimFocus(this.value)" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#cff245]">
+            <div class="flex justify-between text-[8px] text-gray-500 font-mono">
+              <span class="whitespace-nowrap">Zaostřeno (vlevo)</span>
+              <span class="whitespace-nowrap">Rozostřeno (vpravo)</span>
+            </div>
+          </div>
+
+          <div class="h-[1px] bg-white/5"></div>
+
+          <!-- ISO Noise Slider -->
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center text-[10px] font-sans">
+              <label class="text-gray-500 font-bold uppercase tracking-wider whitespace-nowrap">Citlivost snímače (ISO & Šum)</label>
+              <span id="lbl-sim-iso" class="text-white font-bold whitespace-nowrap">ISO 100</span>
+            </div>
+            <input type="range" id="sim-iso-range" min="0" max="6" value="0" step="1" oninput="updateSimISO(this.value)" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#cff245]">
+            <div class="flex justify-between text-[8px] text-gray-500 font-mono">
+              <span class="whitespace-nowrap">ISO 100 (Čistý)</span>
+              <span class="whitespace-nowrap">ISO 6400 (Šum)</span>
+            </div>
+          </div>
+
+
+
+          <div class="h-[1px] bg-white/5"></div>
+
+          <!-- Image Stabilization Toggle -->
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center text-[10px] font-sans">
+              <label class="text-gray-500 font-bold uppercase tracking-wider whitespace-nowrap">Stabilizace obrazu (EIS)</label>
+              <span id="lbl-sim-stabilization" class="text-white font-bold whitespace-nowrap">AKTIVNÍ</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setSimStabilization(true)" id="btn-sim-stab-on" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border transition border-[#cff245] bg-[#cff245]/5 text-[#cff245]">Zapnuto</button>
+              <button onclick="setSimStabilization(false)" id="btn-sim-stab-off" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300">Vypnuto</button>
+            </div>
+          </div>
+
+          <div class="h-[1px] bg-white/5"></div>
+
+          <!-- Camera Filter -->
+          <div class="flex flex-col gap-2">
+            <label class="text-[10px] text-gray-500 font-bold uppercase tracking-wider font-sans text-left whitespace-nowrap">Optické filtry & Senzory</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setSimFilter('none')" id="btn-sim-filt-none" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border transition border-[#cff245] bg-[#cff245]/5 text-[#cff245]">Bez filtru</button>
+              <button onclick="setSimFilter('cpl')" id="btn-sim-filt-cpl" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="Eliminuje odlesky vodní hladiny a střech">Polarizační CPL</button>
+              <button onclick="setSimFilter('nd')" id="btn-sim-filt-nd" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="Snižuje oslnění, vyrovnává přepaly">Šedý ND Filtr</button>
+              <button onclick="setSimFilter('grayscale')" id="btn-sim-filt-grayscale" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="Černobílé ortofoto">Černobílý (B&W)</button>
+              <button onclick="setSimFilter('sepia')" id="btn-sim-filt-sepia" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="Sépiový archivní filtr">Hist. archiv (Sepia)</button>
+              <button onclick="setSimFilter('nir')" id="btn-sim-filt-nir" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="Multispektrální analýza zdraví rostlin (NIR)">Vegetace (NIR)</button>
+              <button onclick="setSimFilter('edges')" id="btn-sim-filt-edges" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="AI počítačové vidění detekce hran objektů">Detekce hran (AI)</button>
+              <button onclick="setSimFilter('nightvision')" id="btn-sim-filt-nightvision" class="px-3 py-2 rounded-xl text-[10px] font-bold font-sans border border-white/5 bg-white/[0.01] hover:border-white/10 text-gray-300" title="Noční infračervená kamera">Noční vidění</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consultation Modal -->
+  <div id="consultation-modal" class="fixed inset-0 bg-topo-backdrop backdrop-blur-md z-50 hidden items-center justify-center p-4">
+    <div class="bg-[#0f1115] border border-gray-800 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative text-left">
+      <!-- Close Button -->
+      <button type="button" onclick="closeConsultationModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl" title="Zavřít">&times;</button>
+      
+      <!-- Modal Content -->
+      <div class="p-8">
+        <!-- Header & Stepper -->
+        <div id="configurator-header" class="flex flex-col gap-4 mb-6">
+          <div class="flex justify-between items-center">
+            <h3 class="text-2xl font-bold text-white">Konfigurátor poptávky</h3>
+            <span id="configurator-step-lbl" class="text-[9px] font-mono text-[#cff245] border border-[#cff245]/20 px-2 py-0.5 rounded-md uppercase">Krok 1/3</span>
+          </div>
+          <!-- Stepper Visual -->
+          <div class="flex items-center gap-2">
+            <div id="step-indicator-1" class="h-1.5 rounded-full flex-1 transition-all duration-300 bg-[#cff245]"></div>
+            <div id="step-indicator-2" class="h-1.5 rounded-full flex-1 transition-all duration-300 bg-white/10"></div>
+            <div id="step-indicator-3" class="h-1.5 rounded-full flex-1 transition-all duration-300 bg-white/10"></div>
+          </div>
+        </div>
+        
+        <form id="consultation-form" onsubmit="submitConfigurator(event)" class="flex flex-col gap-5">
+          <!-- Step 1: Služby -->
+          <div id="config-step-1" class="flex flex-col gap-4 animate-fade-in">
+            <span class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Jakou službu poptáváte? * (vyberte jednu nebo více)</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label onclick="toggleConfigService(this)" class="group cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-white/20 transition-all select-none">
+                <input type="checkbox" name="services" value="Ortofoto" class="hidden">
+                <i class="bi bi-map text-lg text-gray-400 group-hover:text-[#cff245] transition"></i>
+                <span class="text-white font-bold text-sm">Ortofoto</span>
+                <span class="text-[9px] text-gray-500 leading-normal font-mono">Letecké 2D snímkování s centimetrovým detailem.</span>
+              </label>
+
+              <label onclick="toggleConfigService(this)" class="group cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-white/20 transition-all select-none">
+                <input type="checkbox" name="services" value="3D Modely" class="hidden">
+                <i class="bi bi-box-seam text-lg text-gray-400 group-hover:text-[#cff245] transition"></i>
+                <span class="text-white font-bold text-sm">3D Modely</span>
+                <span class="text-[9px] text-gray-500 leading-normal font-mono">Digitální dvojčata budov a terénních celků.</span>
+              </label>
+
+              <label onclick="toggleConfigService(this)" class="group cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-white/20 transition-all select-none">
+                <input type="checkbox" name="services" value="Kubatury" class="hidden">
+                <i class="bi bi-calculator text-lg text-gray-400 group-hover:text-[#cff245] transition"></i>
+                <span class="text-white font-bold text-sm">Kubatury</span>
+                <span class="text-[9px] text-gray-500 leading-normal font-mono">Přesné výpočty objemů sypkých materiálů.</span>
+              </label>
+
+              <label onclick="toggleConfigService(this)" class="group cursor-pointer flex flex-col gap-2 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-white/20 transition-all select-none">
+                <input type="checkbox" name="services" value="Časosběr" class="hidden">
+                <i class="bi bi-clock-history text-lg text-gray-400 group-hover:text-[#cff245] transition"></i>
+                <span class="text-white font-bold text-sm">Časosběr</span>
+                <span class="text-[9px] text-gray-500 leading-normal font-mono">Pravidelný monitoring vývoje staveb v čase.</span>
+              </label>
+            </div>
+            <div id="step-1-err" class="text-red-400 text-[10px] font-mono hidden mt-1">Prosím vyberte alespoň jednu službu k pokračování.</div>
+          </div>
+
+          <!-- Step 2: Rozsah a parametry -->
+          <div id="config-step-2" class="flex flex-col gap-5 hidden animate-fade-in">
+            <!-- Slider -->
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between items-baseline">
+                <span class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Odhadovaná rozloha projektu</span>
+                <span id="config-slider-val" class="text-[#cff245] font-mono text-sm font-bold">1 - 10 ha (Staveniště / Lom)</span>
+              </div>
+              <input type="range" id="config-range-slider" min="1" max="4" value="2" step="1" oninput="updateConfigSlider(this.value)" class="w-full h-1.5 bg-white/10 accent-[#cff245] rounded-lg appearance-none cursor-pointer">
+              <div class="flex justify-between text-[9px] text-gray-500 font-mono">
+                <span>&lt; 1 ha</span>
+                <span>1 - 10 ha</span>
+                <span>10 - 50 ha</span>
+                <span>&gt; 50 ha</span>
+              </div>
+            </div>
+
+            <!-- Accuracy -->
+            <div class="flex flex-col gap-2">
+              <span class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Požadovaná přesnost výstupů</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label onclick="selectConfigAccuracy('rtk', this)" class="cursor-pointer flex flex-col gap-1.5 p-4 rounded-2xl border border-[#cff245] bg-[#cff245]/5 text-white select-none">
+                  <input type="radio" name="accuracy" value="rtk" checked class="hidden">
+                  <span class="text-white font-bold text-xs flex items-center gap-1.5">
+                    <i class="bi bi-patch-check-fill text-[#cff245]"></i>
+                    <span>Centimetrová (RTK/PPK)</span>
+                  </span>
+                  <span class="text-[9px] text-gray-400 leading-normal font-mono">Geodetická přesnost pro projekční podklady, CAD/GIS vrstvy.</span>
+                </label>
+
+                <label onclick="selectConfigAccuracy('standard', this)" class="cursor-pointer flex flex-col gap-1.5 p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-white/10 text-white select-none">
+                  <input type="radio" name="accuracy" value="standard" class="hidden">
+                  <span class="text-white font-bold text-xs flex items-center gap-1.5">
+                    <i class="bi bi-camera-video text-gray-400"></i>
+                    <span>Standardní (Decimetrová)</span>
+                  </span>
+                  <span class="text-[9px] text-gray-400 leading-normal font-mono">Ideální pro vizualizace, letecké foto a video, technické inspekce.</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Kontakt -->
+          <div id="config-step-3" class="flex flex-col gap-4 hidden animate-fade-in">
+            <!-- Row 1: Name and Email -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label for="form-name" class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Jméno a příjmení *</label>
+                <input type="text" id="form-name" class="bg-white/5 border border-gray-800 focus:border-[#cff245] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none transition">
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="form-email" class="text-gray-300 text-xs font-semibold uppercase tracking-wider">E-mail *</label>
+                <input type="email" id="form-email" class="bg-white/5 border border-gray-800 focus:border-[#cff245] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none transition">
+              </div>
+            </div>
+            
+            <!-- Row 2: Phone and Coordinates System -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label for="form-phone" class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Telefonní číslo *</label>
+                <input type="tel" id="form-phone" class="bg-white/5 border border-gray-800 focus:border-[#cff245] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none transition">
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="form-location" class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Lokalita a souřadnicový systém</label>
+                <input type="text" id="form-location" placeholder="např. Ostrava / S-JTSK" class="bg-white/5 border border-gray-800 focus:border-[#cff245] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none transition">
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="flex flex-col gap-1.5">
+              <label for="form-desc" class="text-gray-300 text-xs font-semibold uppercase tracking-wider">Stručný popis projektu</label>
+              <textarea id="form-desc" rows="3" placeholder="Popište specifikaci projektu nebo vaše požadavky..." class="bg-white/5 border border-gray-800 focus:border-[#cff245] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none transition resize-none"></textarea>
+            </div>
+            <div id="step-3-err" class="text-red-400 text-[10px] font-mono hidden">Prosím vyplňte všechna povinná pole označená hvězdičkou (*).</div>
+          </div>
+
+          <!-- Bottom controls -->
+          <div class="flex justify-between items-center gap-4 mt-2 border-t border-white/5 pt-4">
+            <button type="button" id="config-btn-back" onclick="navigateConfigStep(-1)" class="px-5 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-gray-300 font-bold text-xs transition select-none opacity-0 pointer-events-none">
+              Zpět
+            </button>
+            <button type="button" id="config-btn-next" onclick="navigateConfigStep(1)" class="px-6 py-3 bg-[#cff245] text-black font-bold text-xs rounded-xl hover:opacity-90 transition select-none">
+              Pokračovat
+            </button>
+            <button type="submit" id="config-btn-submit" class="px-6 py-3 bg-[#cff245] text-black font-bold text-xs rounded-xl hover:opacity-90 transition hidden">
+              Odeslat poptávku
+            </button>
+          </div>
+        </form>
+
+        <!-- Success Screen -->
+        <div id="config-success-screen" class="hidden flex-col items-center justify-center text-center py-12 px-6 gap-5 animate-fade-in">
+          <div class="w-16 h-16 rounded-full bg-[#cff245]/10 border border-[#cff245] flex items-center justify-center text-3xl text-[#cff245] shadow-[0_0_15px_rgba(207,242,69,0.2)] animate-pulse">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <div class="flex flex-col gap-2">
+            <h4 class="text-xl font-bold text-white">Poptávka úspěšně odeslána!</h4>
+            <p class="text-gray-400 text-xs leading-relaxed max-w-sm mx-auto font-mono">
+              Děkujeme. Na základě zadaných parametrů vám náš CDO **Karel Psota** navrhne nejvhodnější technické řešení a předběžnou cenu. Ozveme se vám zpět do 24 hodin.
+            </p>
+          </div>
+          <button type="button" onclick="closeConsultationModal()" class="border border-white/10 hover:bg-white/5 px-6 py-2.5 rounded-xl text-white font-bold text-xs transition mt-2">
+            Zavřít konfigurátor
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Lightbox -->
   <div id="lightbox">
@@ -302,49 +1943,542 @@
     <button id="lb-next" onclick="lbNav(1)">&#8250;</button>
   </div>
 
-  <script>
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lb-img');
-    const lbPrev = document.getElementById('lb-prev');
-    const lbNext = document.getElementById('lb-next');
-    let lbGallery = [], lbIndex = 0;
+  <!-- Compare Resolution Modal -->
+  <div id="compare-modal" class="hidden fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-6xl bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] lg:max-h-[95vh]">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#0f1013] flex-none">
+        <h3 class="text-white font-bold text-lg tracking-tight">Srovnání rozlišení snímků</h3>
+        <button onclick="closeCompareModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none">&times;</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 flex flex-col lg:flex-row gap-6 overflow-y-auto">
+        <!-- Left side: Interactive Slider Widget -->
+        <div class="flex-1 flex flex-col gap-4">
+          <div id="slider-container" class="relative w-full h-[300px] md:h-[450px] overflow-hidden rounded-2xl border border-white/10 select-none cursor-ew-resize">
+            <!-- Before: Satellite Map (pixelated low-res simulated via canvas) -->
+            <canvas id="compare-before-canvas" class="absolute inset-0 w-full h-full object-cover pixelated saturate-[60%] brightness-[70%] select-none pointer-events-none"></canvas>
+            <div class="compare-tag-sat absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[10px] uppercase font-mono tracking-widest text-gray-400 select-none pointer-events-none">Satelitní snímek (Nízké rozlišení)</div>
+            
+            <!-- After: Drone Orthophoto (sharp, clipped) -->
+            <div id="slider-clip" class="absolute inset-y-0 left-0 right-0 overflow-hidden" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+              <img id="compare-after-img" src="images/photos/compare_garden.png" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none">
+              <div class="compare-tag-drone absolute top-4 right-4 bg-[#cff245] px-3 py-1.5 rounded-lg text-black text-[10px] uppercase font-mono font-bold tracking-widest select-none pointer-events-none">Dronová ortofotomapa (Vysoké rozlišení)</div>
+            </div>
 
-    document.querySelectorAll('.lb-thumb').forEach(img => {
-      img.addEventListener('click', () => {
-        const group = img.closest('.grid');
-        lbGallery = Array.from(group.querySelectorAll('.lb-thumb'));
-        lbIndex = lbGallery.indexOf(img);
-        openLightbox();
-      });
-    });
+            <!-- Slider Handle Bar -->
+            <div id="slider-handle" class="absolute inset-y-0 w-[2px] bg-[#cff245] pointer-events-none" style="left: 50%;">
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#cff245] text-black shadow-lg flex items-center justify-center border border-[#cff245]/30">
+                <i class="bi bi-arrows-left-right text-sm"></i>
+              </div>
+            </div>
 
-    function openLightbox() {
-      lbImg.src = lbGallery[lbIndex].src;
-      lbImg.alt = lbGallery[lbIndex].alt;
-      lbPrev.classList.toggle('hidden', lbIndex === 0);
-      lbNext.classList.toggle('hidden', lbIndex === lbGallery.length - 1);
-      lb.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
+          </div>
+          <!-- Description -->
+          <p class="text-xs text-gray-400 text-center leading-relaxed max-w-2xl mx-auto">
+            Posunutím jezdce porovnejte detail standardní satelitní mapy s naším dronovým snímkováním ve vysokém rozlišení.
+          </p>
+        </div>
+        
+        <!-- Right side: Scenario Selection (Nadir orthophotos at different altitudes) -->
+        <div class="w-full lg:w-[280px] flex flex-col gap-3 shrink-0">
+          <span class="text-gray-400 text-[10px] uppercase font-mono tracking-widest mb-1 compare-panel-title">Výška letu a typ území</span>
+          
+          <!-- Card 1 -->
+          <button onclick="setCompareScenario('house', 'images/photos/compare_garden.png', 6)" id="btn-scen-house" class="scen-btn text-left p-4 rounded-2xl bg-[#cff245]/5 border border-[#cff245]/80 transition duration-200 hover:bg-[#cff245]/10 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white compare-scen-house-title">Soukromý pozemek</span>
+              <span class="text-[9px] bg-[#cff245] text-black font-bold px-1.5 py-0.5 rounded-md font-mono">35m</span>
+            </div>
+            <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-house-desc">Zahrada rodinného domu, maximální detaily povrchu.</span>
+          </button>
 
-    function lbNav(dir) {
-      lbIndex = Math.max(0, Math.min(lbGallery.length - 1, lbIndex + dir));
-      openLightbox();
-    }
+          <!-- Card 2 -->
+          <button onclick="setCompareScenario('ind', 'images/photos/compare_industrial.png', 4)" id="btn-scen-ind" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white compare-scen-ind-title">Průmyslový areál</span>
+              <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">60m</span>
+            </div>
+            <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-ind-desc">Zaměření objektů, skladů a zpevněných ploch.</span>
+          </button>
 
-    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', e => {
-      if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') lbNav(-1);
-      if (e.key === 'ArrowRight') lbNav(1);
-    });
+          <!-- Card 3 -->
+          <button onclick="setCompareScenario('golf', 'images/photos/compare_golf.png', 3)" id="btn-scen-golf" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white compare-scen-golf-title">Golfové hřiště</span>
+              <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">100m</span>
+            </div>
+            <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-golf-desc">Velkoplošné mapování terénu a vegetace.</span>
+          </button>
 
-    function closeLightbox() {
-      lb.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  </script>
+          <!-- Card 4 -->
+          <button onclick="setCompareScenario('const', 'images/photos/compare_construction.png', 4.5)" id="btn-scen-const" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white compare-scen-const-title">Staveniště bytového domu</span>
+              <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">80m</span>
+            </div>
+            <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-const-desc">Zaměření stavební jámy, základů a postupů prací.</span>
+          </button>
+
+          <!-- Card 5 -->
+          <button onclick="setCompareScenario('quarry', 'images/photos/compare_quarry_v2.png', 3.5)" id="btn-scen-quarry" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white compare-scen-quarry-title">Povrchový lom</span>
+              <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">120m</span>
+            </div>
+            <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-quarry-desc">Objemová analýza, mapování terénu a lomových stěn.</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Health Modal -->
+  <div id="health-modal" class="hidden fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-5xl bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] lg:max-h-[95vh]">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#0f1013] flex-none">
+        <h3 class="text-white font-bold text-lg tracking-tight health-modal-title">Analýza zdraví vegetace</h3>
+        <button onclick="closeHealthModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none">&times;</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 flex flex-col lg:flex-row gap-6 overflow-y-auto">
+        <!-- Left side: Interactive Slider Widget -->
+        <div class="flex-1 flex flex-col gap-4">
+          <div id="health-slider-container" class="relative w-full h-[300px] md:h-[450px] overflow-hidden rounded-2xl border border-white/10 select-none cursor-ew-resize">
+            <!-- Before: Normal Map -->
+            <img src="images/photos/compare_field.png" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none">
+            <div class="health-tag-normal absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[10px] uppercase font-mono tracking-widest text-gray-400 select-none pointer-events-none">Standardní snímkování</div>
+            
+            <!-- After: Health Map (clipped) -->
+            <div id="health-slider-clip" class="absolute inset-y-0 left-0 right-0 overflow-hidden" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+              <img src="images/photos/compare_field_ndvi.jpg?v=1" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none">
+              <div class="health-tag-analysis absolute top-4 right-4 bg-[#cff245] px-3 py-1.5 rounded-lg text-black text-[10px] uppercase font-mono font-bold tracking-widest select-none pointer-events-none">Analýza zdraví vegetace</div>
+            </div>
+
+            <!-- Slider Handle Bar -->
+            <div id="health-slider-handle" class="absolute inset-y-0 w-[2px] bg-[#cff245] pointer-events-none" style="left: 50%;">
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#cff245] text-black shadow-lg flex items-center justify-center border border-[#cff245]/30">
+                <i class="bi bi-arrows-left-right text-sm"></i>
+              </div>
+            </div>
+
+            <!-- Graphic Scale Overlay -->
+            <div class="absolute bottom-4 right-6 flex flex-col select-none pointer-events-none z-10 font-mono text-black">
+              <div class="relative w-[80px] h-[10px] text-[8px] font-bold">
+                <span class="absolute left-0 -translate-x-1/2">0</span>
+                <span class="absolute left-1/2 -translate-x-1/2">45</span>
+                <span class="absolute right-0 translate-x-1/2 whitespace-nowrap">90 m</span>
+              </div>
+              <div class="relative w-[80px] h-[5px] flex items-end">
+                <!-- Horizontal line -->
+                <div class="absolute bottom-0 left-0 right-0 h-[1.5px] bg-black"></div>
+                <!-- Vertical tics -->
+                <div class="absolute left-0 bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[12.5%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[25%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[37.5%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[50%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[75%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute right-0 bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Description -->
+          <p class="text-xs text-gray-400 text-center leading-relaxed max-w-2xl mx-auto health-modal-desc">
+            Posunutím jezdce porovnejte běžný snímek plodiny s naší analýzou zdraví porostu. Zelené oblasti značí zdravé rostliny, žluté a červené značí oslabení, sucho nebo plevel.
+          </p>
+        </div>
+
+        <!-- Right side: Telemetry & Metadata Panel -->
+        <div class="w-full lg:w-[280px] flex flex-col gap-3 shrink-0">
+          <span class="text-gray-400 text-[10px] uppercase font-mono tracking-widest mb-1 health-sidebar-title">Parametry analýzy</span>
+          
+          <!-- Card 1: Měřítko & Detaily -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="health-lbl-scale text-[10px] text-gray-500 uppercase font-mono tracking-wider">Měřítko & Detaily</span>
+              <div class="health-val-scale text-white font-bold text-sm mt-1">GSD ~2.5 cm/px</div>
+            </div>
+            <div class="health-sub-scale text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-rulers text-[#cff245]"></i> Grafické měřítko: 1:750
+            </div>
+          </div>
+
+          <!-- Card 2: Sledovaná plocha -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="health-lbl-area text-[10px] text-gray-500 uppercase font-mono tracking-wider">Sledovaná plocha</span>
+              <div class="health-val-area text-white font-bold text-sm mt-1">32.4 ha</div>
+            </div>
+            <div class="health-sub-area text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-tag text-[#cff245]"></i> Typ pozemku: Orná půda
+            </div>
+          </div>
+
+          <!-- Card 3: Stav vegetace -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="health-lbl-state text-[10px] text-gray-500 uppercase font-mono tracking-wider">Stav vegetace</span>
+              <div class="health-val-state text-white font-bold text-sm mt-1">Variabilita: Střední</div>
+            </div>
+            <div class="health-sub-state text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-activity text-[#cff245]"></i> NDVI index: 0.15 - 0.82
+            </div>
+          </div>
+
+          <!-- Card 4: Metoda sběru -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="health-lbl-method text-[10px] text-gray-500 uppercase font-mono tracking-wider">Metoda sběru</span>
+              <div class="health-val-method text-white font-bold text-sm mt-1">RGB analýza</div>
+            </div>
+            <div class="health-sub-method text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-airplane text-[#cff245]"></i> Výška letu: 120 m AGL
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Mowing Modal -->
+  <div id="mowing-modal" class="hidden fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-5xl bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] lg:max-h-[95vh]">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#0f1013] flex-none">
+        <h3 class="text-white font-bold text-lg tracking-tight mowing-modal-title">Kontrola sečení luk a polí</h3>
+        <button onclick="closeMowingModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none">&times;</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 flex flex-col lg:flex-row gap-6 overflow-y-auto">
+        <!-- Left side: Interactive Slider Widget -->
+        <div class="flex-1 flex flex-col gap-4">
+          <div id="mowing-slider-container" class="relative w-full h-[300px] md:h-[450px] overflow-hidden rounded-2xl border border-white/10 select-none cursor-ew-resize">
+            <!-- Before: Unmowed Map -->
+            <img src="images/photos/mowing_unmowed.jpg" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none">
+            <div class="mowing-tag-unmowed absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[10px] uppercase font-mono tracking-widest text-[#ef4444] font-bold select-none pointer-events-none">Před sečením (14. 6. 2026)</div>
+            
+            <!-- After: Mowed Map (clipped) -->
+            <div id="mowing-slider-clip" class="absolute inset-y-0 left-0 right-0 overflow-hidden" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+              <img src="images/photos/mowing_mowed.jpg" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none">
+              <div class="mowing-tag-mowed absolute top-4 right-4 bg-[#cff245] px-3 py-1.5 rounded-lg text-black text-[10px] uppercase font-mono font-bold tracking-widest select-none pointer-events-none">Po sečení (25. 6. 2026)</div>
+            </div>
+
+            <!-- Slider Handle Bar -->
+            <div id="mowing-slider-handle" class="absolute inset-y-0 w-[2px] bg-[#cff245] pointer-events-none" style="left: 50%;">
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#cff245] text-black shadow-lg flex items-center justify-center border border-[#cff245]/30">
+                <i class="bi bi-arrows-left-right text-sm"></i>
+              </div>
+            </div>
+
+            <!-- Graphic Scale Overlay -->
+            <div class="absolute bottom-4 right-6 flex flex-col select-none pointer-events-none z-10 font-mono text-black">
+              <div class="relative w-[80px] h-[10px] text-[8px] font-bold">
+                <span class="absolute left-0 -translate-x-1/2">0</span>
+                <span class="absolute left-1/2 -translate-x-1/2">22.5</span>
+                <span class="absolute right-0 translate-x-1/2 whitespace-nowrap">45 m</span>
+              </div>
+              <div class="relative w-[80px] h-[5px] flex items-end">
+                <!-- Horizontal line -->
+                <div class="absolute bottom-0 left-0 right-0 h-[1.5px] bg-black"></div>
+                <!-- Vertical tics -->
+                <div class="absolute left-0 bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[12.5%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[25%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[37.5%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[50%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute left-[75%] bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+                <div class="absolute right-0 bottom-0 w-[1.5px] h-[5px] bg-black"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Description -->
+          <p class="text-xs text-gray-400 text-center leading-relaxed max-w-2xl mx-auto mowing-modal-desc">
+            Posunutím jezdce porovnejte stav pozemků před zahájením senoseče a po jejím dokončení. Srovnání slouží pro kontrolu provedení seče, lokalizaci případných nedoseků a ověření postupu zemědělských prací.
+          </p>
+        </div>
+
+        <!-- Right side: Telemetry & Metadata Panel -->
+        <div class="w-full lg:w-[280px] flex flex-col gap-3 shrink-0">
+          <span class="text-gray-400 text-[10px] uppercase font-mono tracking-widest mb-1 mowing-sidebar-title">Parametry sečení</span>
+          
+          <!-- Card 1: Měřítko & Detaily -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="mowing-lbl-scale text-[10px] text-gray-500 uppercase font-mono tracking-wider">Měřítko & Detaily</span>
+              <div class="mowing-val-scale text-white font-bold text-sm mt-1">GSD ~1.2 cm/px</div>
+            </div>
+            <div class="mowing-sub-scale text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-rulers text-[#cff245]"></i> Grafické měřítko: 1:360
+            </div>
+          </div>
+
+          <!-- Card 2: Celková plocha -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="mowing-lbl-area text-[10px] text-gray-500 uppercase font-mono tracking-wider">Celková plocha</span>
+              <div class="mowing-val-area text-white font-bold text-sm mt-1">14.8 ha</div>
+            </div>
+            <div class="mowing-sub-area text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-aspect-ratio text-[#cff245]"></i> Detekováno: 100% plocha
+            </div>
+          </div>
+
+          <!-- Card 3: Nedoseky / Chyby -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="mowing-lbl-errors text-[10px] text-gray-500 uppercase font-mono tracking-wider">Nedoseky / Chyby</span>
+              <div class="mowing-val-errors text-red-400 font-bold text-sm mt-1">0.05 ha (0.34%)</div>
+            </div>
+            <div class="mowing-sub-errors text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-exclamation-triangle text-red-400"></i> 2 lokalizovaná místa
+            </div>
+          </div>
+
+          <!-- Card 4: Metoda sběru -->
+          <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between hover:bg-white/[0.04] transition duration-200">
+            <div>
+              <span class="mowing-lbl-method text-[10px] text-gray-500 uppercase font-mono tracking-wider">Metoda sběru</span>
+              <div class="mowing-val-method text-white font-bold text-sm mt-1">RGB multispektrální</div>
+            </div>
+            <div class="mowing-sub-method text-[10px] text-gray-400 mt-2 flex items-center gap-1.5 leading-none">
+              <i class="bi bi-airplane text-[#cff245]"></i> Výška letu: 90 m AGL
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Villa Timelapse Modal -->
+  <div id="villa-timelapse-modal" class="hidden fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] items-center justify-center p-4 animate-fade-in">
+    <div class="relative w-full max-w-5xl max-h-[calc(100vh-2rem)] bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#0f1013] flex-none">
+        <h3 class="text-white font-bold text-lg tracking-tight villa-timelapse-modal-title">Časosběrný vývoj vily</h3>
+        <button onclick="closeVillaTimelapseModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none">&times;</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-4 md:p-6 flex flex-col gap-6 overflow-y-auto">
+        <!-- Top Section: Image and Slider side-by-side -->
+        <div class="flex flex-row gap-6 items-stretch md:h-[480px]">
+          <!-- Image display area with overlay description -->
+          <div class="flex-1 min-w-0 relative aspect-video md:aspect-auto overflow-hidden rounded-2xl border border-white/10 bg-black flex items-center justify-center">
+            <img id="villa-timelapse-img" src="images/photos/villa_01.jpg?v=5" class="w-full h-full object-cover select-none pointer-events-none">
+            
+            <!-- Stage Badge/Overlay -->
+            <div id="villa-timelapse-stage-badge" class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[10px] uppercase font-mono tracking-widest text-[#cff245] font-bold select-none pointer-events-none">
+              Etapa 1/10
+            </div>
+
+            <!-- Description overlay directly inside the image at the bottom -->
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 pt-12 select-none pointer-events-none text-center">
+              <p id="villa-timelapse-desc" class="text-sm text-white font-medium leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                Začištěný a vyrovnaný stavební pozemek
+              </p>
+            </div>
+          </div>
+
+          <!-- Hidden range input for script compatibility -->
+          <input type="range" id="villa-timelapse-range" min="0" max="9" value="0" step="1" class="hidden">
+
+          <!-- Vertical Custom Timeline Container (right next to the image, stretching to match height) -->
+          <div id="villa-timelapse-track-outer" class="flex items-stretch justify-start pl-6 w-40 shrink-0 py-6 relative select-none border-l border-white/[0.04] bg-white/[0.01] cursor-ns-resize">
+            <!-- The vertical track line -->
+            <div id="villa-timelapse-track" class="relative w-[4px] h-full bg-white/[0.06] border border-white/[0.02] rounded-full flex flex-col justify-between items-center py-2">
+              <!-- Active progress fill line (drawn absolute on top of the track) -->
+              <div id="villa-timelapse-fill" class="absolute top-0 left-0 w-full bg-gradient-to-b from-[#cff245] to-[#a8cf1c] rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(207,242,69,0.4)]" style="height: 0%;"></div>
+              
+              <!-- Step 0 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(0)">
+                <!-- Floating label to the right -->
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-0">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-0"></i><span class="villa-tick-label">01 - 01.06.2024</span>
+                </span>
+                <!-- Dot indicator -->
+                <div id="v-dot-0" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 1 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(1)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-1">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-1"></i><span class="villa-tick-label">02 - 18.08.2024</span>
+                </span>
+                <div id="v-dot-1" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(2)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-2">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-2"></i><span class="villa-tick-label">03 - 05.10.2024</span>
+                </span>
+                <div id="v-dot-2" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 3 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(3)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-3">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-3"></i><span class="villa-tick-label">04 - 12.12.2024</span>
+                </span>
+                <div id="v-dot-3" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 4 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(4)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-4">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-4"></i><span class="villa-tick-label">05 - 23.02.2025</span>
+                </span>
+                <div id="v-dot-4" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 5 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(5)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-5">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-5"></i><span class="villa-tick-label">06 - 07.04.2025</span>
+                </span>
+                <div id="v-dot-5" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 6 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(6)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-6">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-6"></i><span class="villa-tick-label">07 - 14.06.2025</span>
+                </span>
+                <div id="v-dot-6" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 7 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(7)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-7">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-7"></i><span class="villa-tick-label">08 - 28.08.2025</span>
+                </span>
+                <div id="v-dot-7" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 8 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(8)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-8">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-8"></i><span class="villa-tick-label">09 - 09.10.2025</span>
+                </span>
+                <div id="v-dot-8" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+              
+              <!-- Step 9 -->
+              <div class="group relative flex items-center justify-center w-8 h-8 cursor-pointer z-10" onclick="setVillaTimelapseIndex(9)">
+                <span class="absolute left-8 font-mono text-[9px] text-gray-500 bg-[#16181d]/80 border border-white/[0.05] px-1.5 py-0.5 rounded transition-all duration-200 flex items-center gap-1 whitespace-nowrap" id="tick-label-9">
+                  <i class="bi bi-caret-right-fill text-[#cff245] text-[9px] opacity-0 transition-opacity" id="tick-arrow-9"></i><span class="villa-tick-label">10 - 18.12.2025</span>
+                </span>
+                <div id="v-dot-9" class="w-2.5 h-2.5 rounded-full bg-[#181a20] border border-white/35 group-hover:border-white/70 transition-all duration-200"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive 3D Model Modal -->
+  <div id="model3d-modal" class="hidden fixed inset-0 bg-topo-backdrop backdrop-blur-md z-[1100] items-center justify-center p-4">
+    <div class="relative w-full max-w-5xl bg-[#13151a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#0f1013]">
+        <h3 class="text-white font-bold text-lg tracking-tight model3d-modal-title">Interaktivní 3D digitální dvojče</h3>
+        <button onclick="closeModel3DModal()" class="text-gray-400 hover:text-white transition text-2xl font-semibold leading-none">&times;</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="p-6 flex flex-col lg:flex-row gap-6">
+        <!-- Left side: 3D Canvas viewport -->
+        <div class="flex-1 flex flex-col gap-4">
+          <div id="canvas3d-container" class="relative w-full h-[350px] md:h-[480px] overflow-hidden rounded-2xl border border-white/10 bg-[#07080a] select-none cursor-grab active:cursor-grabbing">
+            <!-- Loading Indicator -->
+            <div id="model3d-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-[#07080a] gap-3 z-10 transition-opacity duration-300">
+              <div class="w-8 h-8 border-2 border-[#cff245] border-t-transparent rounded-full animate-spin"></div>
+              <span class="text-[10px] text-gray-500 font-mono tracking-widest uppercase model3d-loading-text">Načítání 3D modelu...</span>
+            </div>
+            
+            <!-- Canvas for WebGL -->
+            <canvas id="webgl-canvas" class="w-full h-full block"></canvas>
+            
+            <!-- Navigation HUD -->
+            <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-2 rounded-lg border border-white/10 text-[9px] font-mono text-gray-400 select-none pointer-events-none flex flex-col gap-1">
+              <div><i class="bi bi-mouse text-[#cff245] mr-1"></i> <span class="model3d-hud-rotate">Rotace: Levým tlačítkem myši</span></div>
+              <div><i class="bi bi-arrows-move text-[#cff245] mr-1"></i> <span class="model3d-hud-pan">Posun: Pravým tlačítkem / Shift</span></div>
+              <div><i class="bi bi-zoom-in text-[#cff245] mr-1"></i> <span class="model3d-hud-zoom">Přiblížení: Kolečkem myši</span></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right side: Telemetry & Model Info panel -->
+        <div class="w-full lg:w-[280px] flex flex-col gap-4 shrink-0 justify-between">
+          <div class="flex flex-col gap-3">
+            <span class="text-gray-400 text-[10px] uppercase font-mono tracking-widest model3d-info-title">Parametry modelu</span>
+            
+            <!-- Info Card -->
+            <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-3 font-mono text-[11px] text-gray-300">
+              <div class="flex justify-between border-b border-white/5 pb-2">
+                <span class="text-gray-500 model3d-lbl-obj">Objekt:</span>
+                <span class="text-white font-bold model3d-val-obj">3D model pozemku</span>
+              </div>
+              <div class="flex justify-between border-b border-white/5 pb-2">
+                <span class="text-gray-500 model3d-lbl-scale">Měřítko:</span>
+                <span class="text-[#cff245] font-bold">1 : 100</span>
+              </div>
+              <div class="flex justify-between border-b border-white/5 pb-2">
+                <span class="text-gray-500 model3d-lbl-points">Mračno bodů:</span>
+                <span class="text-white">16,384 pts</span>
+              </div>
+              <div class="flex justify-between border-b border-white/5 pb-2">
+                <span class="text-gray-500 model3d-lbl-faces">Polygony:</span>
+                <span class="text-white">32,258</span>
+              </div>
+              <div class="flex justify-between pb-1">
+                <span class="text-gray-500 model3d-lbl-prec">Polohová přesnost:</span>
+                <span class="text-white">&lt; 1.5 cm</span>
+              </div>
+            </div>
+            
+            <p class="text-[10px] text-gray-500 leading-relaxed model3d-desc-text">
+              Tento 3D model soukromého pozemku s rodinným domem byl rekonstruován metodou fotogrammetrické triagulace z 85 překrývajících se leteckých snímků.
+            </p>
+          </div>
+
+          <!-- Color Mode / Rendering controls -->
+          <div class="flex flex-col gap-2">
+            <span class="text-gray-400 text-[10px] uppercase font-mono tracking-widest model3d-render-title">Režim zobrazení</span>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setModelViewMode('textured')" id="btn-mode-textured" class="render-btn p-2 rounded-xl bg-[#cff245]/5 border border-[#cff245]/80 text-[#cff245] font-bold text-[10px] uppercase tracking-wider font-mono hover:bg-[#cff245]/10 transition duration-200">
+                Textura
+              </button>
+              <button onclick="setModelViewMode('wireframe')" id="btn-mode-wireframe" class="render-btn p-2 rounded-xl bg-white/[0.01] border border-white/5 text-gray-400 font-bold text-[10px] uppercase tracking-wider font-mono hover:border-white/20 hover:bg-white/[0.04] transition duration-200">
+                Drátěný
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="js/lightbox.js"></script>
+  <script src="js/map-projects.js"></script>
+  <script src="js/case-studies-tabs.js"></script>
+  <script src="js/gis-demo-engine.js"></script>
+  <script src="js/mobile-menu.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/configurator.js"></script>
+  <script src="js/compare-sliders.js"></script>
+  <script src="js/villa-timelapse.js"></script>
+  <script src="js/model3d-viewer.js"></script>
+  <script src="js/hero-canvas.js"></script>
+  <script src="js/header-telemetry.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/camera-simulator.js"></script>
+  <script src="js/client-zone.js"></script>
 </body>
 
 </html>
