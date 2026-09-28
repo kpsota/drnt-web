@@ -274,12 +274,11 @@
         }
         
         // Reset lock icon style
-        const lock = document.getElementById('gis-admin-lock');
-        if (lock) {
+        document.querySelectorAll('.gis-admin-lock').forEach(lock => {
           lock.innerHTML = '<i class="bi bi-shield-lock"></i>';
-          lock.className = "text-white/20 hover:text-white/60 cursor-pointer transition text-xs select-none ml-2";
+          lock.className = "gis-admin-lock text-white/20 hover:text-white/60 cursor-pointer transition text-xs select-none ml-2";
           lock.title = "Administrace (Správa)";
-        }
+        });
         
         // Hide visitor counter
         const counter = document.getElementById('visitor-counter');
@@ -313,12 +312,11 @@
           }
           
           // Update lock icon style to indicate logged in state
-          const lock = document.getElementById('gis-admin-lock');
-          if (lock) {
+          document.querySelectorAll('.gis-admin-lock').forEach(lock => {
             lock.innerHTML = '<i class="bi bi-shield-slash-fill"></i>';
-            lock.className = "text-[#cff245] hover:text-[#a6c437] cursor-pointer transition text-xs select-none ml-2 filter drop-shadow-[0_0_4px_rgba(207,242,69,0.4)]";
+            lock.className = "gis-admin-lock text-[#cff245] hover:text-[#a6c437] cursor-pointer transition text-xs select-none ml-2 filter drop-shadow-[0_0_4px_rgba(207,242,69,0.4)]";
             lock.title = "Odhlásit správce";
-          }
+          });
           
           // Show visitor counter
           const counter = document.getElementById('visitor-counter');

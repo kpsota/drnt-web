@@ -60,19 +60,19 @@
           <a href="#reference" class="hover:text-[#cff245] transition">Reference</a>
           <a href="#kontakt" class="hover:text-[#cff245] transition">Kontakt</a>
         </nav>
-        
-        <!-- Language Switcher Flags -->
-        <div class="flex items-center gap-3 md:border-l md:border-white/10 md:pl-6 h-5">
-          <button onclick="setLanguage('cs')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" id="btn-lang-cs" title="Čeština">
+
+        <!-- Language Switcher Flags (desktop only - moved into hamburger menu on mobile) -->
+        <div class="hidden md:flex items-center gap-3 md:border-l md:border-white/10 md:pl-6 h-5">
+          <button onclick="setLanguage('cs')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" data-lang="cs" title="Čeština">
             <img src="images/flags/cz.svg" alt="CZ" class="w-6 h-4 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
           </button>
-          <button onclick="setLanguage('en')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" id="btn-lang-en" title="English">
+          <button onclick="setLanguage('en')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" data-lang="en" title="English">
             <img src="images/flags/gb.svg" alt="EN" class="w-6 h-4 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
           </button>
-          <button onclick="setLanguage('de')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" id="btn-lang-de" title="Deutsch">
+          <button onclick="setLanguage('de')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" data-lang="de" title="Deutsch">
             <img src="images/flags/de.svg" alt="DE" class="w-6 h-4 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
           </button>
-          <span onclick="toggleGisAdmin()" class="text-white/20 hover:text-white/60 cursor-pointer transition text-xs select-none ml-2" id="gis-admin-lock" title="Administrace (Správa)"><i class="bi bi-shield-lock"></i></span>
+          <span onclick="toggleGisAdmin()" class="gis-admin-lock text-white/20 hover:text-white/60 cursor-pointer transition text-xs select-none ml-2" id="gis-admin-lock" title="Administrace (Správa)"><i class="bi bi-shield-lock"></i></span>
         </div>
         <!-- Mobile Menu Hamburger Button -->
         <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-white/80 hover:text-white focus:outline-none transition p-1 flex items-center justify-center" title="Menu">
@@ -82,29 +82,49 @@
     </div>
   </header>
 
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu-overlay" class="fixed inset-0 bg-[#0d0e11]/95 backdrop-blur-md z-[1200] hidden flex-col transition-all duration-300 transform -translate-y-full opacity-0">
-    <!-- Header inside Overlay (For logo and close button) -->
-    <div class="flex items-center justify-between px-8 py-4 border-b border-white/5">
-      <a href="#" onclick="closeMobileMenu()" class="flex items-center gap-3.5">
-        <i class="bi bi-send-fill text-xl text-[#cff245]"></i>
-        <span class="font-bold text-lg text-white tracking-tight">DRONAUT</span>
-      </a>
-      <button onclick="closeMobileMenu()" class="text-white/80 hover:text-white transition text-3xl font-light leading-none" title="Zavřít">&times;</button>
+  <!-- Mobile Menu Overlay (compact dropdown panel, not fullscreen) -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1200] hidden opacity-0 transition-opacity duration-300" onclick="if (event.target === this) closeMobileMenu();">
+    <div id="mobile-menu-panel" class="bg-[#0d0e11] border-b border-[#cff245]/15 shadow-2xl rounded-b-3xl max-h-[85vh] overflow-y-auto transform -translate-y-full transition-transform duration-300">
+      <!-- Header inside Panel (For logo and close button) -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <a href="#" onclick="closeMobileMenu()" class="flex items-center gap-3">
+          <i class="bi bi-send-fill text-lg text-[#cff245]"></i>
+          <span class="font-bold text-base text-white tracking-tight">DRONAUT</span>
+        </a>
+        <button onclick="closeMobileMenu()" class="text-white/70 hover:text-white transition text-2xl font-light leading-none" title="Zavřít">&times;</button>
+      </div>
+      <!-- Menu Links -->
+      <nav id="mobile-nav" class="flex flex-col gap-1 px-4 py-4 text-sm font-bold">
+        <a href="#sluzby" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] hover:bg-white/5 transition-colors py-2.5 px-3 rounded-xl block w-full text-center">Služby</a>
+        <a href="#onas" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] hover:bg-white/5 transition-colors py-2.5 px-3 rounded-xl block w-full text-center">O nás</a>
+        <a href="#reference" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] hover:bg-white/5 transition-colors py-2.5 px-3 rounded-xl block w-full text-center">Reference</a>
+        <a href="#kontakt" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] hover:bg-white/5 transition-colors py-2.5 px-3 rounded-xl block w-full text-center">Kontakt</a>
+
+        <div class="h-px bg-white/10 my-2"></div>
+
+        <!-- Případové studie (moved from floating dock, visually distinct blue accent) -->
+        <button onclick="closeMobileMenu(); openCasesModal();" class="flex items-center justify-center gap-2 border border-[#23d8ff]/40 text-[#23d8ff] hover:bg-[#23d8ff]/10 transition-colors py-2.5 px-3 rounded-xl">
+          <i class="bi bi-journal-text"></i>
+          <span>Případové studie</span>
+        </button>
+
+        <div class="h-px bg-white/10 my-2"></div>
+
+        <!-- Language switcher + admin access (moved from header) -->
+        <div class="flex items-center justify-center gap-4 py-1">
+          <button onclick="setLanguage('cs')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" data-lang="cs" title="Čeština">
+            <img src="images/flags/cz.svg" alt="CZ" class="w-7 h-5 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
+          </button>
+          <button onclick="setLanguage('en')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" data-lang="en" title="English">
+            <img src="images/flags/gb.svg" alt="EN" class="w-7 h-5 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
+          </button>
+          <button onclick="setLanguage('de')" class="lang-btn hover:scale-115 active:scale-95 transition-all duration-200 flex items-center justify-center filter hover:brightness-110 opacity-50" data-lang="de" title="Deutsch">
+            <img src="images/flags/de.svg" alt="DE" class="w-7 h-5 rounded-sm object-cover select-none pointer-events-none shadow-sm border border-white/20">
+          </button>
+          <span onclick="toggleGisAdmin()" class="gis-admin-lock text-white/20 hover:text-white/60 cursor-pointer transition text-sm select-none ml-1" title="Administrace (Správa)"><i class="bi bi-shield-lock"></i></span>
+        </div>
+      </nav>
     </div>
-    <!-- Menu Links -->
-    <nav id="mobile-nav" class="flex flex-col gap-8 items-center justify-center flex-1 text-lg font-bold">
-      <a href="#sluzby" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">Služby</a>
-      <a href="#onas" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">O nás</a>
-      <a href="#reference" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">Reference</a>
-      <a href="#kontakt" onclick="closeMobileMenu()" class="text-gray-300 hover:text-[#cff245] transition-colors py-2 block w-full text-center">Kontakt</a>
-      
-      <!-- Interactive Client Zone / GIS Trigger for Mobile -->
-      <button onclick="openMobileGisFromNav()" class="bg-[#cff245] text-black px-8 py-3 rounded-xl hover:opacity-90 transition font-bold shadow-lg flex items-center gap-2 mt-4 text-sm">
-        <i class="bi bi-ruler"></i>
-        <span>Interaktivní zóna</span>
-      </button>
-    </nav>
   </div>
 
   <!-- Hero -->
@@ -144,9 +164,9 @@
       </div>
 
       <!-- 4 Columns / Features -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mt-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 w-full mt-4">
         <!-- Col 1 -->
-        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+        <div class="group flex flex-col items-center text-center px-2 py-3 md:px-3 md:py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
           <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
             <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
@@ -158,7 +178,7 @@
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Získáváme přesná a spolehlivá data pro vaše projekty.</p>
         </div>
         <!-- Col 2 -->
-        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+        <div class="group flex flex-col items-center text-center px-2 py-3 md:px-3 md:py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
           <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
             <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="2"></circle>
@@ -180,7 +200,7 @@
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Využíváme špičkové drony a nejnovější technologie.</p>
         </div>
         <!-- Col 3 -->
-        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+        <div class="group flex flex-col items-center text-center px-2 py-3 md:px-3 md:py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
           <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
             <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -194,7 +214,7 @@
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Centimetrová přesnost díky RTK/PPK a pokročilé fotogrammetrii.</p>
         </div>
         <!-- Col 4 -->
-        <div class="group flex flex-col items-center text-center px-3 py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
+        <div class="group flex flex-col items-center text-center px-2 py-3 md:px-3 md:py-4 rounded-2xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.01] hover:backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1">
           <div class="p-2 rounded-xl bg-white/0 group-hover:bg-[#cff245]/5 transition duration-300">
             <svg class="w-7 h-7 text-[#cff245] group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -226,38 +246,38 @@
             <img src="images/photos/OF_3_web.jpg" class="hidden md:block w-full rounded-xl lb-thumb" alt="Ortofoto">
           </div>
           <!-- Podsekce Ortofoto -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div class="grid grid-cols-3 gap-2 md:gap-4 mt-6">
             <!-- Podsekce 1: Srovnávač rozlišení -->
-            <div class="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-3 justify-between">
+            <div class="bg-white/5 border border-white/5 rounded-2xl p-3 md:p-5 flex flex-col gap-2 md:gap-3 justify-between text-center md:text-left">
               <div>
-                <h4 class="text-gray-900 font-bold text-sm tracking-tight compare-sub-title-res">Interaktivní srovnávač rozlišení</h4>
-                <p class="text-xs text-gray-500 mt-1 leading-relaxed compare-sub-desc-res">Porovnejte detail standardních satelitních map a našeho přesného snímkování z různých výšek letu.</p>
+                <h4 class="text-gray-900 font-bold text-[11px] md:text-sm leading-tight tracking-tight compare-sub-title-res">Interaktivní srovnávač rozlišení</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed hidden md:block compare-sub-desc-res">Porovnejte detail standardních satelitních map a našeho přesného snímkování z různých výšek letu.</p>
               </div>
-              <button onclick="openCompareModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-4 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold w-full mt-2 shadow-sm">
+              <button onclick="openCompareModal()" class="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-2 py-2 md:px-4 md:py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-[10px] md:text-xs font-bold w-full mt-2 shadow-sm leading-tight">
                 <i class="bi bi-bezier2 text-sm"></i>
                 <span class="compare-btn-text-res">Kvalitativní srovnávač</span>
               </button>
             </div>
-            
+
             <!-- Podsekce 2: Zdraví rostlin -->
-            <div class="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-3 justify-between">
+            <div class="bg-white/5 border border-white/5 rounded-2xl p-3 md:p-5 flex flex-col gap-2 md:gap-3 justify-between text-center md:text-left">
               <div>
-                <h4 class="text-gray-900 font-bold text-sm tracking-tight compare-sub-title-health">Analýza zdraví rostlin</h4>
-                <p class="text-xs text-gray-500 mt-1 leading-relaxed compare-sub-desc-health">Vizualizace vitality porostu pro včasnou detekci suchých ložisek, oslabení plodin nebo zaplevelení.</p>
+                <h4 class="text-gray-900 font-bold text-[11px] md:text-sm leading-tight tracking-tight compare-sub-title-health">Analýza zdraví rostlin</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed hidden md:block compare-sub-desc-health">Vizualizace vitality porostu pro včasnou detekci suchých ložisek, oslabení plodin nebo zaplevelení.</p>
               </div>
-              <button onclick="openHealthModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-4 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold w-full mt-2 shadow-sm">
+              <button onclick="openHealthModal()" class="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-2 py-2 md:px-4 md:py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-[10px] md:text-xs font-bold w-full mt-2 shadow-sm leading-tight">
                 <i class="bi bi-patch-check text-sm"></i>
                 <span class="compare-btn-text-health">Analýza zdraví</span>
               </button>
             </div>
 
             <!-- Podsekce 3: Kontrola sečení -->
-            <div class="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-3 justify-between">
+            <div class="bg-white/5 border border-white/5 rounded-2xl p-3 md:p-5 flex flex-col gap-2 md:gap-3 justify-between text-center md:text-left">
               <div>
-                <h4 class="text-gray-900 font-bold text-sm tracking-tight compare-sub-title-mowing">Kontrola sečení</h4>
-                <p class="text-xs text-gray-500 mt-1 leading-relaxed compare-sub-desc-mowing">Porovnání a vizuální kontrola provedení seče luk a polí v časovém odstupu.</p>
+                <h4 class="text-gray-900 font-bold text-[11px] md:text-sm leading-tight tracking-tight compare-sub-title-mowing">Kontrola sečení</h4>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed hidden md:block compare-sub-desc-mowing">Porovnání a vizuální kontrola provedení seče luk a polí v časovém odstupu.</p>
               </div>
-              <button onclick="openMowingModal()" class="flex items-center justify-center gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-4 py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-xs font-bold w-full mt-2 shadow-sm">
+              <button onclick="openMowingModal()" class="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 bg-[#0d0e11] hover:bg-[#15171d] text-[#cff245] border border-[#cff245]/30 hover:border-[#cff245]/80 px-2 py-2 md:px-4 md:py-2.5 rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 text-[10px] md:text-xs font-bold w-full mt-2 shadow-sm leading-tight">
                 <i class="bi bi-calendar-check text-sm"></i>
                 <span class="compare-btn-text-mowing">Kontrola sečení</span>
               </button>
@@ -268,9 +288,9 @@
           <h3 class="text-xl font-bold">3D Modely</h3>
           <p class="text-sm text-gray-600">Tvoříme detailní 3D modely objektů, které přesně zachycují jejich tvar, strukturu i výškové poměry. Jsou nepostradatelné pro vizualizace, posuzování aktuálního stavu budov nebo vzdálenostní a strukturální analýzy. Získejte realistický digitální dvojče svého objektu, které si prohlédnete z libovolného úhlu.</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-            <img src="images/photos/3D_1_web.jpg?v=2" class="w-full rounded-xl lb-thumb" alt="3D Modely">
-            <img src="images/photos/3D_2_web.jpg?v=2" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D Modely">
-            <img src="images/photos/3D_3_web.jpg?v=2" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D Modely">
+            <img src="images/photos/3D_1_web.jpg?v=3" class="w-full rounded-xl lb-thumb" alt="3D model kostelíka z dronových snímků">
+            <img src="images/photos/3D_2_web.jpg?v=3" class="hidden md:block w-full rounded-xl lb-thumb" alt="3D model kostelíka - jiný úhel pohledu">
+            <img src="images/photos/3D_3_web.jpg?v=3" class="hidden md:block w-full rounded-xl lb-thumb" alt="Drátěný model - rekonstruovaná mesh geometrie">
           </div>
           <!-- Podsekce 3D model -->
           <div class="mt-6">
@@ -348,9 +368,9 @@
 
 
 
-  <!-- Floating Sidebar Dock -->
-  <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3.5 items-end pointer-events-none">
-    
+  <!-- Floating Sidebar Dock (desktop only - Případové studie moved into hamburger menu on mobile, Interaktivní zóna hidden on mobile) -->
+  <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3.5 items-end pointer-events-none">
+
     <!-- Button 1: Case Studies (Případové studie) -->
     <button type="button" onclick="openCasesModal()" class="pointer-events-auto bg-gradient-to-l from-[#0f1117]/95 to-[#151821]/95 backdrop-blur-md hover:from-[#13161e] hover:to-[#1a1e2a] text-white border-l-2 border-[#23d8ff] border-t border-b border-white/10 px-3 py-7 rounded-l-2xl shadow-[0_10px_45px_rgba(0,0,0,0.65),0_0_15px_rgba(35,216,255,0.12)] hover:shadow-[0_12px_55px_rgba(0,0,0,0.75),0_0_30px_rgba(35,216,255,0.4)] transition-all duration-300 flex flex-col items-center gap-4 group select-none hover:-translate-x-2">
       <!-- Pulsing indicator (blue) -->
@@ -904,40 +924,40 @@
       </div>
 
       <!-- 3 pillars -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-gray-700">
-          <i class="bi bi-shield-check text-4xl text-[#cff245]"></i>
-          <h3 class="text-white font-bold text-lg">Letecká zkušenost a licence</h3>
-          <p class="text-gray-400 text-sm">Disponujeme všemi potřebnými pilotními licencemi pro specifickou kategorii. Bezpečný a legální provoz v souladu s předpisy ÚCL.</p>
+      <div class="grid grid-cols-3 gap-2 md:gap-4">
+        <div class="flex flex-col items-center text-center gap-1.5 p-3 md:items-start md:text-left md:gap-4 md:p-8 bg-white/5 rounded-2xl md:rounded-3xl border border-gray-700">
+          <i class="bi bi-shield-check text-2xl md:text-4xl text-[#cff245]"></i>
+          <h3 class="text-white font-bold text-[11px] leading-tight md:text-lg">Letecká zkušenost a licence</h3>
+          <p class="text-gray-400 text-sm hidden md:block">Disponujeme všemi potřebnými pilotními licencemi pro specifickou kategorii. Bezpečný a legální provoz v souladu s předpisy ÚCL.</p>
         </div>
-        <div class="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-gray-700">
-          <i class="bi bi-globe text-4xl text-[#cff245]"></i>
-          <h3 class="text-white font-bold text-lg">GIS a precizní geodata</h3>
-          <p class="text-gray-400 text-sm">Výstupy dodáváme ve standardních souřadnicových systémech plně kompatibilních s vaším GIS, CAD nebo BIM softwarem.</p>
+        <div class="flex flex-col items-center text-center gap-1.5 p-3 md:items-start md:text-left md:gap-4 md:p-8 bg-white/5 rounded-2xl md:rounded-3xl border border-gray-700">
+          <i class="bi bi-globe text-2xl md:text-4xl text-[#cff245]"></i>
+          <h3 class="text-white font-bold text-[11px] leading-tight md:text-lg">GIS a precizní geodata</h3>
+          <p class="text-gray-400 text-sm hidden md:block">Výstupy dodáváme ve standardních souřadnicových systémech plně kompatibilních s vaším GIS, CAD nebo BIM softwarem.</p>
         </div>
-        <div class="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-gray-700">
-          <i class="bi bi-cpu text-4xl text-[#cff245]"></i>
-          <h3 class="text-white font-bold text-lg">IT a Moderní nástroje</h3>
-          <p class="text-gray-400 text-sm">Moderní software a výpočetní technologie pro zpracování leteckých dat. Rozumíme automatizaci a zpracování velkých dat.</p>
+        <div class="flex flex-col items-center text-center gap-1.5 p-3 md:items-start md:text-left md:gap-4 md:p-8 bg-white/5 rounded-2xl md:rounded-3xl border border-gray-700">
+          <i class="bi bi-cpu text-2xl md:text-4xl text-[#cff245]"></i>
+          <h3 class="text-white font-bold text-[11px] leading-tight md:text-lg">IT a Moderní nástroje</h3>
+          <p class="text-gray-400 text-sm hidden md:block">Moderní software a výpočetní technologie pro zpracování leteckých dat. Rozumíme automatizaci a zpracování velkých dat.</p>
         </div>
       </div>
 
       <!-- Founders -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-white/5 rounded-3xl p-6 flex items-start gap-4 border border-gray-700">
-          <i class="bi bi-person-circle text-3xl text-[#cff245] mt-1 flex-shrink-0"></i>
-          <div class="flex flex-col gap-1">
-            <span class="text-white font-semibold">Ondřej Slavík</span>
-            <span class="text-gray-400 text-sm">Business Development & Chief Pilot</span>
-            <p class="text-gray-300 text-sm mt-1">Garant řízení projektů a Chief Pilot. Zajišťuje komunikaci s klienty, návrh řešení, koordinaci realizace a bezpečný průběh leteckých operací.</p>
+      <div class="grid grid-cols-2 gap-2 md:gap-4">
+        <div class="bg-white/5 rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center text-center gap-1.5 md:flex-row md:items-start md:text-left md:gap-4 border border-gray-700">
+          <i class="bi bi-person-circle text-2xl md:text-3xl text-[#cff245] md:mt-1 flex-shrink-0"></i>
+          <div class="flex flex-col items-center text-center md:items-start md:text-left gap-1">
+            <span class="text-white font-semibold text-[11px] md:text-base leading-tight">Ondřej Slavík</span>
+            <span class="text-gray-400 text-[10px] md:text-sm leading-tight">Business Development & Chief Pilot</span>
+            <p class="text-gray-300 text-sm mt-1 hidden md:block">Garant řízení projektů a Chief Pilot. Zajišťuje komunikaci s klienty, návrh řešení, koordinaci realizace a bezpečný průběh leteckých operací.</p>
           </div>
         </div>
-        <div class="bg-white/5 rounded-3xl p-6 flex items-start gap-4 border border-gray-700">
-          <i class="bi bi-person-circle text-3xl text-[#cff245] mt-1 flex-shrink-0"></i>
-          <div class="flex flex-col gap-1">
-            <span class="text-white font-semibold">Karel Psota</span>
-            <span class="text-gray-400 text-sm">Chief Data Officer</span>
-            <p class="text-gray-300 text-sm mt-1">Expert na geoinformatiku a data engineering. Zodpovídá za metodickou správnost výstupů a jejich integraci do vašich systémů.</p>
+        <div class="bg-white/5 rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center text-center gap-1.5 md:flex-row md:items-start md:text-left md:gap-4 border border-gray-700">
+          <i class="bi bi-person-circle text-2xl md:text-3xl text-[#cff245] md:mt-1 flex-shrink-0"></i>
+          <div class="flex flex-col items-center text-center md:items-start md:text-left gap-1">
+            <span class="text-white font-semibold text-[11px] md:text-base leading-tight">Karel Psota</span>
+            <span class="text-gray-400 text-[10px] md:text-sm leading-tight">Chief Data Officer</span>
+            <p class="text-gray-300 text-sm mt-1 hidden md:block">Expert na geoinformatiku a data engineering. Zodpovídá za metodickou správnost výstupů a jejich integraci do vašich systémů.</p>
           </div>
         </div>
       </div>
@@ -953,75 +973,83 @@
         <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter">Reference</h2>
         <p class="mt-4 text-gray-600">Vybrané projekty z různých odvětví</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Ekologie a sanace</span>
-            <span class="text-gray-400 text-sm">2025</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_ostrava.jpg" alt="Halda Jan Šverma – Ostrava" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Ekologie a sanace</span>
+            <span class="text-gray-400 text-[9px] md:text-sm">2025</span>
           </div>
-          <p class="font-bold text-gray-900">Halda Jan Šverma – Ostrava</p>
-          <p class="text-sm text-gray-600">Dronové skenování pro přesný výškový profil, polohopis a ortofoto. Podklady pro rekultivaci území a návrh tréninkových ploch pro HZS Ostrava.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Halda Jan Šverma – Ostrava</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Dronové skenování pro přesný výškový profil, polohopis a ortofoto. Podklady pro rekultivaci území a návrh tréninkových ploch pro HZS Ostrava.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Infrastruktura</span>
-            <span class="text-gray-400 text-sm">2025</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_d55.jpg" alt="Dálnice D55 – Babice – Staré Město" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Infrastruktura</span>
+            <span class="text-gray-400 text-[9px] md:text-sm">2025</span>
           </div>
-          <p class="font-bold text-gray-900">Dálnice D55 – Babice – Staré Město</p>
-          <p class="text-sm text-gray-600">Podrobná ortofotomapa pro dokumentaci nově budované komunikace. Podklad pro zakreslení skutečného provedení stavby a technickou dokumentaci.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Dálnice D55 – Babice – Staré Město</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Podrobná ortofotomapa pro dokumentaci nově budované komunikace. Podklad pro zakreslení skutečného provedení stavby a technickou dokumentaci.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Infrastruktura</span>
-            <span class="text-gray-400 text-sm">2025</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_bystricka.jpg" alt="Silnice I/57 Semetín – Bystřička" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Infrastruktura</span>
+            <span class="text-gray-400 text-[9px] md:text-sm">2025</span>
           </div>
-          <p class="font-bold text-gray-900">Silnice I/57 Semetín – Bystřička</p>
-          <p class="text-sm text-gray-600">Průběžné zaměřování zemního tělesa, výškový profil a ortofoto pro kontrolu postupu prací a výpočet kubatur přemístěné zeminy.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Silnice I/57 Semetín – Bystřička</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Průběžné zaměřování zemního tělesa, výškový profil a ortofoto pro kontrolu postupu prací a výpočet kubatur přemístěné zeminy.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Vodohospodářství</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_vak.jpg" alt="Voda a Kanalizace – vodárenské objekty" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Vodohospodářství</span>
           </div>
-          <p class="font-bold text-gray-900">Voda a Kanalizace – vodárenské objekty</p>
-          <p class="text-sm text-gray-600">Letecké snímkování vodárenských objektů v lokalitách Hřivínův Újezd, Lukoveček a Zlín – Jižní Svahy. Ortofoto a 3D model pro technické posouzení.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Voda a Kanalizace – vodárenské objekty</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Letecké snímkování vodárenských objektů v lokalitách Hřivínův Újezd, Lukoveček a Zlín – Jižní Svahy. Ortofoto a 3D model pro technické posouzení.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Průmysl a energetika</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_malenovice_fve.jpg" alt="Průmyslový objekt Malenovice u Zlína" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Průmysl a energetika</span>
             <span class="text-gray-400 text-sm">2024</span>
           </div>
-          <p class="font-bold text-gray-900">Průmyslový objekt Malenovice u Zlína</p>
-          <p class="text-sm text-gray-600">Zaměření střešní konstrukce, ortofotomapa a 3D model jako podklad pro návrh a rozmístění instalace solárních panelů.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Průmyslový objekt Malenovice u Zlína</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Zaměření střešní konstrukce, ortofotomapa a 3D model jako podklad pro návrh a rozmístění instalace solárních panelů.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Projekce a architektura</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_soukrome.jpg" alt="Soukromé objekty a pozemky" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Projekce a architektura</span>
           </div>
-          <p class="font-bold text-gray-900">Soukromé objekty a pozemky</p>
-          <p class="text-sm text-gray-600">Ortofotomapy, polohopis a výškopis jako digitální podklady pro projektanty a architekty — návrhy staveb, úpravy pozemků a projektová dokumentace.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Soukromé objekty a pozemky</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Ortofotomapy, polohopis a výškopis jako digitální podklady pro projektanty a architekty — návrhy staveb, úpravy pozemků a projektová dokumentace.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Odpadové hospodářství</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_suchy_dul.jpg" alt="Suchý důl – Zlín" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Odpadové hospodářství</span>
           </div>
-          <p class="font-bold text-gray-900">Suchý důl – Zlín</p>
-          <p class="text-sm text-gray-600">Průběžné zaměřování území sloužícího pro ukládání odpadu města Zlína. Sledování množství navezeného materiálu a pravidelný výpočet kubatur.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Suchý důl – Zlín</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Průběžné zaměřování území sloužícího pro ukládání odpadu města Zlína. Sledování množství navezeného materiálu a pravidelný výpočet kubatur.</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-6 flex flex-col gap-3 shadow-sm">
-          <div class="flex items-center justify-between">
-            <span class="bg-[#cff245] text-black text-xs px-3 py-1 rounded-full font-semibold">Časosběr</span>
-            <span class="text-gray-400 text-sm">2025 – ?</span>
+        <div class="bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col gap-1.5 md:gap-3 shadow-sm">
+          <img src="images/photos/ref_malenovice_timelapse.jpg" alt="Sídliště Nové Malenovice – Zlín" class="w-full aspect-video object-cover rounded-xl md:rounded-2xl lb-thumb">
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <span class="bg-[#cff245] text-black text-[9px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full font-semibold whitespace-nowrap">Časosběr</span>
+            <span class="text-gray-400 text-[9px] md:text-sm">2025 – ?</span>
           </div>
-          <p class="font-bold text-gray-900">Sídliště Nové Malenovice – Zlín</p>
-          <p class="text-sm text-gray-600">Pravidelným snímkováním z totožných tras a pozic dokumentujeme průběh výstavby sídliště Nové Malenovice od zahájení prací až po dokončení objektů. Výsledkem je časosběrné video, které přehledně zachycuje proměnu území a celý průběh realizace projektu.</p>
+          <p class="font-bold text-gray-900 text-[12px] md:text-base leading-tight">Sídliště Nové Malenovice – Zlín</p>
+          <p class="text-xs md:text-sm text-gray-600 leading-snug">Pravidelným snímkováním z totožných tras a pozic dokumentujeme průběh výstavby sídliště Nové Malenovice od zahájení prací až po dokončení objektů. Výsledkem je časosběrné video, které přehledně zachycuje proměnu území a celý průběh realizace projektu.</p>
         </div>
 
       </div>

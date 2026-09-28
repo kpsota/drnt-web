@@ -760,7 +760,7 @@
 
       // Update flags opacity
       document.querySelectorAll('.lang-btn').forEach(btn => {
-        if (btn.id === `btn-lang-${lang}`) {
+        if (btn.dataset.lang === lang) {
           btn.classList.remove('opacity-50');
           btn.classList.add('opacity-100', 'scale-115', 'drop-shadow-[0_0_5px_rgba(255,255,255,0.4)]');
         } else {

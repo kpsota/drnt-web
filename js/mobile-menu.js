@@ -5,12 +5,16 @@
       const menu = document.getElementById('mobile-menu-overlay');
       if (!menu) return;
       if (menu.classList.contains('hidden')) {
+        const panel = document.getElementById('mobile-menu-panel');
         menu.classList.remove('hidden');
-        menu.classList.add('flex');
         // trigger reflow for animation
         menu.getBoundingClientRect();
-        menu.classList.remove('-translate-y-full', 'opacity-0');
-        menu.classList.add('translate-y-0', 'opacity-100');
+        menu.classList.remove('opacity-0');
+        menu.classList.add('opacity-100');
+        if (panel) {
+          panel.classList.remove('-translate-y-full');
+          panel.classList.add('translate-y-0');
+        }
         document.body.style.overflow = 'hidden';
       } else {
         closeMobileMenu();
@@ -19,19 +23,18 @@
 
     function closeMobileMenu() {
       const menu = document.getElementById('mobile-menu-overlay');
+      const panel = document.getElementById('mobile-menu-panel');
       if (!menu) return;
-      menu.classList.remove('translate-y-0', 'opacity-100');
-      menu.classList.add('-translate-y-full', 'opacity-0');
+      menu.classList.remove('opacity-100');
+      menu.classList.add('opacity-0');
+      if (panel) {
+        panel.classList.remove('translate-y-0');
+        panel.classList.add('-translate-y-full');
+      }
       setTimeout(() => {
-        menu.classList.remove('flex');
         menu.classList.add('hidden');
         document.body.style.overflow = '';
       }, 300);
-    }
-
-    function openMobileGisFromNav() {
-      closeMobileMenu();
-      openGisModal();
     }
 
     function toggleGisMobileSidebar(isOpen) {
