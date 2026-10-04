@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>3D Digitální dvojče | DRONAUT</title>
-  <meta name="description" content="Prototyp 3D prohlížeče digitálního dvojčete | DRONAUT">
+  <title>3D Digitální dvojčata | DRONAUT</title>
+  <meta name="description" content="Katalog a interaktivní prohlížeč 3D fotogrammetrických modelů | DRONAUT">
+  <link rel="icon" type="image/png" href="/images/logos/logo-mint.png">
 
   <!-- Tailwind CSS & Icons & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,19 +14,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="css/style.css">
 
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background-color: #0d0e11;
       font-family: 'Inter', sans-serif;
     }
     .hud-card {
-      background: rgba(19, 21, 26, 0.82);
+      background: rgba(19, 21, 26, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -34,7 +32,7 @@
     .hud-btn {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #d1d5db;
+      color: #9ca3af;
       transition: all 0.2s ease;
     }
     .hud-btn:hover {
@@ -43,182 +41,420 @@
       color: #cff245;
     }
     .hud-btn.active {
-      background: rgba(207, 242, 69, 0.15);
+      background: rgba(207, 242, 69, 0.18);
       border-color: #cff245;
       color: #cff245;
+      font-weight: 600;
+    }
+    .model-card {
+      background: linear-gradient(180deg, rgba(22, 25, 33, 0.85) 0%, rgba(14, 16, 21, 0.96) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .model-card:hover {
+      border-color: rgba(207, 242, 69, 0.45);
+      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(207, 242, 69, 0.14);
+      transform: translateY(-4px);
+    }
+    .bg-grid-pattern {
+      background-size: 36px 36px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
     }
     @keyframes pulseGlow {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.9; }
+      0%, 100% { opacity: 0.35; transform: scale(0.98); }
+      50% { opacity: 0.85; transform: scale(1.02); }
     }
     .pulse-glow {
-      animation: pulseGlow 2.5s infinite ease-in-out;
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(300%); }
+    }
+    .animate-scanline {
+      animation: scanline 4s linear infinite;
     }
   </style>
 </head>
 
-<body class="h-full flex flex-col bg-[#0d0e11] text-white select-none">
+<body class="h-full bg-[#0d0e11] text-white">
 
-  <!-- Header -->
-  <header class="px-6 py-3 premium-header z-30 flex items-center justify-between border-b border-white/10 shrink-0">
-    <!-- Left Logo & Branding -->
-    <div class="flex items-center gap-4">
-      <a href="/" class="flex items-center gap-3 group">
-        <i class="bi bi-send-fill text-xl text-[#cff245] transition-transform duration-300 group-hover:rotate-12"></i>
-        <div class="flex items-center gap-3">
-          <span class="font-bold text-lg tracking-tight leading-none text-white">DRONAUT</span>
-          <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
-          <span class="text-[9px] text-gray-400 tracking-[0.18em] font-mono uppercase hidden sm:inline">3D Digitální dvojče</span>
-        </div>
-      </a>
+  <!-- ======================================================== -->
+  <!-- 1. CATALOG / MODEL SELECTION VIEW                        -->
+  <!-- ======================================================== -->
+  <div id="catalog-view" class="min-h-screen flex flex-col bg-[#0d0e11] text-white bg-grid-pattern relative">
+    
+    <!-- Ambient Glow Top -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-[#cff245]/5 blur-[120px] pointer-events-none rounded-full"></div>
 
-      <!-- Status Prototype Badge -->
-      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/30">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#cff245] animate-ping"></span>
-        PROTOTYP
-      </span>
-    </div>
-
-    <!-- Center Model Title (desktop only) -->
-    <div class="hidden lg:flex items-center gap-2 font-mono text-xs text-gray-400 bg-white/[0.03] px-3 py-1 rounded-lg border border-white/5">
-      <i class="bi bi-box text-[#cff245]"></i>
-      <span class="text-gray-200 font-semibold">Husova, Kutná Hora</span>
-      <span class="text-gray-600">•</span>
-      <span class="text-[10px] text-gray-400">Draco GLB (R2 CDN)</span>
-    </div>
-
-    <!-- Right: Return to Main Site -->
-    <div class="flex items-center gap-3">
-      <a href="/" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3.5 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Návrat na hlavní web">
-        <i class="bi bi-arrow-left text-[#cff245]"></i>
-        <span class="hidden sm:inline">Zpět na web</span>
-        <span class="sm:hidden">Zpět</span>
-      </a>
-    </div>
-  </header>
-
-  <!-- Viewer Canvas Container -->
-  <main class="relative flex-1 w-full h-full overflow-hidden" id="canvas-container">
-
-    <!-- Loading Screen Overlay -->
-    <div id="loading-overlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#0d0e11]/95 backdrop-blur-md transition-opacity duration-500 p-6">
-      <div class="hud-card rounded-3xl p-8 max-w-md w-full flex flex-col items-center text-center gap-5 border border-white/10">
-        <!-- Animated Radar / Logo Spinner -->
-        <div class="relative w-16 h-16 flex items-center justify-center">
-          <div class="absolute inset-0 rounded-full border-2 border-[#cff245]/20"></div>
-          <div class="absolute inset-0 rounded-full border-2 border-[#cff245] border-t-transparent animate-spin"></div>
-          <i class="bi bi-box text-2xl text-[#cff245] pulse-glow"></i>
-        </div>
-
-        <div class="flex flex-col gap-1.5">
-          <h2 class="text-lg font-bold tracking-tight text-white">Načítání 3D modelu</h2>
-          <p class="text-xs text-gray-400 font-mono">Husova, Kutná Hora • Letecká fotogrammetrie</p>
-        </div>
-
-        <!-- Progress Bar & Metrics -->
-        <div class="w-full flex flex-col gap-2 mt-1">
-          <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden p-0.5 border border-white/5">
-            <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8bb31d] to-[#cff245] rounded-full transition-all duration-200" style="width: 5%;"></div>
+    <!-- Header -->
+    <header class="px-6 py-4 z-30 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#0d0e11]/80 backdrop-blur-md sticky top-0">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-3 group">
+          <i class="bi bi-send-fill text-xl text-[#cff245] transition-transform duration-300 group-hover:rotate-12"></i>
+          <div class="flex items-center gap-3">
+            <span class="font-bold text-lg tracking-tight leading-none text-white">DRONAUT</span>
+            <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
+            <span class="text-[9px] text-gray-400 tracking-[0.18em] font-mono uppercase hidden sm:inline">3D Digitální dvojčata</span>
           </div>
-          <div class="flex justify-between items-center text-[11px] font-mono text-gray-400">
-            <span id="loading-status">Připojuji se k R2 uložení...</span>
-            <span id="loading-percent" class="text-[#cff245] font-semibold">0%</span>
-          </div>
-        </div>
+        </a>
 
-        <!-- Notice -->
-        <p class="text-[10px] text-gray-500 leading-relaxed font-mono">
-          Velikost modelu je cca 70 MB komprimováno technologií Draco. Načtení probíhá z Cloudflare R2 CDN.
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/30">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#cff245] animate-ping"></span>
+          KATALOG MODELŮ
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3.5 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200">
+          <i class="bi bi-arrow-left text-[#cff245]"></i>
+          <span class="hidden sm:inline">Zpět na web</span>
+          <span class="sm:hidden">Zpět</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 flex flex-col justify-center max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 z-10">
+      
+      <!-- Section Title & Intro -->
+      <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 mb-3">
+          <i class="bi bi-box"></i>
+          <span>PROHLÍŽEČ 3D MODELŮ</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+          Výběr 3D modelu
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed font-normal">
+          Vyberte si digitální dvojče pro otevření interaktivní WebGL scény. Modely jsou rekonstruovány z letecké fotogrammetrie a komprimovány technologií Google Draco pro plynulý chod v prohlížeči.
         </p>
+      </div>
 
-        <!-- Error State (hidden by default) -->
-        <div id="error-box" class="hidden flex-col items-center gap-3 w-full pt-2 border-t border-red-500/20 text-red-400">
-          <span class="text-xs font-mono" id="error-msg">Chyba při stahování modelu.</span>
-          <button onclick="location.reload()" class="px-4 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-300 hover:bg-red-500/20 transition">
-            Zkusit znovu
+      <!-- Models Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full max-w-4xl mx-auto">
+
+        <!-- Card 1: Husova -->
+        <div onclick="window.selectModel('husova')" class="model-card group rounded-3xl p-5 sm:p-6 flex flex-col justify-between cursor-pointer relative overflow-hidden">
+          <!-- Top Accent Light -->
+          <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#cff245]/10 rounded-full blur-2xl group-hover:bg-[#cff245]/20 transition duration-500 pointer-events-none"></div>
+
+          <div>
+            <!-- Card Header Badges -->
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-white/5 border border-white/10 text-gray-300">
+                <i class="bi bi-geo-alt text-[#cff245]"></i>
+                Kutná Hora
+              </span>
+              <span class="text-[10px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2.5 py-1 rounded-full">
+                Draco GLB • ~70 MB
+              </span>
+            </div>
+
+            <!-- Visual Preview Graphic -->
+            <div class="relative w-full h-36 rounded-2xl bg-black/40 border border-white/5 mb-4 flex items-center justify-center overflow-hidden group-hover:border-[#cff245]/30 transition duration-300">
+              <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+              <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#cff245]/60 to-transparent animate-scanline pointer-events-none"></div>
+
+              <div class="relative z-10 flex flex-col items-center gap-1.5 group-hover:scale-105 transition-transform duration-300">
+                <div class="w-14 h-14 rounded-2xl bg-[#cff245]/10 border border-[#cff245]/30 flex items-center justify-center text-[#cff245] text-2xl shadow-[0_0_25px_rgba(207,242,69,0.15)]">
+                  <i class="bi bi-buildings"></i>
+                </div>
+                <span class="text-[10px] font-mono text-gray-400">Husova-9-15-2026.glb</span>
+              </div>
+            </div>
+
+            <!-- Title & Info -->
+            <h2 class="text-xl sm:text-2xl font-bold text-white mb-1.5 group-hover:text-[#cff245] transition-colors">
+              Husova
+            </h2>
+            <p class="text-xs text-gray-400 leading-relaxed mb-4 font-normal">
+              Detailní 3D model historické městské zástavby v Husově ulici vytvořený leteckou fotogrammetrií s kompletní texturou fasád a střech.
+            </p>
+
+            <!-- Specs Grid -->
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono mb-5 bg-white/[0.02] p-3 rounded-xl border border-white/5">
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-[10px]">LOKALITA</span>
+                <span class="text-gray-200 font-medium">Kutná Hora</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-[10px]">DATUM</span>
+                <span class="text-gray-200 font-medium">15. 9. 2026</span>
+              </div>
+              <div class="flex flex-col mt-1">
+                <span class="text-gray-500 text-[10px]">METODA</span>
+                <span class="text-gray-200 font-medium">Fotogrammetrie</span>
+              </div>
+              <div class="flex flex-col mt-1">
+                <span class="text-gray-500 text-[10px]">VELIKOST</span>
+                <span class="text-gray-200 font-medium">73.8 MB (Draco)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action CTA -->
+          <div class="w-full py-2.5 px-4 rounded-xl bg-white/[0.05] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-white group-hover:text-black font-semibold text-xs font-mono flex items-center justify-between transition-all duration-300">
+            <span>SPUSTIT 3D MODEL</span>
+            <i class="bi bi-arrow-right text-base text-[#cff245] group-hover:text-black transition-transform duration-300 group-hover:translate-x-1"></i>
+          </div>
+        </div>
+
+        <!-- Card 2: Holešovská -->
+        <div onclick="window.selectModel('holesovska')" class="model-card group rounded-3xl p-5 sm:p-6 flex flex-col justify-between cursor-pointer relative overflow-hidden">
+          <!-- Top Accent Light -->
+          <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#cff245]/15 rounded-full blur-2xl group-hover:bg-[#cff245]/25 transition duration-500 pointer-events-none"></div>
+
+          <div>
+            <!-- Card Header Badges -->
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-[#cff245]/15 border border-[#cff245]/40 text-[#cff245]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#cff245] animate-ping"></span>
+                NOVÝ MODEL
+              </span>
+              <span class="text-[10px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2.5 py-1 rounded-full">
+                Draco GLB • ~79 MB
+              </span>
+            </div>
+
+            <!-- Visual Preview Graphic -->
+            <div class="relative w-full h-36 rounded-2xl bg-black/40 border border-white/5 mb-4 flex items-center justify-center overflow-hidden group-hover:border-[#cff245]/30 transition duration-300">
+              <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+              <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#cff245]/60 to-transparent animate-scanline pointer-events-none"></div>
+
+              <div class="relative z-10 flex flex-col items-center gap-1.5 group-hover:scale-105 transition-transform duration-300">
+                <div class="w-14 h-14 rounded-2xl bg-[#cff245]/10 border border-[#cff245]/30 flex items-center justify-center text-[#cff245] text-2xl shadow-[0_0_25px_rgba(207,242,69,0.15)]">
+                  <i class="bi bi-box-seam"></i>
+                </div>
+                <span class="text-[10px] font-mono text-gray-400">Holeovsk-9-18-2026.glb</span>
+              </div>
+            </div>
+
+            <!-- Title & Info -->
+            <h2 class="text-xl sm:text-2xl font-bold text-white mb-1.5 group-hover:text-[#cff245] transition-colors">
+              Holešovská
+            </h2>
+            <p class="text-xs text-gray-400 leading-relaxed mb-4 font-normal">
+              Fotogrammetrické digitální dvojče objektu a přilehlého terénu s vysokým rozlišením geometrie a optimalizovaným streamingem přes Cloudflare R2.
+            </p>
+
+            <!-- Specs Grid -->
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono mb-5 bg-white/[0.02] p-3 rounded-xl border border-white/5">
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-[10px]">TYP</span>
+                <span class="text-gray-200 font-medium">Objekt & Terén</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-[10px]">DATUM</span>
+                <span class="text-gray-200 font-medium">18. 9. 2026</span>
+              </div>
+              <div class="flex flex-col mt-1">
+                <span class="text-gray-500 text-[10px]">METODA</span>
+                <span class="text-gray-200 font-medium">Fotogrammetrie</span>
+              </div>
+              <div class="flex flex-col mt-1">
+                <span class="text-gray-500 text-[10px]">VELIKOST</span>
+                <span class="text-gray-200 font-medium">82.6 MB (Draco)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action CTA -->
+          <div class="w-full py-2.5 px-4 rounded-xl bg-white/[0.05] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-white group-hover:text-black font-semibold text-xs font-mono flex items-center justify-between transition-all duration-300">
+            <span>SPUSTIT 3D MODEL</span>
+            <i class="bi bi-arrow-right text-base text-[#cff245] group-hover:text-black transition-transform duration-300 group-hover:translate-x-1"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Info Note -->
+      <div class="mt-8 text-center text-xs text-gray-500 font-mono flex flex-wrap items-center justify-center gap-4">
+        <span><i class="bi bi-shield-check text-[#cff245]"></i> Hosting: Cloudflare R2 CDN</span>
+        <span>•</span>
+        <span><i class="bi bi-cpu text-[#cff245]"></i> WebGL Three.js Engine</span>
+        <span>•</span>
+        <span><i class="bi bi-file-zip text-[#cff245]"></i> Komprese: Google Draco 3D</span>
+      </div>
+
+    </main>
+  </div>
+
+
+  <!-- ======================================================== -->
+  <!-- 2. INTERACTIVE 3D VIEWER VIEW (Full viewport overlay)    -->
+  <!-- ======================================================== -->
+  <div id="viewer-view" class="fixed inset-0 z-20 flex flex-col bg-[#0d0e11] text-white select-none hidden">
+
+    <!-- Header -->
+    <header class="px-4 sm:px-6 py-2.5 sm:py-3 z-30 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#0d0e11]/90 backdrop-blur-md">
+      <!-- Left: Back to Catalog & DRONAUT Logo -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <button id="btn-back-to-catalog" onclick="window.showCatalog()" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Zpět na výběr modelů">
+          <i class="bi bi-grid-fill text-[#cff245]"></i>
+          <span class="hidden sm:inline">Výběr modelů</span>
+          <span class="sm:hidden">Modely</span>
+        </button>
+
+        <div class="h-4 w-[1px] bg-white/10 hidden md:block"></div>
+
+        <a href="/" class="items-center gap-2.5 group hidden md:flex">
+          <span class="font-bold text-base tracking-tight leading-none text-white">DRONAUT</span>
+          <span class="text-[9px] text-gray-400 tracking-[0.18em] font-mono uppercase">3D PROHLÍŽEČ</span>
+        </a>
+      </div>
+
+      <!-- Center: Model Quick Switcher Pills -->
+      <div class="flex items-center bg-black/40 border border-white/10 p-1 rounded-2xl font-mono text-xs shadow-inner">
+        <button id="switch-husova" onclick="window.selectModel('husova')" class="hud-btn px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-xl transition duration-200 flex items-center gap-1.5 text-[11px] sm:text-xs">
+          <i class="bi bi-box text-[10px]"></i>
+          <span>Husova</span>
+        </button>
+        <button id="switch-holesovska" onclick="window.selectModel('holesovska')" class="hud-btn px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-xl transition duration-200 flex items-center gap-1.5 text-[11px] sm:text-xs">
+          <i class="bi bi-box text-[10px]"></i>
+          <span>Holešovská</span>
+        </button>
+      </div>
+
+      <!-- Right: Back to Main Web -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="/" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Návrat na hlavní web drnt.cz">
+          <i class="bi bi-arrow-left text-[#cff245]"></i>
+          <span class="hidden sm:inline">Hlavní web</span>
+          <span class="sm:hidden">Web</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Viewer Canvas Container -->
+    <main class="relative flex-1 w-full h-full overflow-hidden" id="canvas-container">
+
+      <!-- Loading Screen Overlay -->
+      <div id="loading-overlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#0d0e11]/95 backdrop-blur-md transition-opacity duration-500 p-6">
+        <div class="hud-card rounded-3xl p-8 max-w-md w-full flex flex-col items-center text-center gap-5 border border-white/10">
+          <!-- Animated Radar / Logo Spinner -->
+          <div class="relative w-16 h-16 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-2 border-[#cff245]/20"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-[#cff245] border-t-transparent animate-spin"></div>
+            <i class="bi bi-box text-2xl text-[#cff245] pulse-glow"></i>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <h2 id="loading-title" class="text-lg font-bold tracking-tight text-white">Načítání 3D modelu</h2>
+            <p id="loading-subtitle" class="text-xs text-gray-400 font-mono">Husova, Kutná Hora • Letecká fotogrammetrie</p>
+          </div>
+
+          <!-- Progress Bar & Metrics -->
+          <div class="w-full flex flex-col gap-2 mt-1">
+            <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden p-0.5 border border-white/5">
+              <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8bb31d] to-[#cff245] rounded-full transition-all duration-200" style="width: 5%;"></div>
+            </div>
+            <div class="flex justify-between items-center text-[11px] font-mono text-gray-400">
+              <span id="loading-status">Připojuji se k R2 uložení...</span>
+              <span id="loading-percent" class="text-[#cff245] font-semibold">0%</span>
+            </div>
+          </div>
+
+          <!-- Notice -->
+          <p id="loading-notice" class="text-[10px] text-gray-500 leading-relaxed font-mono">
+            Model je komprimován technologií Draco. Načtení probíhá z Cloudflare R2 CDN.
+          </p>
+
+          <!-- Error State (hidden by default) -->
+          <div id="error-box" class="hidden flex-col items-center gap-3 w-full pt-2 border-t border-red-500/20 text-red-400">
+            <span class="text-xs font-mono" id="error-msg">Chyba při stahování modelu.</span>
+            <button onclick="window.retryLoad()" class="px-4 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-300 hover:bg-red-500/20 transition">
+              Zkusit znovu
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Overlay: Top-Left Model Info Card -->
+      <div class="absolute top-4 left-4 z-10 hidden sm:block">
+        <div class="hud-card rounded-2xl p-4 max-w-xs flex flex-col gap-2.5 transition-all">
+          <div class="flex items-center justify-between border-b border-white/5 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#cff245] animate-pulse"></span>
+              <span id="hud-model-title" class="text-xs font-bold text-white font-mono tracking-tight">Husova – 3D Model</span>
+            </div>
+            <span class="text-[9px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-1.5 py-0.5 rounded">GLB</span>
+          </div>
+          
+          <div class="flex flex-col gap-1 text-[11px] font-mono text-gray-400">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Metoda:</span>
+              <span class="text-gray-200">Fotogrammetrie</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Komprese:</span>
+              <span class="text-gray-200">Google Draco</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Velikost:</span>
+              <span id="hud-model-size" class="text-gray-200">~70 MB</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Hosting:</span>
+              <span class="text-gray-200">Cloudflare R2 CDN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Overlay: Bottom Controls Bar -->
+      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-10">
+        <div class="hud-card rounded-2xl px-3 py-2 flex items-center gap-2 border border-white/10 shadow-2xl">
+          <!-- Texture / Wireframe Mode Toggle -->
+          <button id="btn-wireframe" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Přepnout režim textury / drátěného modelu">
+            <i class="bi bi-grid-3x3"></i>
+            <span class="hidden md:inline" id="label-wireframe">Drátěný model</span>
+          </button>
+
+          <!-- Auto-Rotate Toggle -->
+          <button id="btn-autorotate" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Zapnout / vypnout automatické otáčení">
+            <i class="bi bi-arrow-repeat"></i>
+            <span class="hidden md:inline" id="label-autorotate">Auto-rotace</span>
+          </button>
+
+          <!-- Reset Camera -->
+          <button id="btn-reset" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Resetovat pozici kamery">
+            <i class="bi bi-aspect-ratio"></i>
+            <span class="hidden md:inline">Reset kamery</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="h-4 w-[1px] bg-white/10"></div>
+
+          <!-- Fullscreen Button -->
+          <button id="btn-fullscreen" class="hud-btn p-2 rounded-xl text-xs flex items-center justify-center" title="Celá obrazovka">
+            <i class="bi bi-fullscreen text-sm" id="fullscreen-icon"></i>
           </button>
         </div>
       </div>
-    </div>
 
-    <!-- HUD Overlay: Top-Left Model Info Card -->
-    <div class="absolute top-4 left-4 z-10 hidden sm:block">
-      <div class="hud-card rounded-2xl p-4 max-w-xs flex flex-col gap-2.5 transition-all">
-        <div class="flex items-center justify-between border-b border-white/5 pb-2">
+      <!-- HUD Overlay: Navigation Help (Bottom-Left) -->
+      <div class="absolute bottom-5 left-4 z-10 hidden lg:block">
+        <div class="hud-card rounded-xl px-3.5 py-2 text-[10px] font-mono text-gray-400 flex flex-col gap-1 border border-white/5 pointer-events-none">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#cff245] animate-pulse"></span>
-            <span class="text-xs font-bold text-white font-mono tracking-tight">Husova – 3D Model</span>
+            <i class="bi bi-mouse text-[#cff245]"></i>
+            <span>Levé tlačítko: Rotace</span>
           </div>
-          <span class="text-[9px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-1.5 py-0.5 rounded">GLB</span>
-        </div>
-        
-        <div class="flex flex-col gap-1 text-[11px] font-mono text-gray-400">
-          <div class="flex justify-between">
-            <span class="text-gray-500">Metoda:</span>
-            <span class="text-gray-200">Fotogrammetrie</span>
+          <div class="flex items-center gap-2">
+            <i class="bi bi-arrows-move text-[#cff245]"></i>
+            <span>Pravé tlačítko / Shift: Posun</span>
           </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Komprese:</span>
-            <span class="text-gray-200">Google Draco</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Hosting:</span>
-            <span class="text-gray-200">Cloudflare R2 CDN</span>
+          <div class="flex items-center gap-2">
+            <i class="bi bi-zoom-in text-[#cff245]"></i>
+            <span>Kolečko myši: Přiblížení</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- HUD Overlay: Bottom Controls Bar -->
-    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-10">
-      <div class="hud-card rounded-2xl px-3 py-2 flex items-center gap-2 border border-white/10 shadow-2xl">
-        <!-- Texture / Wireframe Mode Toggle -->
-        <button id="btn-wireframe" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Přepnout režim textury / drátěného modelu">
-          <i class="bi bi-grid-3x3"></i>
-          <span class="hidden md:inline" id="label-wireframe">Drátěný model</span>
-        </button>
-
-        <!-- Auto-Rotate Toggle -->
-        <button id="btn-autorotate" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Zapnout / vypnout automatické otáčení">
-          <i class="bi bi-arrow-repeat"></i>
-          <span class="hidden md:inline" id="label-autorotate">Auto-rotace</span>
-        </button>
-
-        <!-- Reset Camera -->
-        <button id="btn-reset" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Resetovat pozici kamery">
-          <i class="bi bi-aspect-ratio"></i>
-          <span class="hidden md:inline">Reset kamery</span>
-        </button>
-
-        <!-- Divider -->
-        <div class="h-4 w-[1px] bg-white/10"></div>
-
-        <!-- Fullscreen Button -->
-        <button id="btn-fullscreen" class="hud-btn p-2 rounded-xl text-xs flex items-center justify-center" title="Celá obrazovka">
-          <i class="bi bi-fullscreen text-sm" id="fullscreen-icon"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- HUD Overlay: Navigation Help (Bottom-Left) -->
-    <div class="absolute bottom-5 left-4 z-10 hidden lg:block">
-      <div class="hud-card rounded-xl px-3.5 py-2 text-[10px] font-mono text-gray-400 flex flex-col gap-1 border border-white/5 pointer-events-none">
-        <div class="flex items-center gap-2">
-          <i class="bi bi-mouse text-[#cff245]"></i>
-          <span>Levé tlačítko: Rotace</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="bi bi-arrows-move text-[#cff245]"></i>
-          <span>Pravé tlačítko / Shift: Posun</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="bi bi-zoom-in text-[#cff245]"></i>
-          <span>Kolečko myši: Přiblížení</span>
-        </div>
-      </div>
-    </div>
-
-  </main>
+    </main>
+  </div>
 
   <!-- Three.js Import Map -->
   <script type="importmap">
@@ -237,18 +473,53 @@
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-    // Model URL on Cloudflare R2
-    const MODEL_URL = 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Husova-9-15-2026-textured_model.glb';
+    // Model Definitions
+    const MODELS = {
+      husova: {
+        id: 'husova',
+        title: 'Husova',
+        location: 'Kutná Hora',
+        fullTitle: 'Husova, Kutná Hora',
+        date: '15. 9. 2026',
+        size: '~70 MB',
+        method: 'Letecká fotogrammetrie',
+        url: 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Husova-9-15-2026-textured_model.glb'
+      },
+      holesovska: {
+        id: 'holesovska',
+        title: 'Holešovská',
+        location: 'Letecké snímkování',
+        fullTitle: 'Holešovská',
+        date: '18. 9. 2026',
+        size: '~79 MB',
+        method: 'Letecká fotogrammetrie',
+        url: 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Holeovsk-9-18-2026-textured_model.glb'
+      }
+    };
+
     const DRACO_DECODER_PATH = 'https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/';
 
-    // DOM Elements
+    // Views
+    const catalogView = document.getElementById('catalog-view');
+    const viewerView = document.getElementById('viewer-view');
+
+    // DOM Elements - Viewer
     const container = document.getElementById('canvas-container');
     const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingTitle = document.getElementById('loading-title');
+    const loadingSubtitle = document.getElementById('loading-subtitle');
+    const loadingNotice = document.getElementById('loading-notice');
     const progressBar = document.getElementById('progress-bar');
     const loadingPercent = document.getElementById('loading-percent');
     const loadingStatus = document.getElementById('loading-status');
     const errorBox = document.getElementById('error-box');
     const errorMsg = document.getElementById('error-msg');
+
+    // HUD Elements
+    const hudModelTitle = document.getElementById('hud-model-title');
+    const hudModelSize = document.getElementById('hud-model-size');
+    const switchHusova = document.getElementById('switch-husova');
+    const switchHolesovska = document.getElementById('switch-holesovska');
 
     // Controls Buttons
     const btnWireframe = document.getElementById('btn-wireframe');
@@ -260,14 +531,24 @@
     const fullscreenIcon = document.getElementById('fullscreen-icon');
 
     // Three.js State
-    let scene, camera, renderer, controls;
+    let scene = null;
+    let camera = null;
+    let renderer = null;
+    let controls = null;
+    let gltfLoader = null;
+    let dracoLoader = null;
+    let isInitialized = false;
+
+    let currentModelId = null;
     let loadedModel = null;
     let isWireframe = false;
     let initialCameraPos = new THREE.Vector3();
     let initialTarget = new THREE.Vector3(0, 0, 0);
 
     // Initialize 3D Engine
-    function init() {
+    function initThreeEngine() {
+      if (isInitialized) return;
+
       // Scene
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x0d0e11);
@@ -312,29 +593,102 @@
       scene.add(ambientLight);
 
       // Setup Loaders
-      const dracoLoader = new DRACOLoader();
+      dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath(DRACO_DECODER_PATH);
 
-      const loader = new GLTFLoader();
-      loader.setDRACOLoader(dracoLoader);
-
-      // Load 3D Model
-      loadModel(loader);
+      gltfLoader = new GLTFLoader();
+      gltfLoader.setDRACOLoader(dracoLoader);
 
       // Setup Event Handlers
       setupEvents();
 
       // Render Loop
       animate();
+
+      isInitialized = true;
     }
 
-    // Load Model with progress feedback
-    function loadModel(loader) {
-      loadingStatus.innerText = 'Stahuji 3D model z R2 CDN...';
+    // Load Model into Scene
+    function loadModel(modelId) {
+      const model = MODELS[modelId];
+      if (!model) return;
 
-      loader.load(
-        MODEL_URL,
+      // If already loaded and active, just reset camera view
+      if (currentModelId === modelId && loadedModel) {
+        resetCamera();
+        return;
+      }
+
+      initThreeEngine();
+
+      // Update Switch Buttons Active State
+      if (switchHusova && switchHolesovska) {
+        if (modelId === 'husova') {
+          switchHusova.classList.add('active');
+          switchHolesovska.classList.remove('active');
+        } else {
+          switchHolesovska.classList.add('active');
+          switchHusova.classList.remove('active');
+        }
+      }
+
+      // Update Document Title
+      document.title = `${model.fullTitle} | 3D Digitální dvojče DRONAUT`;
+
+      // Update HUD Info Card
+      if (hudModelTitle) hudModelTitle.innerText = `${model.title} – 3D Model`;
+      if (hudModelSize) hudModelSize.innerText = model.size;
+
+      // Update Loading Overlay text
+      if (loadingTitle) loadingTitle.innerText = `Načítání 3D modelu: ${model.title}`;
+      if (loadingSubtitle) loadingSubtitle.innerText = `${model.fullTitle} • ${model.method}`;
+      if (loadingNotice) loadingNotice.innerText = `Velikost modelu je ${model.size} komprimováno technologií Draco. Načtení probíhá z Cloudflare R2 CDN.`;
+      
+      // Reset loading overlay UI
+      errorBox.classList.add('hidden');
+      errorBox.classList.remove('flex');
+      progressBar.style.width = '5%';
+      loadingPercent.innerText = '0%';
+      loadingStatus.innerText = 'Připojuji se k R2 CDN...';
+      loadingOverlay.style.display = 'flex';
+      loadingOverlay.style.opacity = '1';
+
+      // Clean up previously loaded model
+      if (loadedModel) {
+        scene.remove(loadedModel);
+        loadedModel.traverse((child) => {
+          if (child.isMesh) {
+            if (child.geometry) child.geometry.dispose();
+            if (child.material) {
+              if (Array.isArray(child.material)) {
+                child.material.forEach((mat) => {
+                  if (mat.map) mat.map.dispose();
+                  mat.dispose();
+                });
+              } else {
+                if (child.material.map) child.material.map.dispose();
+                child.material.dispose();
+              }
+            }
+          }
+        });
+        loadedModel = null;
+      }
+
+      // Reset wireframe toggle
+      isWireframe = false;
+      if (btnWireframe) btnWireframe.classList.remove('active');
+      if (labelWireframe) labelWireframe.innerText = 'Drátěný model';
+
+      currentModelId = modelId;
+
+      // Trigger download and parse
+      gltfLoader.load(
+        model.url,
         (gltf) => {
+          // Check if user switched to another model while loading
+          if (currentModelId !== modelId) return;
+
           loadedModel = gltf.scene;
           scene.add(loadedModel);
 
@@ -391,6 +745,51 @@
       );
     }
 
+    // Navigation: Select Model
+    window.selectModel = function(modelId, updateHistory = true) {
+      if (!MODELS[modelId]) return;
+
+      catalogView.classList.add('hidden');
+      viewerView.classList.remove('hidden');
+      viewerView.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+
+      if (updateHistory) {
+        const newUrl = `${window.location.pathname}?model=${modelId}`;
+        window.history.pushState({ modelId }, '', newUrl);
+      }
+
+      // Sizing & Load
+      setTimeout(() => {
+        onResize();
+        loadModel(modelId);
+      }, 30);
+    };
+
+    // Navigation: Show Catalog
+    window.showCatalog = function(updateHistory = true) {
+      viewerView.classList.remove('flex');
+      viewerView.classList.add('hidden');
+      catalogView.classList.remove('hidden');
+      document.body.classList.remove('overflow-hidden');
+      document.title = '3D Digitální dvojčata | DRONAUT';
+
+      if (updateHistory) {
+        window.history.pushState(null, '', window.location.pathname);
+      }
+    };
+
+    // Retry load
+    window.retryLoad = function() {
+      if (currentModelId) {
+        const id = currentModelId;
+        currentModelId = null;
+        loadModel(id);
+      } else {
+        window.location.reload();
+      }
+    };
+
     // Toggle Wireframe / Textured Mode
     function toggleWireframe() {
       if (!loadedModel) return;
@@ -417,6 +816,7 @@
 
     // Toggle Auto-Rotation
     function toggleAutorotate() {
+      if (!controls) return;
       controls.autoRotate = !controls.autoRotate;
       if (controls.autoRotate) {
         btnAutorotate.classList.add('active');
@@ -427,7 +827,7 @@
 
     // Reset Camera Position
     function resetCamera() {
-      if (!loadedModel) return;
+      if (!loadedModel || !controls || !camera) return;
       camera.position.copy(initialCameraPos);
       controls.target.copy(initialTarget);
       controls.update();
@@ -451,8 +851,9 @@
     // Handle Resize
     function onResize() {
       if (!container || !renderer || !camera) return;
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const width = container.clientWidth || window.innerWidth;
+      const height = container.clientHeight || (window.innerHeight - 60);
+      if (width === 0 || height === 0) return;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
@@ -483,12 +884,37 @@
     // Render loop
     function animate() {
       requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
+      if (controls) controls.update();
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
     }
 
+    // Initial Routing / Deep Linking Handler
+    function handleInitialRoute() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramModel = urlParams.get('model') || (window.location.hash ? window.location.hash.replace('#', '') : null);
+
+      if (paramModel && MODELS[paramModel.toLowerCase()]) {
+        window.selectModel(paramModel.toLowerCase(), false);
+      } else {
+        window.showCatalog(false);
+      }
+    }
+
+    // Handle Browser History Back / Forward
+    window.addEventListener('popstate', (e) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramModel = urlParams.get('model');
+      if (paramModel && MODELS[paramModel.toLowerCase()]) {
+        window.selectModel(paramModel.toLowerCase(), false);
+      } else {
+        window.showCatalog(false);
+      }
+    });
+
     // Start
-    init();
+    handleInitialRoute();
   </script>
 </body>
 </html>
