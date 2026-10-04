@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="cs" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>3D Digitální dvojče | DRONAUT</title>
+  <meta name="description" content="Prototyp 3D prohlížeče digitálního dvojčete | DRONAUT">
+
+  <!-- Tailwind CSS & Icons & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #0d0e11;
+      font-family: 'Inter', sans-serif;
+    }
+    .hud-card {
+      background: rgba(19, 21, 26, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    }
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d1d5db;
+      transition: all 0.2s ease;
+    }
+    .hud-btn:hover {
+      background: rgba(207, 242, 69, 0.1);
+      border-color: rgba(207, 242, 69, 0.4);
+      color: #cff245;
+    }
+    .hud-btn.active {
+      background: rgba(207, 242, 69, 0.15);
+      border-color: #cff245;
+      color: #cff245;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.9; }
+    }
+    .pulse-glow {
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="h-full flex flex-col bg-[#0d0e11] text-white select-none">
+
+  <!-- Header -->
+  <header class="px-6 py-3 premium-header z-30 flex items-center justify-between border-b border-white/10 shrink-0">
+    <!-- Left Logo & Branding -->
+    <div class="flex items-center gap-4">
+      <a href="/" class="flex items-center gap-3 group">
+        <i class="bi bi-send-fill text-xl text-[#cff245] transition-transform duration-300 group-hover:rotate-12"></i>
+        <div class="flex items-center gap-3">
+          <span class="font-bold text-lg tracking-tight leading-none text-white">DRONAUT</span>
+          <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
+          <span class="text-[9px] text-gray-400 tracking-[0.18em] font-mono uppercase hidden sm:inline">3D Digitální dvojče</span>
+        </div>
+      </a>
+
+      <!-- Status Prototype Badge -->
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/30">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#cff245] animate-ping"></span>
+        PROTOTYP
+      </span>
+    </div>
+
+    <!-- Center Model Title (desktop only) -->
+    <div class="hidden lg:flex items-center gap-2 font-mono text-xs text-gray-400 bg-white/[0.03] px-3 py-1 rounded-lg border border-white/5">
+      <i class="bi bi-box text-[#cff245]"></i>
+      <span class="text-gray-200 font-semibold">Husova, Kutná Hora</span>
+      <span class="text-gray-600">•</span>
+      <span class="text-[10px] text-gray-400">Draco GLB (R2 CDN)</span>
+    </div>
+
+    <!-- Right: Return to Main Site -->
+    <div class="flex items-center gap-3">
+      <a href="/" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3.5 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Návrat na hlavní web">
+        <i class="bi bi-arrow-left text-[#cff245]"></i>
+        <span class="hidden sm:inline">Zpět na web</span>
+        <span class="sm:hidden">Zpět</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Viewer Canvas Container -->
+  <main class="relative flex-1 w-full h-full overflow-hidden" id="canvas-container">
+
+    <!-- Loading Screen Overlay -->
+    <div id="loading-overlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#0d0e11]/95 backdrop-blur-md transition-opacity duration-500 p-6">
+      <div class="hud-card rounded-3xl p-8 max-w-md w-full flex flex-col items-center text-center gap-5 border border-white/10">
+        <!-- Animated Radar / Logo Spinner -->
+        <div class="relative w-16 h-16 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full border-2 border-[#cff245]/20"></div>
+          <div class="absolute inset-0 rounded-full border-2 border-[#cff245] border-t-transparent animate-spin"></div>
+          <i class="bi bi-box text-2xl text-[#cff245] pulse-glow"></i>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <h2 class="text-lg font-bold tracking-tight text-white">Načítání 3D modelu</h2>
+          <p class="text-xs text-gray-400 font-mono">Husova, Kutná Hora • Letecká fotogrammetrie</p>
+        </div>
+
+        <!-- Progress Bar & Metrics -->
+        <div class="w-full flex flex-col gap-2 mt-1">
+          <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden p-0.5 border border-white/5">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8bb31d] to-[#cff245] rounded-full transition-all duration-200" style="width: 5%;"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] font-mono text-gray-400">
+            <span id="loading-status">Připojuji se k R2 uložení...</span>
+            <span id="loading-percent" class="text-[#cff245] font-semibold">0%</span>
+          </div>
+        </div>
+
+        <!-- Notice -->
+        <p class="text-[10px] text-gray-500 leading-relaxed font-mono">
+          Velikost modelu je cca 70 MB komprimováno technologií Draco. Načtení probíhá z Cloudflare R2 CDN.
+        </p>
+
+        <!-- Error State (hidden by default) -->
+        <div id="error-box" class="hidden flex-col items-center gap-3 w-full pt-2 border-t border-red-500/20 text-red-400">
+          <span class="text-xs font-mono" id="error-msg">Chyba při stahování modelu.</span>
+          <button onclick="location.reload()" class="px-4 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-300 hover:bg-red-500/20 transition">
+            Zkusit znovu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUD Overlay: Top-Left Model Info Card -->
+    <div class="absolute top-4 left-4 z-10 hidden sm:block">
+      <div class="hud-card rounded-2xl p-4 max-w-xs flex flex-col gap-2.5 transition-all">
+        <div class="flex items-center justify-between border-b border-white/5 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#cff245] animate-pulse"></span>
+            <span class="text-xs font-bold text-white font-mono tracking-tight">Husova – 3D Model</span>
+          </div>
+          <span class="text-[9px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-1.5 py-0.5 rounded">GLB</span>
+        </div>
+        
+        <div class="flex flex-col gap-1 text-[11px] font-mono text-gray-400">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Metoda:</span>
+            <span class="text-gray-200">Fotogrammetrie</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Komprese:</span>
+            <span class="text-gray-200">Google Draco</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Hosting:</span>
+            <span class="text-gray-200">Cloudflare R2 CDN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUD Overlay: Bottom Controls Bar -->
+    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-10">
+      <div class="hud-card rounded-2xl px-3 py-2 flex items-center gap-2 border border-white/10 shadow-2xl">
+        <!-- Texture / Wireframe Mode Toggle -->
+        <button id="btn-wireframe" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Přepnout režim textury / drátěného modelu">
+          <i class="bi bi-grid-3x3"></i>
+          <span class="hidden md:inline" id="label-wireframe">Drátěný model</span>
+        </button>
+
+        <!-- Auto-Rotate Toggle -->
+        <button id="btn-autorotate" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Zapnout / vypnout automatické otáčení">
+          <i class="bi bi-arrow-repeat"></i>
+          <span class="hidden md:inline" id="label-autorotate">Auto-rotace</span>
+        </button>
+
+        <!-- Reset Camera -->
+        <button id="btn-reset" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Resetovat pozici kamery">
+          <i class="bi bi-aspect-ratio"></i>
+          <span class="hidden md:inline">Reset kamery</span>
+        </button>
+
+        <!-- Divider -->
+        <div class="h-4 w-[1px] bg-white/10"></div>
+
+        <!-- Fullscreen Button -->
+        <button id="btn-fullscreen" class="hud-btn p-2 rounded-xl text-xs flex items-center justify-center" title="Celá obrazovka">
+          <i class="bi bi-fullscreen text-sm" id="fullscreen-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- HUD Overlay: Navigation Help (Bottom-Left) -->
+    <div class="absolute bottom-5 left-4 z-10 hidden lg:block">
+      <div class="hud-card rounded-xl px-3.5 py-2 text-[10px] font-mono text-gray-400 flex flex-col gap-1 border border-white/5 pointer-events-none">
+        <div class="flex items-center gap-2">
+          <i class="bi bi-mouse text-[#cff245]"></i>
+          <span>Levé tlačítko: Rotace</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="bi bi-arrows-move text-[#cff245]"></i>
+          <span>Pravé tlačítko / Shift: Posun</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="bi bi-zoom-in text-[#cff245]"></i>
+          <span>Kolečko myši: Přiblížení</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <!-- Application Logic -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+    // Model URL on Cloudflare R2
+    const MODEL_URL = 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Husova-9-15-2026-textured_model.glb';
+    const DRACO_DECODER_PATH = 'https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/';
+
+    // DOM Elements
+    const container = document.getElementById('canvas-container');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const progressBar = document.getElementById('progress-bar');
+    const loadingPercent = document.getElementById('loading-percent');
+    const loadingStatus = document.getElementById('loading-status');
+    const errorBox = document.getElementById('error-box');
+    const errorMsg = document.getElementById('error-msg');
+
+    // Controls Buttons
+    const btnWireframe = document.getElementById('btn-wireframe');
+    const labelWireframe = document.getElementById('label-wireframe');
+    const btnAutorotate = document.getElementById('btn-autorotate');
+    const labelAutorotate = document.getElementById('label-autorotate');
+    const btnReset = document.getElementById('btn-reset');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
+
+    // Three.js State
+    let scene, camera, renderer, controls;
+    let loadedModel = null;
+    let isWireframe = false;
+    let initialCameraPos = new THREE.Vector3();
+    let initialTarget = new THREE.Vector3(0, 0, 0);
+
+    // Initialize 3D Engine
+    function init() {
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0d0e11);
+
+      // Camera
+      const width = container.clientWidth || window.innerWidth;
+      const height = container.clientHeight || (window.innerHeight - 60);
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
+      camera.position.set(0, 50, 100);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.05;
+      container.appendChild(renderer.domElement);
+
+      // OrbitControls
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.autoRotate = false;
+      controls.autoRotateSpeed = 1.0;
+      controls.maxDistance = 1500;
+      controls.minDistance = 1;
+
+      // Lights
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x22242a, 1.2);
+      scene.add(hemiLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.4);
+      dirLight1.position.set(40, 80, 50);
+      scene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0xa5c4ff, 0.7);
+      dirLight2.position.set(-40, 20, -50);
+      scene.add(dirLight2);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      // Setup Loaders
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath(DRACO_DECODER_PATH);
+
+      const loader = new GLTFLoader();
+      loader.setDRACOLoader(dracoLoader);
+
+      // Load 3D Model
+      loadModel(loader);
+
+      // Setup Event Handlers
+      setupEvents();
+
+      // Render Loop
+      animate();
+    }
+
+    // Load Model with progress feedback
+    function loadModel(loader) {
+      loadingStatus.innerText = 'Stahuji 3D model z R2 CDN...';
+
+      loader.load(
+        MODEL_URL,
+        (gltf) => {
+          loadedModel = gltf.scene;
+          scene.add(loadedModel);
+
+          // Center & fit model
+          const box = new THREE.Box3().setFromObject(loadedModel);
+          const center = box.getCenter(new THREE.Vector3());
+          const size = box.getSize(new THREE.Vector3());
+
+          loadedModel.position.sub(center);
+
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const fitDistance = maxDim * 1.5;
+
+          camera.position.set(maxDim * 0.6, maxDim * 0.8, fitDistance);
+          controls.target.set(0, 0, 0);
+          controls.update();
+
+          // Save initial camera states for reset
+          initialCameraPos.copy(camera.position);
+          initialTarget.copy(controls.target);
+
+          // UI Success
+          progressBar.style.width = '100%';
+          loadingPercent.innerText = '100%';
+          loadingStatus.innerText = 'Model úspěšně načten!';
+
+          setTimeout(() => {
+            loadingOverlay.style.opacity = '0';
+            setTimeout(() => {
+              loadingOverlay.style.display = 'none';
+            }, 500);
+          }, 600);
+        },
+        (xhr) => {
+          if (xhr.total) {
+            const percent = Math.min(100, Math.round((xhr.loaded / xhr.total) * 100));
+            const loadedMB = (xhr.loaded / (1024 * 1024)).toFixed(1);
+            const totalMB = (xhr.total / (1024 * 1024)).toFixed(1);
+            progressBar.style.width = `${percent}%`;
+            loadingPercent.innerText = `${percent}%`;
+            loadingStatus.innerText = `Staženo: ${loadedMB} MB z ${totalMB} MB`;
+          } else {
+            const loadedMB = (xhr.loaded / (1024 * 1024)).toFixed(1);
+            loadingStatus.innerText = `Stahuji data... (${loadedMB} MB)`;
+          }
+        },
+        (error) => {
+          console.error('Three.js GLTF Loading Error:', error);
+          errorBox.classList.remove('hidden');
+          errorBox.classList.add('flex');
+          errorMsg.innerText = 'Chyba při stahování nebo dekódování 3D modelu.';
+          loadingStatus.innerText = 'Stahování selhalo';
+        }
+      );
+    }
+
+    // Toggle Wireframe / Textured Mode
+    function toggleWireframe() {
+      if (!loadedModel) return;
+      isWireframe = !isWireframe;
+
+      loadedModel.traverse((child) => {
+        if (child.isMesh && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => { mat.wireframe = isWireframe; });
+          } else {
+            child.material.wireframe = isWireframe;
+          }
+        }
+      });
+
+      if (isWireframe) {
+        btnWireframe.classList.add('active');
+        if (labelWireframe) labelWireframe.innerText = 'Textura';
+      } else {
+        btnWireframe.classList.remove('active');
+        if (labelWireframe) labelWireframe.innerText = 'Drátěný model';
+      }
+    }
+
+    // Toggle Auto-Rotation
+    function toggleAutorotate() {
+      controls.autoRotate = !controls.autoRotate;
+      if (controls.autoRotate) {
+        btnAutorotate.classList.add('active');
+      } else {
+        btnAutorotate.classList.remove('active');
+      }
+    }
+
+    // Reset Camera Position
+    function resetCamera() {
+      if (!loadedModel) return;
+      camera.position.copy(initialCameraPos);
+      controls.target.copy(initialTarget);
+      controls.update();
+    }
+
+    // Toggle Fullscreen
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+          fullscreenIcon.classList.replace('bi-fullscreen', 'bi-fullscreen-exit');
+        }).catch(err => console.warn(err));
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().then(() => {
+            fullscreenIcon.classList.replace('bi-fullscreen-exit', 'bi-fullscreen');
+          });
+        }
+      }
+    }
+
+    // Handle Resize
+    function onResize() {
+      if (!container || !renderer || !camera) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    // Event Listeners
+    function setupEvents() {
+      btnWireframe.addEventListener('click', toggleWireframe);
+      btnAutorotate.addEventListener('click', toggleAutorotate);
+      btnReset.addEventListener('click', resetCamera);
+      btnFullscreen.addEventListener('click', toggleFullscreen);
+
+      window.addEventListener('resize', onResize);
+      if (window.ResizeObserver) {
+        const resizeObserver = new ResizeObserver(onResize);
+        resizeObserver.observe(container);
+      }
+
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+          fullscreenIcon.classList.replace('bi-fullscreen-exit', 'bi-fullscreen');
+        } else {
+          fullscreenIcon.classList.replace('bi-fullscreen', 'bi-fullscreen-exit');
+        }
+      });
+    }
+
+    // Render loop
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // Start
+    init();
+  </script>
+</body>
+</html>
