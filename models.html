@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>3D Digitální dvojčata | DRONAUT</title>
-  <meta name="description" content="Katalog a interaktivní prohlížeč 3D fotogrammetrických modelů | DRONAUT">
+  <meta name="description" content="Seznam a interaktivní prohlížeč 3D fotogrammetrických modelů | DRONAUT">
   <link rel="icon" type="image/png" href="/images/logos/logo-mint.png">
 
   <!-- Tailwind CSS & Icons & Fonts -->
@@ -46,21 +46,11 @@
       color: #cff245;
       font-weight: 600;
     }
-    .model-card {
-      background: linear-gradient(180deg, rgba(22, 25, 33, 0.85) 0%, rgba(14, 16, 21, 0.96) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .model-card:hover {
-      border-color: rgba(207, 242, 69, 0.45);
-      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(207, 242, 69, 0.14);
-      transform: translateY(-4px);
-    }
     .bg-grid-pattern {
       background-size: 36px 36px;
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     }
     @keyframes pulseGlow {
       0%, 100% { opacity: 0.35; transform: scale(0.98); }
@@ -69,12 +59,9 @@
     .pulse-glow {
       animation: pulseGlow 3s infinite ease-in-out;
     }
-    @keyframes scanline {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(300%); }
-    }
-    .animate-scanline {
-      animation: scanline 4s linear infinite;
+    select option {
+      background-color: #13151a;
+      color: #ffffff;
     }
   </style>
 </head>
@@ -82,15 +69,15 @@
 <body class="h-full bg-[#0d0e11] text-white">
 
   <!-- ======================================================== -->
-  <!-- 1. CATALOG / MODEL SELECTION VIEW                        -->
+  <!-- 1. MINIMALIST LIST / MODEL SELECTION VIEW                -->
   <!-- ======================================================== -->
   <div id="catalog-view" class="min-h-screen flex flex-col bg-[#0d0e11] text-white bg-grid-pattern relative">
     
     <!-- Ambient Glow Top -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-[#cff245]/5 blur-[120px] pointer-events-none rounded-full"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-72 bg-[#cff245]/5 blur-[120px] pointer-events-none rounded-full"></div>
 
     <!-- Header -->
-    <header class="px-6 py-4 z-30 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#0d0e11]/80 backdrop-blur-md sticky top-0">
+    <header class="px-6 py-4 z-30 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#0d0e11]/85 backdrop-blur-md sticky top-0">
       <div class="flex items-center gap-4">
         <a href="/" class="flex items-center gap-3 group">
           <i class="bi bi-send-fill text-xl text-[#cff245] transition-transform duration-300 group-hover:rotate-12"></i>
@@ -103,7 +90,7 @@
 
         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/30">
           <span class="w-1.5 h-1.5 rounded-full bg-[#cff245] animate-ping"></span>
-          KATALOG MODELŮ
+          SEZNAM MODELŮ
         </span>
       </div>
 
@@ -117,166 +104,71 @@
     </header>
 
     <!-- Main Content Container -->
-    <main class="flex-1 flex flex-col justify-center max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 z-10">
+    <main class="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 z-10 flex flex-col">
       
-      <!-- Section Title & Intro -->
-      <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 mb-3">
-          <i class="bi bi-box"></i>
-          <span>PROHLÍŽEČ 3D MODELŮ</span>
+      <!-- Intro Title & Search Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 mb-2">
+            <i class="bi bi-box"></i>
+            <span>3D PROHLÍŽEČ</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+            Katalog 3D modelů
+          </h1>
+          <p class="text-xs text-gray-400 mt-1">
+            Vyberte model ze seznamu pro načtení do interaktivního WebGL prohlížeče.
+          </p>
         </div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
-          Výběr 3D modelu
-        </h1>
-        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed font-normal">
-          Vyberte si digitální dvojče pro otevření interaktivní WebGL scény. Modely jsou rekonstruovány z letecké fotogrammetrie a komprimovány technologií Google Draco pro plynulý chod v prohlížeči.
-        </p>
+
+        <!-- Search Input & Count Badge -->
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="relative w-full sm:w-64">
+            <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+            <input 
+              id="model-search" 
+              type="text" 
+              placeholder="Filtrovat modely..." 
+              class="w-full pl-8 pr-3 py-1.5 bg-white/[0.03] border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#cff245]/50 focus:ring-1 focus:ring-[#cff245]/50 font-mono transition"
+            >
+          </div>
+          <span id="model-count-badge" class="text-[11px] font-mono text-gray-400 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl whitespace-nowrap hidden sm:inline-block">
+            0 modelů
+          </span>
+        </div>
       </div>
 
-      <!-- Models Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full max-w-4xl mx-auto">
-
-        <!-- Card 1: Husova -->
-        <div onclick="window.selectModel('husova')" class="model-card group rounded-3xl p-5 sm:p-6 flex flex-col justify-between cursor-pointer relative overflow-hidden">
-          <!-- Top Accent Light -->
-          <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#cff245]/10 rounded-full blur-2xl group-hover:bg-[#cff245]/20 transition duration-500 pointer-events-none"></div>
-
-          <div>
-            <!-- Card Header Badges -->
-            <div class="flex items-center justify-between gap-2 mb-4">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-white/5 border border-white/10 text-gray-300">
-                <i class="bi bi-geo-alt text-[#cff245]"></i>
-                Kutná Hora
-              </span>
-              <span class="text-[10px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2.5 py-1 rounded-full">
-                Draco GLB • ~70 MB
-              </span>
-            </div>
-
-            <!-- Visual Preview Graphic -->
-            <div class="relative w-full h-36 rounded-2xl bg-black/40 border border-white/5 mb-4 flex items-center justify-center overflow-hidden group-hover:border-[#cff245]/30 transition duration-300">
-              <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-              <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#cff245]/60 to-transparent animate-scanline pointer-events-none"></div>
-
-              <div class="relative z-10 flex flex-col items-center gap-1.5 group-hover:scale-105 transition-transform duration-300">
-                <div class="w-14 h-14 rounded-2xl bg-[#cff245]/10 border border-[#cff245]/30 flex items-center justify-center text-[#cff245] text-2xl shadow-[0_0_25px_rgba(207,242,69,0.15)]">
-                  <i class="bi bi-buildings"></i>
-                </div>
-                <span class="text-[10px] font-mono text-gray-400">Husova-9-15-2026.glb</span>
-              </div>
-            </div>
-
-            <!-- Title & Info -->
-            <h2 class="text-xl sm:text-2xl font-bold text-white mb-1.5 group-hover:text-[#cff245] transition-colors">
-              Husova
-            </h2>
-            <p class="text-xs text-gray-400 leading-relaxed mb-4 font-normal">
-              Detailní 3D model historické městské zástavby v Husově ulici vytvořený leteckou fotogrammetrií s kompletní texturou fasád a střech.
-            </p>
-
-            <!-- Specs Grid -->
-            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono mb-5 bg-white/[0.02] p-3 rounded-xl border border-white/5">
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-[10px]">LOKALITA</span>
-                <span class="text-gray-200 font-medium">Kutná Hora</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-[10px]">DATUM</span>
-                <span class="text-gray-200 font-medium">15. 9. 2026</span>
-              </div>
-              <div class="flex flex-col mt-1">
-                <span class="text-gray-500 text-[10px]">METODA</span>
-                <span class="text-gray-200 font-medium">Fotogrammetrie</span>
-              </div>
-              <div class="flex flex-col mt-1">
-                <span class="text-gray-500 text-[10px]">VELIKOST</span>
-                <span class="text-gray-200 font-medium">73.8 MB (Draco)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action CTA -->
-          <div class="w-full py-2.5 px-4 rounded-xl bg-white/[0.05] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-white group-hover:text-black font-semibold text-xs font-mono flex items-center justify-between transition-all duration-300">
-            <span>SPUSTIT 3D MODEL</span>
-            <i class="bi bi-arrow-right text-base text-[#cff245] group-hover:text-black transition-transform duration-300 group-hover:translate-x-1"></i>
-          </div>
+      <!-- Table / List Container -->
+      <div class="hud-card rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col">
+        
+        <!-- Table Column Header -->
+        <div class="flex items-center justify-between px-5 py-3 text-[10px] font-mono text-gray-400 uppercase tracking-wider bg-white/[0.02] border-b border-white/5">
+          <div class="flex-1">Název modelu</div>
+          <div class="hidden sm:block w-36 text-left">Lokalita</div>
+          <div class="hidden md:block w-28 text-left">Datum</div>
+          <div class="hidden lg:block w-44 text-left">Formát &amp; Velikost</div>
+          <div class="w-20 text-right">Akce</div>
         </div>
 
-        <!-- Card 2: Holešovská -->
-        <div onclick="window.selectModel('holesovska')" class="model-card group rounded-3xl p-5 sm:p-6 flex flex-col justify-between cursor-pointer relative overflow-hidden">
-          <!-- Top Accent Light -->
-          <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#cff245]/15 rounded-full blur-2xl group-hover:bg-[#cff245]/25 transition duration-500 pointer-events-none"></div>
-
-          <div>
-            <!-- Card Header Badges -->
-            <div class="flex items-center justify-between gap-2 mb-4">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-[#cff245]/15 border border-[#cff245]/40 text-[#cff245]">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#cff245] animate-ping"></span>
-                NOVÝ MODEL
-              </span>
-              <span class="text-[10px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-2.5 py-1 rounded-full">
-                Draco GLB • ~79 MB
-              </span>
-            </div>
-
-            <!-- Visual Preview Graphic -->
-            <div class="relative w-full h-36 rounded-2xl bg-black/40 border border-white/5 mb-4 flex items-center justify-center overflow-hidden group-hover:border-[#cff245]/30 transition duration-300">
-              <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
-              <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#cff245]/60 to-transparent animate-scanline pointer-events-none"></div>
-
-              <div class="relative z-10 flex flex-col items-center gap-1.5 group-hover:scale-105 transition-transform duration-300">
-                <div class="w-14 h-14 rounded-2xl bg-[#cff245]/10 border border-[#cff245]/30 flex items-center justify-center text-[#cff245] text-2xl shadow-[0_0_25px_rgba(207,242,69,0.15)]">
-                  <i class="bi bi-box-seam"></i>
-                </div>
-                <span class="text-[10px] font-mono text-gray-400">Holeovsk-9-18-2026.glb</span>
-              </div>
-            </div>
-
-            <!-- Title & Info -->
-            <h2 class="text-xl sm:text-2xl font-bold text-white mb-1.5 group-hover:text-[#cff245] transition-colors">
-              Holešovská
-            </h2>
-            <p class="text-xs text-gray-400 leading-relaxed mb-4 font-normal">
-              Fotogrammetrické digitální dvojče objektu a přilehlého terénu s vysokým rozlišením geometrie a optimalizovaným streamingem přes Cloudflare R2.
-            </p>
-
-            <!-- Specs Grid -->
-            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono mb-5 bg-white/[0.02] p-3 rounded-xl border border-white/5">
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-[10px]">TYP</span>
-                <span class="text-gray-200 font-medium">Objekt & Terén</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-[10px]">DATUM</span>
-                <span class="text-gray-200 font-medium">18. 9. 2026</span>
-              </div>
-              <div class="flex flex-col mt-1">
-                <span class="text-gray-500 text-[10px]">METODA</span>
-                <span class="text-gray-200 font-medium">Fotogrammetrie</span>
-              </div>
-              <div class="flex flex-col mt-1">
-                <span class="text-gray-500 text-[10px]">VELIKOST</span>
-                <span class="text-gray-200 font-medium">82.6 MB (Draco)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action CTA -->
-          <div class="w-full py-2.5 px-4 rounded-xl bg-white/[0.05] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-white group-hover:text-black font-semibold text-xs font-mono flex items-center justify-between transition-all duration-300">
-            <span>SPUSTIT 3D MODEL</span>
-            <i class="bi bi-arrow-right text-base text-[#cff245] group-hover:text-black transition-transform duration-300 group-hover:translate-x-1"></i>
-          </div>
+        <!-- List Items Container -->
+        <div id="models-list-container" class="divide-y divide-white/5">
+          <!-- Dynamically populated via JS -->
         </div>
 
+        <!-- Empty Filter State (hidden by default) -->
+        <div id="empty-search-state" class="hidden flex-col items-center justify-center p-12 text-center text-gray-500 font-mono text-xs">
+          <i class="bi bi-search text-2xl text-gray-600 mb-2"></i>
+          <span>Žádný 3D model neodpovídá hledanému výrazu.</span>
+        </div>
       </div>
 
       <!-- Footer Info Note -->
       <div class="mt-8 text-center text-xs text-gray-500 font-mono flex flex-wrap items-center justify-center gap-4">
-        <span><i class="bi bi-shield-check text-[#cff245]"></i> Hosting: Cloudflare R2 CDN</span>
+        <span><i class="bi bi-shield-check text-[#cff245]"></i> Cloudflare R2 CDN</span>
         <span>•</span>
-        <span><i class="bi bi-cpu text-[#cff245]"></i> WebGL Three.js Engine</span>
+        <span><i class="bi bi-cpu text-[#cff245]"></i> Three.js WebGL</span>
         <span>•</span>
-        <span><i class="bi bi-file-zip text-[#cff245]"></i> Komprese: Google Draco 3D</span>
+        <span><i class="bi bi-file-zip text-[#cff245]"></i> Google Draco 3D</span>
       </div>
 
     </main>
@@ -290,12 +182,12 @@
 
     <!-- Header -->
     <header class="px-4 sm:px-6 py-2.5 sm:py-3 z-30 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#0d0e11]/90 backdrop-blur-md">
-      <!-- Left: Back to Catalog & DRONAUT Logo -->
+      <!-- Left: Back to List & DRONAUT Logo -->
       <div class="flex items-center gap-2 sm:gap-4">
-        <button id="btn-back-to-catalog" onclick="window.showCatalog()" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Zpět na výběr modelů">
-          <i class="bi bi-grid-fill text-[#cff245]"></i>
-          <span class="hidden sm:inline">Výběr modelů</span>
-          <span class="sm:hidden">Modely</span>
+        <button id="btn-back-to-catalog" onclick="window.showCatalog()" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Zpět na seznam modelů">
+          <i class="bi bi-list-ul text-[#cff245]"></i>
+          <span class="hidden sm:inline">Seznam modelů</span>
+          <span class="sm:hidden">Seznam</span>
         </button>
 
         <div class="h-4 w-[1px] bg-white/10 hidden md:block"></div>
@@ -306,16 +198,12 @@
         </a>
       </div>
 
-      <!-- Center: Model Quick Switcher Pills -->
-      <div class="flex items-center bg-black/40 border border-white/10 p-1 rounded-2xl font-mono text-xs shadow-inner">
-        <button id="switch-husova" onclick="window.selectModel('husova')" class="hud-btn px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-xl transition duration-200 flex items-center gap-1.5 text-[11px] sm:text-xs">
-          <i class="bi bi-box text-[10px]"></i>
-          <span>Husova</span>
-        </button>
-        <button id="switch-holesovska" onclick="window.selectModel('holesovska')" class="hud-btn px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-xl transition duration-200 flex items-center gap-1.5 text-[11px] sm:text-xs">
-          <i class="bi bi-box text-[10px]"></i>
-          <span>Holešovská</span>
-        </button>
+      <!-- Center: Model Dropdown Switcher (Scales cleanly for dozens of models) -->
+      <div class="flex items-center bg-black/40 border border-white/10 px-3 py-1.5 rounded-xl font-mono text-xs shadow-inner">
+        <i class="bi bi-box text-[#cff245] mr-2 text-xs"></i>
+        <select id="viewer-model-select" onchange="window.selectModel(this.value)" class="bg-transparent text-gray-200 text-xs font-mono focus:outline-none cursor-pointer pr-1">
+          <!-- Dynamically populated options -->
+        </select>
       </div>
 
       <!-- Right: Back to Main Web -->
@@ -343,7 +231,7 @@
 
           <div class="flex flex-col gap-1.5">
             <h2 id="loading-title" class="text-lg font-bold tracking-tight text-white">Načítání 3D modelu</h2>
-            <p id="loading-subtitle" class="text-xs text-gray-400 font-mono">Husova, Kutná Hora • Letecká fotogrammetrie</p>
+            <p id="loading-subtitle" class="text-xs text-gray-400 font-mono">Letecká fotogrammetrie</p>
           </div>
 
           <!-- Progress Bar & Metrics -->
@@ -378,12 +266,20 @@
           <div class="flex items-center justify-between border-b border-white/5 pb-2">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-[#cff245] animate-pulse"></span>
-              <span id="hud-model-title" class="text-xs font-bold text-white font-mono tracking-tight">Husova – 3D Model</span>
+              <span id="hud-model-title" class="text-xs font-bold text-white font-mono tracking-tight">3D Model</span>
             </div>
             <span class="text-[9px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-1.5 py-0.5 rounded">GLB</span>
           </div>
           
           <div class="flex flex-col gap-1 text-[11px] font-mono text-gray-400">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Lokalita:</span>
+              <span id="hud-model-loc" class="text-gray-200">–</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Datum:</span>
+              <span id="hud-model-date" class="text-gray-200">–</span>
+            </div>
             <div class="flex justify-between">
               <span class="text-gray-500">Metoda:</span>
               <span class="text-gray-200">Fotogrammetrie</span>
@@ -394,7 +290,7 @@
             </div>
             <div class="flex justify-between">
               <span class="text-gray-500">Velikost:</span>
-              <span id="hud-model-size" class="text-gray-200">~70 MB</span>
+              <span id="hud-model-size" class="text-gray-200">–</span>
             </div>
             <div class="flex justify-between">
               <span class="text-gray-500">Hosting:</span>
@@ -473,35 +369,49 @@
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-    // Model Definitions
-    const MODELS = {
-      husova: {
+    // Model Database (Scalable list designed for dozens of items)
+    const MODELS = [
+      {
+        id: 'holesovska',
+        title: 'Holešovská',
+        location: 'Objekt a terén',
+        fullTitle: 'Holešovská',
+        date: '18. 09. 2026',
+        size: '82.6 MB',
+        format: 'Draco GLB',
+        method: 'Letecká fotogrammetrie',
+        isNew: true,
+        url: 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Holeovsk-9-18-2026-textured_model.glb'
+      },
+      {
         id: 'husova',
         title: 'Husova',
         location: 'Kutná Hora',
         fullTitle: 'Husova, Kutná Hora',
-        date: '15. 9. 2026',
-        size: '~70 MB',
+        date: '15. 09. 2026',
+        size: '73.8 MB',
+        format: 'Draco GLB',
         method: 'Letecká fotogrammetrie',
+        isNew: false,
         url: 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Husova-9-15-2026-textured_model.glb'
-      },
-      holesovska: {
-        id: 'holesovska',
-        title: 'Holešovská',
-        location: 'Letecké snímkování',
-        fullTitle: 'Holešovská',
-        date: '18. 9. 2026',
-        size: '~79 MB',
-        method: 'Letecká fotogrammetrie',
-        url: 'https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Holeovsk-9-18-2026-textured_model.glb'
       }
-    };
+    ];
+
+    // Helper map
+    const MODELS_MAP = {};
+    MODELS.forEach(m => { MODELS_MAP[m.id] = m; });
 
     const DRACO_DECODER_PATH = 'https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/';
 
     // Views
     const catalogView = document.getElementById('catalog-view');
     const viewerView = document.getElementById('viewer-view');
+
+    // List DOM Elements
+    const modelsListContainer = document.getElementById('models-list-container');
+    const modelSearchInput = document.getElementById('model-search');
+    const modelCountBadge = document.getElementById('model-count-badge');
+    const emptySearchState = document.getElementById('empty-search-state');
 
     // DOM Elements - Viewer
     const container = document.getElementById('canvas-container');
@@ -517,9 +427,10 @@
 
     // HUD Elements
     const hudModelTitle = document.getElementById('hud-model-title');
+    const hudModelLoc = document.getElementById('hud-model-loc');
+    const hudModelDate = document.getElementById('hud-model-date');
     const hudModelSize = document.getElementById('hud-model-size');
-    const switchHusova = document.getElementById('switch-husova');
-    const switchHolesovska = document.getElementById('switch-holesovska');
+    const viewerModelSelect = document.getElementById('viewer-model-select');
 
     // Controls Buttons
     const btnWireframe = document.getElementById('btn-wireframe');
@@ -544,6 +455,90 @@
     let isWireframe = false;
     let initialCameraPos = new THREE.Vector3();
     let initialTarget = new THREE.Vector3(0, 0, 0);
+
+    // ==========================================
+    // RENDER MINIMALIST MODEL LIST
+    // ==========================================
+    function renderModelList(filterQuery = '') {
+      const q = filterQuery.toLowerCase().trim();
+      const filtered = MODELS.filter(m => 
+        m.title.toLowerCase().includes(q) || 
+        m.location.toLowerCase().includes(q) ||
+        m.date.toLowerCase().includes(q) ||
+        m.format.toLowerCase().includes(q)
+      );
+
+      if (modelCountBadge) {
+        const count = filtered.length;
+        let label = 'modelů';
+        if (count === 1) label = 'model';
+        else if (count >= 2 && count <= 4) label = 'modely';
+        modelCountBadge.innerText = `${count} ${label}`;
+      }
+
+      if (filtered.length === 0) {
+        modelsListContainer.innerHTML = '';
+        emptySearchState.classList.remove('hidden');
+        emptySearchState.classList.add('flex');
+        return;
+      }
+
+      emptySearchState.classList.add('hidden');
+      emptySearchState.classList.remove('flex');
+
+      modelsListContainer.innerHTML = filtered.map((m, idx) => `
+        <div onclick="window.selectModel('${m.id}')" class="group flex items-center justify-between px-5 py-3 hover:bg-[#cff245]/[0.06] transition-colors cursor-pointer border-l-2 border-l-transparent hover:border-l-[#cff245]">
+          <!-- Column 1: Icon + Title + Mobile Subtitle -->
+          <div class="flex items-center gap-3.5 min-w-0 flex-1 pr-4">
+            <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 group-hover:border-[#cff245]/40 group-hover:bg-[#cff245]/10 flex items-center justify-center text-gray-400 group-hover:text-[#cff245] transition shrink-0">
+              <i class="bi bi-box text-sm"></i>
+            </div>
+            <div class="min-w-0 flex flex-col">
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-sm text-white group-hover:text-[#cff245] transition truncate">${m.title}</span>
+                ${m.isNew ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#cff245]/15 text-[#cff245] border border-[#cff245]/30">NOVÝ</span>' : ''}
+              </div>
+              <div class="text-[11px] text-gray-500 font-mono sm:hidden truncate mt-0.5">
+                ${m.location} • ${m.date} • ${m.size}
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Location (Desktop) -->
+          <div class="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 font-mono w-36 truncate pr-2">
+            <i class="bi bi-geo-alt text-[#cff245]/70 text-[11px] shrink-0"></i>
+            <span class="truncate">${m.location}</span>
+          </div>
+
+          <!-- Column 3: Date (Desktop) -->
+          <div class="hidden md:block text-xs text-gray-400 font-mono w-28 pr-2">
+            ${m.date}
+          </div>
+
+          <!-- Column 4: Format & Size (Desktop) -->
+          <div class="hidden lg:flex items-center gap-2 text-xs font-mono text-gray-400 w-44 pr-2">
+            <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300 border border-white/5 shrink-0">${m.format}</span>
+            <span class="text-[11px] text-gray-400 shrink-0">${m.size}</span>
+          </div>
+
+          <!-- Column 5: Action Button -->
+          <div class="w-20 flex justify-end shrink-0">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.04] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-gray-300 group-hover:text-black text-xs font-mono font-medium transition duration-200">
+              <span class="hidden sm:inline">Otevřít</span>
+              <i class="bi bi-arrow-right text-xs"></i>
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Populate viewer select options
+    function populateViewerSelect() {
+      if (!viewerModelSelect) return;
+      viewerModelSelect.innerHTML = MODELS.map(m => `
+        <option value="${m.id}">${m.title} (${m.date})</option>
+      `).join('');
+    }
 
     // Initialize 3D Engine
     function initThreeEngine() {
@@ -610,7 +605,7 @@
 
     // Load Model into Scene
     function loadModel(modelId) {
-      const model = MODELS[modelId];
+      const model = MODELS_MAP[modelId];
       if (!model) return;
 
       // If already loaded and active, just reset camera view
@@ -621,15 +616,9 @@
 
       initThreeEngine();
 
-      // Update Switch Buttons Active State
-      if (switchHusova && switchHolesovska) {
-        if (modelId === 'husova') {
-          switchHusova.classList.add('active');
-          switchHolesovska.classList.remove('active');
-        } else {
-          switchHolesovska.classList.add('active');
-          switchHusova.classList.remove('active');
-        }
+      // Update Header Dropdown Selection
+      if (viewerModelSelect) {
+        viewerModelSelect.value = modelId;
       }
 
       // Update Document Title
@@ -637,11 +626,13 @@
 
       // Update HUD Info Card
       if (hudModelTitle) hudModelTitle.innerText = `${model.title} – 3D Model`;
+      if (hudModelLoc) hudModelLoc.innerText = model.location;
+      if (hudModelDate) hudModelDate.innerText = model.date;
       if (hudModelSize) hudModelSize.innerText = model.size;
 
       // Update Loading Overlay text
       if (loadingTitle) loadingTitle.innerText = `Načítání 3D modelu: ${model.title}`;
-      if (loadingSubtitle) loadingSubtitle.innerText = `${model.fullTitle} • ${model.method}`;
+      if (loadingSubtitle) loadingSubtitle.innerText = `${model.location} • ${model.method}`;
       if (loadingNotice) loadingNotice.innerText = `Velikost modelu je ${model.size} komprimováno technologií Draco. Načtení probíhá z Cloudflare R2 CDN.`;
       
       // Reset loading overlay UI
@@ -747,7 +738,7 @@
 
     // Navigation: Select Model
     window.selectModel = function(modelId, updateHistory = true) {
-      if (!MODELS[modelId]) return;
+      if (!MODELS_MAP[modelId]) return;
 
       catalogView.classList.add('hidden');
       viewerView.classList.remove('hidden');
@@ -892,10 +883,19 @@
 
     // Initial Routing / Deep Linking Handler
     function handleInitialRoute() {
+      renderModelList();
+      populateViewerSelect();
+
+      if (modelSearchInput) {
+        modelSearchInput.addEventListener('input', (e) => {
+          renderModelList(e.target.value);
+        });
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const paramModel = urlParams.get('model') || (window.location.hash ? window.location.hash.replace('#', '') : null);
 
-      if (paramModel && MODELS[paramModel.toLowerCase()]) {
+      if (paramModel && MODELS_MAP[paramModel.toLowerCase()]) {
         window.selectModel(paramModel.toLowerCase(), false);
       } else {
         window.showCatalog(false);
@@ -906,7 +906,7 @@
     window.addEventListener('popstate', (e) => {
       const urlParams = new URLSearchParams(window.location.search);
       const paramModel = urlParams.get('model');
-      if (paramModel && MODELS[paramModel.toLowerCase()]) {
+      if (paramModel && MODELS_MAP[paramModel.toLowerCase()]) {
         window.selectModel(paramModel.toLowerCase(), false);
       } else {
         window.showCatalog(false);
