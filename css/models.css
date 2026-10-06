@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  background-color: #0d0e11;
+  font-family: 'Inter', sans-serif;
+}
+.hud-card {
+  background: rgba(19, 21, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+.hud-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  transition: all 0.2s ease;
+}
+.hud-btn:hover {
+  background: rgba(207, 242, 69, 0.1);
+  border-color: rgba(207, 242, 69, 0.4);
+  color: #cff245;
+}
+.hud-btn.active {
+  background: rgba(207, 242, 69, 0.18);
+  border-color: #cff245;
+  color: #cff245;
+  font-weight: 600;
+}
+.bg-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.35; transform: scale(0.98); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+.pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+select option {
+  background-color: #13151a;
+  color: #ffffff;
+}

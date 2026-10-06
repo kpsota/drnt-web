@@ -1,0 +1,26 @@
+[
+  {
+    "id": "holesovska",
+    "title": "Holešovská",
+    "location": "Objekt a terén",
+    "fullTitle": "Holešovská",
+    "date": "18. 09. 2026",
+    "size": "82.6 MB",
+    "format": "Draco GLB",
+    "method": "Letecká fotogrammetrie",
+    "isNew": true,
+    "url": "https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Holeovsk-9-18-2026-textured_model.glb"
+  },
+  {
+    "id": "husova",
+    "title": "Husova",
+    "location": "Kutná Hora",
+    "fullTitle": "Husova, Kutná Hora",
+    "date": "15. 09. 2026",
+    "size": "73.8 MB",
+    "format": "Draco GLB",
+    "method": "Letecká fotogrammetrie",
+    "isNew": false,
+    "url": "https://pub-6d0cb1d1dfd240c0a5d208868f6a7660.r2.dev/web/models/Husova-9-15-2026-textured_model.glb"
+  }
+]
