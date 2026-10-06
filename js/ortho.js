@@ -18,7 +18,7 @@ const countEl = $('ortho-count-badge'), emptyEl = $('empty-search-state');
 const selectEl = $('viewer-ortho-select');
 const overlay = $('loading-overlay'), errorBox = $('error-box');
 
-let map = null, baseLayer = null, orthoLayer = null, currentId = null;
+let map = null, orthoLayer = null, currentId = null;
 
 function renderList(q = '') {
 q = q.toLowerCase().trim();
@@ -53,96 +53,85 @@ listEl.innerHTML = f.map(o => `
 }
 
 function initMap() {
-if (map) return;
-baseLayer = new ol.layer.Tile({ source: new ol.source.OSM(), className: 'basemap' });
-map = new ol.Map({
-  target: 'map',
-  layers: [baseLayer],
-  controls: [],
-  view: new ol.View({ center: [1700000, 6400000], zoom: 7, maxZoom: 28 })
-});
-map.on('pointermove', e => {
-  const [lon, lat] = ol.proj.toLonLat(e.coordinate);
-  $('cursor-coords').innerText = `${lat.toFixed(6)}° N, ${lon.toFixed(6)}° E`;
-});
-$('btn-basemap').addEventListener('click', e => {
-  baseLayer.setVisible(!baseLayer.getVisible());
-  e.currentTarget.classList.toggle('active', baseLayer.getVisible());
-});
-$('btn-basemap').classList.add('active');
-$('opacity').addEventListener('input', e => { if (orthoLayer) orthoLayer.setOpacity(e.target.value / 100); });
-$('btn-reset').addEventListener('click', fitOrtho);
-$('btn-zin').addEventListener('click', () => map.getView().animate({ zoom: map.getView().getZoom() + 1, duration: 200 }));
-$('btn-zout').addEventListener('click', () => map.getView().animate({ zoom: map.getView().getZoom() - 1, duration: 200 }));
-$('btn-fullscreen').addEventListener('click', () => {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(console.warn);
-  else document.exitFullscreen();
-});
-document.addEventListener('fullscreenchange', () => {
-  $('fullscreen-icon').className = 'bi text-sm ' + (document.fullscreenElement ? 'bi-fullscreen-exit' : 'bi-fullscreen');
-});
+  if (map) return;
+  map = new ol.Map({ target: 'map', layers: [], controls: [] });
+  map.on('pointermove', e => {
+    const [lon, lat] = ol.proj.transform(e.coordinate, map.getView().getProjection(), 'EPSG:4326');
+    $('cursor-coords').innerText = `${lat.toFixed(6)}° N, ${lon.toFixed(6)}° E`;
+  });
+  $('opacity').addEventListener('input', e => { if (orthoLayer) orthoLayer.setOpacity(e.target.value / 100); });
+  $('btn-reset').addEventListener('click', fitOrtho);
+  $('btn-zin').addEventListener('click', () => map.getView().animate({ zoom: map.getView().getZoom() + 1, duration: 200 }));
+  $('btn-zout').addEventListener('click', () => map.getView().animate({ zoom: map.getView().getZoom() - 1, duration: 200 }));
+  $('btn-fullscreen').addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(console.warn);
+    else document.exitFullscreen();
+  });
+  document.addEventListener('fullscreenchange', () => {
+    $('fullscreen-icon').className = 'bi text-sm ' + (document.fullscreenElement ? 'bi-fullscreen-exit' : 'bi-fullscreen');
+  });
 }
 
 function fitOrtho() {
-if (!orthoLayer || !orthoLayer.get('viewConfig')) return;
-const vc = orthoLayer.get('viewConfig');
-const ext = vc.extent;
-if (ext) map.getView().fit(ol.proj.transformExtent(ext, vc.projection, map.getView().getProjection()), { padding: [60, 60, 100, 60], duration: 400 });
+  const ext = orthoLayer && orthoLayer.get('extent');
+  if (ext) map.getView().fit(ext, { padding: [60, 60, 100, 60], duration: 400 });
 }
 
 function showError(msg) {
-errorBox.classList.remove('hidden'); errorBox.classList.add('flex');
-$('error-msg').innerText = msg;
-$('loading-status').innerText = 'Načtení selhalo';
-$('spinner').classList.remove('animate-spin');
+  errorBox.classList.remove('hidden'); errorBox.classList.add('flex');
+  $('error-msg').innerText = msg;
+  $('loading-status').innerText = 'Načtení selhalo';
+  $('spinner').classList.remove('animate-spin');
 }
 
 function loadOrtho(id) {
-const o = MAP[id];
-if (!o) return;
-if (currentId === id && orthoLayer) { fitOrtho(); return; }
-initMap();
-currentId = id;
-selectEl.value = id;
-document.title = `${o.title} | Ortofoto DRONAUT`;
-$('hud-title').innerText = o.title;
-$('hud-loc').innerText = o.location;
-$('hud-date').innerText = o.date;
-$('hud-gsd').innerText = o.gsd || '–';
-$('hud-size').innerText = o.size;
-$('hud-coords').innerText = '–';
-$('loading-title').innerText = `Načítání ortofota: ${o.title}`;
-$('loading-subtitle').innerText = `${o.location} • GeoTIFF`;
-$('loading-status').innerText = 'Čtu metadata GeoTIFF...';
-$('spinner').classList.add('animate-spin');
-errorBox.classList.add('hidden'); errorBox.classList.remove('flex');
-overlay.style.display = 'flex'; overlay.style.opacity = '1';
+  const o = MAP[id];
+  if (!o) return;
+  if (currentId === id && orthoLayer) { fitOrtho(); return; }
+  initMap();
+  currentId = id;
+  selectEl.value = id;
+  document.title = `${o.title} | Ortofoto DRONAUT`;
+  $('hud-title').innerText = o.title;
+  $('hud-loc').innerText = o.location;
+  $('hud-date').innerText = o.date;
+  $('hud-gsd').innerText = o.gsd || '–';
+  $('hud-size').innerText = o.size;
+  $('hud-coords').innerText = '–';
+  $('loading-title').innerText = `Načítání ortofota: ${o.title}`;
+  $('loading-subtitle').innerText = `${o.location} • GeoTIFF`;
+  $('loading-status').innerText = 'Čtu metadata GeoTIFF...';
+  $('spinner').classList.add('animate-spin');
+  errorBox.classList.add('hidden'); errorBox.classList.remove('flex');
+  overlay.style.display = 'flex'; overlay.style.opacity = '1';
 
-if (orthoLayer) { map.removeLayer(orthoLayer); orthoLayer.dispose(); orthoLayer = null; }
+  if (orthoLayer) { map.removeLayer(orthoLayer); orthoLayer.dispose(); orthoLayer = null; }
 
-const source = new ol.source.GeoTIFF({
-  sources: [{ url: o.url, nodata: o.nodata }],
-  convertToRGB: 'auto',
-  interpolate: true,
-  normalize: true
-});
-const layer = new ol.layer.WebGLTile({ source, opacity: $('opacity').value / 100 });
-orthoLayer = layer;
-map.addLayer(layer);
+  // Rendered in the file's native CRS (no reprojection) - cheapest for the browser.
+  const source = new ol.source.GeoTIFF({
+    sources: [{ url: o.url, nodata: o.nodata }],
+    convertToRGB: 'auto',
+    interpolate: true,
+    normalize: true
+  });
+  const layer = new ol.layer.WebGLTile({ source, opacity: $('opacity').value / 100 });
+  orthoLayer = layer;
 
-source.getView().then(vc => {
-  if (currentId !== id) return;
-  layer.set('viewConfig', vc);
-  const [x0, y0, x1, y1] = ol.proj.transformExtent(vc.extent, vc.projection, 'EPSG:4326');
-  $('hud-coords').innerText = `${((y0 + y1) / 2).toFixed(4)}°, ${((x0 + x1) / 2).toFixed(4)}°`;
-  fitOrtho();
-  overlay.style.opacity = '0';
-  setTimeout(() => { if (currentId === id) overlay.style.display = 'none'; }, 500);
-}).catch(err => {
-  console.error('GeoTIFF error:', err);
-  if (currentId === id) showError('Chyba při čtení GeoTIFF (zkontrolujte CORS, COG a souřadnicový systém).');
-});
-source.on('error', err => { console.error(err); if (currentId === id) showError('Chyba při načítání dlaždic ortofota.'); });
+  source.getView().then(vc => {
+    if (currentId !== id) return;
+    layer.set('extent', vc.extent);
+    map.setView(new ol.View({ ...vc, showFullExtent: true, constrainOnlyCenter: true }));
+    map.addLayer(layer);
+    const [x0, y0, x1, y1] = ol.proj.transformExtent(vc.extent, vc.projection, 'EPSG:4326');
+    $('hud-coords').innerText = `${((y0 + y1) / 2).toFixed(4)}°, ${((x0 + x1) / 2).toFixed(4)}°`;
+    fitOrtho();
+    overlay.style.opacity = '0';
+    setTimeout(() => { if (currentId === id) overlay.style.display = 'none'; }, 500);
+  }).catch(err => {
+    console.error('GeoTIFF error:', err);
+    if (currentId === id) showError('Chyba při čtení GeoTIFF (zkontrolujte CORS, COG a souřadnicový systém).');
+  });
+  source.on('error', err => { console.error(err); if (currentId === id) showError('Chyba při načítání dlaždic ortofota.'); });
 }
 
 window.selectOrtho = function (id, updateHistory = true) {
