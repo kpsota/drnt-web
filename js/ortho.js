@@ -19,6 +19,68 @@ const selectEl = $('viewer-ortho-select');
 const overlay = $('loading-overlay'), errorBox = $('error-box');
 
 let map = null, orthoLayer = null, currentId = null;
+let measureSource = null, measureDraw = null, measureMode = null;
+
+const fmtLen = m => m >= 1000 ? `${(m / 1000).toLocaleString('cs-CZ', { maximumFractionDigits: 3 })} km` : `${m.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} m`;
+const fmtArea = m2 => m2 >= 1e6 ? `${(m2 / 1e6).toLocaleString('cs-CZ', { maximumFractionDigits: 3 })} km²`
+  : `${m2.toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} m²` + (m2 >= 10000 ? ` (${(m2 / 10000).toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} ha)` : '');
+
+// Planar measurement when the map CRS is metric (S-JTSK, UTM), geodesic otherwise.
+function measureGeom(geom) {
+  const proj = map.getView().getProjection();
+  const metric = proj.getUnits() === 'm' && proj.getCode() !== 'EPSG:3857';
+  if (geom instanceof ol.geom.Polygon) return fmtArea(metric ? geom.getArea() : ol.sphere.getArea(geom, { projection: proj }));
+  return fmtLen(metric ? geom.getLength() : ol.sphere.getLength(geom, { projection: proj }));
+}
+
+function updateLabel(f) {
+  f.set('label', measureGeom(f.getGeometry()));
+}
+
+function setMeasureMode(mode) {
+  if (measureDraw) { map.removeInteraction(measureDraw); measureDraw = null; }
+  measureMode = measureMode === mode ? null : mode;
+  $('btn-measure-dist').classList.toggle('active', measureMode === 'dist');
+  $('btn-measure-area').classList.toggle('active', measureMode === 'area');
+  map.getTargetElement().style.cursor = measureMode ? 'crosshair' : '';
+  if (!measureMode) return;
+  measureDraw = new ol.interaction.Draw({
+    source: measureSource,
+    type: measureMode === 'area' ? 'Polygon' : 'LineString',
+    style: measureStyle
+  });
+  measureDraw.on('drawstart', e => {
+    const f = e.feature;
+    updateLabel(f);
+    f.getGeometry().on('change', () => updateLabel(f));
+  });
+  map.addInteraction(measureDraw);
+}
+
+const measureStroke = new ol.style.Stroke({ color: '#cff245', width: 2.5 });
+const measureVertex = new ol.style.Circle({ radius: 4, fill: new ol.style.Fill({ color: '#0d0e11' }), stroke: new ol.style.Stroke({ color: '#cff245', width: 2 }) });
+function measureStyle(f) {
+  const g = f.getGeometry();
+  const styles = [new ol.style.Style({ stroke: measureStroke, fill: new ol.style.Fill({ color: 'rgba(207,242,69,0.15)' }) })];
+  const coords = g instanceof ol.geom.Polygon ? g.getCoordinates()[0] : g.getCoordinates?.();
+  if (coords) styles.push(new ol.style.Style({ image: measureVertex, geometry: new ol.geom.MultiPoint(coords) }));
+  const label = f.get('label');
+  if (label) {
+    const pos = g instanceof ol.geom.Polygon ? g.getInteriorPoint().getCoordinates().slice(0, 2) : g.getLastCoordinate?.();
+    if (pos) styles.push(new ol.style.Style({
+      geometry: new ol.geom.Point(pos),
+      text: new ol.style.Text({
+        text: label, font: '600 12px Inter, sans-serif', fill: new ol.style.Fill({ color: '#0d0e11' }),
+        backgroundFill: new ol.style.Fill({ color: '#cff245' }), padding: [3, 6, 3, 6],
+        offsetY: g instanceof ol.geom.Polygon ? 0 : -16
+      })
+    }));
+  }
+  return styles;
+}
+
+function clearMeasurements() { if (measureSource) measureSource.clear(); }
+
 
 function renderList(q = '') {
 q = q.toLowerCase().trim();
@@ -55,6 +117,12 @@ listEl.innerHTML = f.map(o => `
 function initMap() {
   if (map) return;
   map = new ol.Map({ target: 'map', layers: [], controls: [] });
+  measureSource = new ol.source.Vector();
+  map.addLayer(new ol.layer.Vector({ source: measureSource, style: measureStyle, zIndex: 10 }));
+  $('btn-measure-dist').addEventListener('click', () => setMeasureMode('dist'));
+  $('btn-measure-area').addEventListener('click', () => setMeasureMode('area'));
+  $('btn-measure-clear').addEventListener('click', clearMeasurements);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && measureDraw) measureDraw.abortDrawing(); });
   map.on('pointermove', e => {
     const [lon, lat] = ol.proj.transform(e.coordinate, map.getView().getProjection(), 'EPSG:4326');
     $('cursor-coords').innerText = `${lat.toFixed(6)}° N, ${lon.toFixed(6)}° E`;
@@ -105,6 +173,7 @@ function loadOrtho(id) {
   errorBox.classList.add('hidden'); errorBox.classList.remove('flex');
   overlay.style.display = 'flex'; overlay.style.opacity = '1';
 
+  clearMeasurements();
   if (orthoLayer) { map.removeLayer(orthoLayer); orthoLayer.dispose(); orthoLayer = null; }
 
   // Rendered in the file's native CRS (no reprojection) - cheapest for the browser.

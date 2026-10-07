@@ -292,6 +292,12 @@ function loadModel(modelId) {
       loadedModel = gltf.scene;
       scene.add(loadedModel);
 
+      // Photogrammetry exports (DJI Terra, Metashape...) are often Z-up, glTF/three.js is Y-up.
+      // Set "up": "z" (or "-z", "x") per model in config/models.json to stand it upright.
+      const UP_ROTATION = { z: [-Math.PI / 2, 0, 0], '-z': [Math.PI / 2, 0, 0], x: [0, 0, Math.PI / 2], '-x': [0, 0, -Math.PI / 2], '-y': [Math.PI, 0, 0] };
+      const rot = UP_ROTATION[(model.up || 'y').toLowerCase()];
+      if (rot) loadedModel.rotation.set(...rot);
+
       // Center & fit model
       const box = new THREE.Box3().setFromObject(loadedModel);
       const center = box.getCenter(new THREE.Vector3());
