@@ -10,7 +10,7 @@
     "method": "Letecká fotogrammetrie",
     "up": "z",
     "isNew": true,
-    "url": "https://drnt.cz/web/models/Holeovsk-9-18-2026-textured_model.glb"
+    "url": "https://data.drnt.cz/web/models/Holeovsk-9-18-2026-textured_model.glb"
   },
   {
     "id": "husova",
@@ -23,6 +23,6 @@
     "method": "Letecká fotogrammetrie",
     "up": "z",
     "isNew": false,
-    "url": "https://drnt.cz/web/models/web/models/Husova-9-15-2026-textured_model.glb"
+    "url": "https://data.drnt.cz/web/models/web/models/Husova-9-15-2026-textured_model.glb"
   }
 ]
