@@ -1,7 +1,7 @@
-// Ortho database lives in /config/ortho.json (edit it there).
+// Data catalog lives in /config/catalog.json (edit it there); this viewer shows items with type "ortho".
 // Files must be Cloud Optimized GeoTIFFs (HTTP range requests, CORS enabled on R2).
-// Fields: id, title, location, date, size, gsd, url, [isNew], [nodata]
-const ORTHOS = await fetch('/config/ortho.json', { cache: 'no-cache' }).then(r => r.json()).catch(err => { console.error(err); return []; });
+// Fields: id, type, title, location, date, size, gsd, url, [isNew], [nodata]
+const ORTHOS = await fetch('/config/catalog.json', { cache: 'no-cache' }).then(r => r.json()).then(a => a.filter(i => i.type === 'ortho')).catch(err => { console.error(err); return []; });
 
 proj4.defs('EPSG:5514', '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=589,76,480,0,0,0,0 +units=m +no_defs');
 proj4.defs('EPSG:32633', '+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs');
@@ -12,9 +12,7 @@ ol.proj.proj4.register(proj4);
 const MAP = {};
 ORTHOS.forEach(o => { MAP[o.id] = o; });
 const $ = id => document.getElementById(id);
-const catalogView = $('catalog-view'), viewerView = $('viewer-view');
-const listEl = $('ortho-list-container'), searchEl = $('ortho-search');
-const countEl = $('ortho-count-badge'), emptyEl = $('empty-search-state');
+const viewerView = $('viewer-view');
 const selectEl = $('viewer-ortho-select');
 const overlay = $('loading-overlay'), errorBox = $('error-box');
 
@@ -81,38 +79,6 @@ function measureStyle(f) {
 
 function clearMeasurements() { if (measureSource) measureSource.clear(); }
 
-
-function renderList(q = '') {
-q = q.toLowerCase().trim();
-const f = ORTHOS.filter(o => [o.title, o.location, o.date, o.gsd].some(v => (v || '').toLowerCase().includes(q)));
-const n = f.length;
-countEl.innerText = `${n} ${n === 1 ? 'ortofoto' : 'ortofot'}`;
-$('empty-text').innerText = ORTHOS.length ? 'Žádné ortofoto neodpovídá hledanému výrazu.' : 'Zatím nejsou k dispozici žádná ortofota.';
-emptyEl.classList.toggle('hidden', n > 0);
-emptyEl.classList.toggle('flex', n === 0);
-listEl.innerHTML = f.map(o => `
-  <div onclick="window.selectOrtho('${o.id}')" class="group flex items-center justify-between px-5 py-3 hover:bg-[#cff245]/[0.06] transition-colors cursor-pointer border-l-2 border-l-transparent hover:border-l-[#cff245]">
-    <div class="flex items-center gap-3.5 min-w-0 flex-1 pr-4">
-      <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 group-hover:border-[#cff245]/40 group-hover:bg-[#cff245]/10 flex items-center justify-center text-gray-400 group-hover:text-[#cff245] transition shrink-0"><i class="bi bi-map text-sm"></i></div>
-      <div class="min-w-0 flex flex-col">
-        <div class="flex items-center gap-2">
-          <span class="font-semibold text-sm text-white group-hover:text-[#cff245] transition truncate">${o.title}</span>
-          ${o.isNew ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#cff245]/15 text-[#cff245] border border-[#cff245]/30">NOVÝ</span>' : ''}
-        </div>
-        <div class="text-[11px] text-gray-500 font-mono sm:hidden truncate mt-0.5">${o.location} • ${o.date} • ${o.size}</div>
-      </div>
-    </div>
-    <div class="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 font-mono w-36 truncate pr-2"><i class="bi bi-geo-alt text-[#cff245]/70 text-[11px] shrink-0"></i><span class="truncate">${o.location}</span></div>
-    <div class="hidden md:block text-xs text-gray-400 font-mono w-28 pr-2">${o.date}</div>
-    <div class="hidden lg:flex items-center gap-2 text-xs font-mono text-gray-400 w-44 pr-2">
-      <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300 border border-white/5 shrink-0">${o.gsd || 'GeoTIFF'}</span>
-      <span class="text-[11px] text-gray-400 shrink-0">${o.size}</span>
-    </div>
-    <div class="w-20 flex justify-end shrink-0">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.04] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-gray-300 group-hover:text-black text-xs font-mono font-medium transition duration-200"><span class="hidden sm:inline">Otevřít</span><i class="bi bi-arrow-right text-xs"></i></span>
-    </div>
-  </div>`).join('');
-}
 
 function initMap() {
   if (map) return;
@@ -205,19 +171,14 @@ function loadOrtho(id) {
 
 window.selectOrtho = function (id, updateHistory = true) {
 if (!MAP[id]) return;
-catalogView.classList.add('hidden');
 viewerView.classList.remove('hidden'); viewerView.classList.add('flex');
 document.body.classList.add('overflow-hidden');
 if (updateHistory) history.pushState({ id }, '', `${location.pathname}?ortho=${id}`);
 setTimeout(() => { initMap(); map.updateSize(); loadOrtho(id); }, 30);
 };
 
-window.showCatalog = function (updateHistory = true) {
-viewerView.classList.remove('flex'); viewerView.classList.add('hidden');
-catalogView.classList.remove('hidden');
-document.body.classList.remove('overflow-hidden');
-document.title = 'Ortofoto | DRONAUT';
-if (updateHistory) history.pushState(null, '', location.pathname);
+window.showCatalog = function () {
+window.location.href = '/data/';
 };
 
 window.retryLoad = function () {
@@ -227,11 +188,9 @@ if (id) loadOrtho(id); else location.reload();
 
 function route() {
 const p = (new URLSearchParams(location.search).get('ortho') || location.hash.replace('#', '')).toLowerCase();
-if (p && MAP[p]) window.selectOrtho(p, false); else window.showCatalog(false);
+if (p && MAP[p]) window.selectOrtho(p, false); else window.location.replace('/data/');
 }
 
 selectEl.innerHTML = ORTHOS.map(o => `<option value="${o.id}">${o.title} (${o.date})</option>`).join('');
-renderList();
-searchEl.addEventListener('input', e => renderList(e.target.value));
 window.addEventListener('popstate', route);
 route();

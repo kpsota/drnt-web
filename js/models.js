@@ -3,8 +3,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-// Model database lives in /config/models.json (edit it there)
-const MODELS = await fetch('/config/models.json', { cache: 'no-cache' }).then(r => r.json()).catch(err => { console.error(err); return []; });
+// Data catalog lives in /config/catalog.json (edit it there); this viewer shows items with type "model"
+const MODELS = await fetch('/config/catalog.json', { cache: 'no-cache' }).then(r => r.json()).then(a => a.filter(i => i.type === 'model')).catch(err => { console.error(err); return []; });
 
 // Helper map
 const MODELS_MAP = {};
@@ -13,14 +13,7 @@ MODELS.forEach(m => { MODELS_MAP[m.id] = m; });
 const DRACO_DECODER_PATH = 'https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/';
 
 // Views
-const catalogView = document.getElementById('catalog-view');
 const viewerView = document.getElementById('viewer-view');
-
-// List DOM Elements
-const modelsListContainer = document.getElementById('models-list-container');
-const modelSearchInput = document.getElementById('model-search');
-const modelCountBadge = document.getElementById('model-count-badge');
-const emptySearchState = document.getElementById('empty-search-state');
 
 // DOM Elements - Viewer
 const container = document.getElementById('canvas-container');
@@ -64,82 +57,6 @@ let loadedModel = null;
 let isWireframe = false;
 let initialCameraPos = new THREE.Vector3();
 let initialTarget = new THREE.Vector3(0, 0, 0);
-
-// ==========================================
-// RENDER MINIMALIST MODEL LIST
-// ==========================================
-function renderModelList(filterQuery = '') {
-  const q = filterQuery.toLowerCase().trim();
-  const filtered = MODELS.filter(m => 
-    m.title.toLowerCase().includes(q) || 
-    m.location.toLowerCase().includes(q) ||
-    m.date.toLowerCase().includes(q) ||
-    m.format.toLowerCase().includes(q)
-  );
-
-  if (modelCountBadge) {
-    const count = filtered.length;
-    let label = 'modelů';
-    if (count === 1) label = 'model';
-    else if (count >= 2 && count <= 4) label = 'modely';
-    modelCountBadge.innerText = `${count} ${label}`;
-  }
-
-  if (filtered.length === 0) {
-    modelsListContainer.innerHTML = '';
-    emptySearchState.classList.remove('hidden');
-    emptySearchState.classList.add('flex');
-    return;
-  }
-
-  emptySearchState.classList.add('hidden');
-  emptySearchState.classList.remove('flex');
-
-  modelsListContainer.innerHTML = filtered.map((m, idx) => `
-    <div onclick="window.selectModel('${m.id}')" class="group flex items-center justify-between px-5 py-3 hover:bg-[#cff245]/[0.06] transition-colors cursor-pointer border-l-2 border-l-transparent hover:border-l-[#cff245]">
-      <!-- Column 1: Icon + Title + Mobile Subtitle -->
-      <div class="flex items-center gap-3.5 min-w-0 flex-1 pr-4">
-        <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 group-hover:border-[#cff245]/40 group-hover:bg-[#cff245]/10 flex items-center justify-center text-gray-400 group-hover:text-[#cff245] transition shrink-0">
-          <i class="bi bi-box text-sm"></i>
-        </div>
-        <div class="min-w-0 flex flex-col">
-          <div class="flex items-center gap-2">
-            <span class="font-semibold text-sm text-white group-hover:text-[#cff245] transition truncate">${m.title}</span>
-            ${m.isNew ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#cff245]/15 text-[#cff245] border border-[#cff245]/30">NOVÝ</span>' : ''}
-          </div>
-          <div class="text-[11px] text-gray-500 font-mono sm:hidden truncate mt-0.5">
-            ${m.location} • ${m.date} • ${m.size}
-          </div>
-        </div>
-      </div>
-
-      <!-- Column 2: Location (Desktop) -->
-      <div class="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 font-mono w-36 truncate pr-2">
-        <i class="bi bi-geo-alt text-[#cff245]/70 text-[11px] shrink-0"></i>
-        <span class="truncate">${m.location}</span>
-      </div>
-
-      <!-- Column 3: Date (Desktop) -->
-      <div class="hidden md:block text-xs text-gray-400 font-mono w-28 pr-2">
-        ${m.date}
-      </div>
-
-      <!-- Column 4: Format & Size (Desktop) -->
-      <div class="hidden lg:flex items-center gap-2 text-xs font-mono text-gray-400 w-44 pr-2">
-        <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300 border border-white/5 shrink-0">${m.format}</span>
-        <span class="text-[11px] text-gray-400 shrink-0">${m.size}</span>
-      </div>
-
-      <!-- Column 5: Action Button -->
-      <div class="w-20 flex justify-end shrink-0">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.04] group-hover:bg-[#cff245] border border-white/10 group-hover:border-[#cff245] text-gray-300 group-hover:text-black text-xs font-mono font-medium transition duration-200">
-          <span class="hidden sm:inline">Otevřít</span>
-          <i class="bi bi-arrow-right text-xs"></i>
-        </span>
-      </div>
-    </div>
-  `).join('');
-}
 
 // Populate viewer select options
 function populateViewerSelect() {
@@ -293,7 +210,7 @@ function loadModel(modelId) {
       scene.add(loadedModel);
 
       // Photogrammetry exports (DJI Terra, Metashape...) are often Z-up, glTF/three.js is Y-up.
-      // Set "up": "z" (or "-z", "x") per model in config/models.json to stand it upright.
+      // Set "up": "z" (or "-z", "x") per model in config/catalog.json to stand it upright.
       const UP_ROTATION = { z: [-Math.PI / 2, 0, 0], '-z': [Math.PI / 2, 0, 0], x: [0, 0, Math.PI / 2], '-x': [0, 0, -Math.PI / 2], '-y': [Math.PI, 0, 0] };
       const rot = UP_ROTATION[(model.up || 'y').toLowerCase()];
       if (rot) loadedModel.rotation.set(...rot);
@@ -355,7 +272,6 @@ function loadModel(modelId) {
 window.selectModel = function(modelId, updateHistory = true) {
   if (!MODELS_MAP[modelId]) return;
 
-  catalogView.classList.add('hidden');
   viewerView.classList.remove('hidden');
   viewerView.classList.add('flex');
   document.body.classList.add('overflow-hidden');
@@ -372,17 +288,9 @@ window.selectModel = function(modelId, updateHistory = true) {
   }, 30);
 };
 
-// Navigation: Show Catalog
-window.showCatalog = function(updateHistory = true) {
-  viewerView.classList.remove('flex');
-  viewerView.classList.add('hidden');
-  catalogView.classList.remove('hidden');
-  document.body.classList.remove('overflow-hidden');
-  document.title = '3D Digitální dvojčata | DRONAUT';
-
-  if (updateHistory) {
-    window.history.pushState(null, '', window.location.pathname);
-  }
+// Navigation: back to the shared data catalog
+window.showCatalog = function() {
+  window.location.href = '/data/';
 };
 
 // Retry load
@@ -498,14 +406,7 @@ function animate() {
 
 // Initial Routing / Deep Linking Handler
 function handleInitialRoute() {
-  renderModelList();
   populateViewerSelect();
-
-  if (modelSearchInput) {
-    modelSearchInput.addEventListener('input', (e) => {
-      renderModelList(e.target.value);
-    });
-  }
 
   const urlParams = new URLSearchParams(window.location.search);
   const paramModel = urlParams.get('model') || (window.location.hash ? window.location.hash.replace('#', '') : null);
@@ -513,7 +414,7 @@ function handleInitialRoute() {
   if (paramModel && MODELS_MAP[paramModel.toLowerCase()]) {
     window.selectModel(paramModel.toLowerCase(), false);
   } else {
-    window.showCatalog(false);
+    window.location.replace('/data/');
   }
 }
 
@@ -524,7 +425,7 @@ window.addEventListener('popstate', (e) => {
   if (paramModel && MODELS_MAP[paramModel.toLowerCase()]) {
     window.selectModel(paramModel.toLowerCase(), false);
   } else {
-    window.showCatalog(false);
+    window.showCatalog();
   }
 });
 
