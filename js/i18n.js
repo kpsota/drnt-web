@@ -771,11 +771,11 @@
 
       // Update Page Title
       if (lang === 'en') {
-        document.title = "Dronaut | Professional Drone Mapping & GIS";
+        document.title = "Dronaut | Drone Mapping, Orthophoto & 3D Models – Zlín & South Moravia, Czechia";
       } else if (lang === 'de') {
-        document.title = "Dronaut | Professionelle Drohnenkartierung & GIS";
+        document.title = "Dronaut | Drohnenkartierung, Orthofotos & 3D-Modelle – Zlín & Südmähren, Tschechien";
       } else {
-        document.title = "Dronaut | Profesionální mapování drony a GIS";
+        document.title = "Dronaut | Mapování dronem, ortofoto a 3D modely – Zlínský a Jihomoravský kraj";
       }
 
       // Re-translate all elements

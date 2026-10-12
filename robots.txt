@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /ortho
+Disallow: /models
+Disallow: /model_viewer.html
+Disallow: /config/
+
+Sitemap: https://drnt.cz/sitemap.xml
