@@ -5,6 +5,12 @@
         "O nás": "About Us",
         "Reference": "References",
         "Kontakt": "Contact",
+        "Mapování dronem.": "Drone mapping.",
+        "Přesná data. Lepší rozhodnutí.": "Precise data. Better decisions.",
+        "Poptat zaměření": "Request a survey",
+        "Ukázky prací": "See our work",
+        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavby, těžbu a průmysl po celé České republice.": 
+          "Orthophotos, 3D models, volumetrics and timelapse with centimeter accuracy<br class=\"hidden md:inline\">\n          for construction, mining and industry across the Czech Republic.",
         "Přesná data.": "Precise data.",
         "Lepší rozhodnutí.": "Better decisions.",
         "Poskytujeme špičková data a analýzy z dronu,<br class=\"hidden md:inline\">\n          které vám pomohou plánovat, řídit a posouvat vaše projekty kupředu.": 
@@ -310,6 +316,12 @@
         "O nás": "Über uns",
         "Reference": "Referenzen",
         "Kontakt": "Kontakt",
+        "Mapování dronem.": "Drohnenvermessung.",
+        "Přesná data. Lepší rozhodnutí.": "Präzise Daten. Bessere Entscheidungen.",
+        "Poptat zaměření": "Vermessung anfragen",
+        "Ukázky prací": "Unsere Referenzen",
+        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavby, těžbu a průmysl po celé České republice.": 
+          "Orthofotos, 3D-Modelle, Kubaturen und Zeitraffer mit Zentimetergenauigkeit<br class=\"hidden md:inline\">\n          für Bau, Bergbau und Industrie in der gesamten Tschechischen Republik.",
         "Přesná data.": "Präzise Daten.",
         "Lepší rozhodnutí.": "Bessere Entscheidungen.",
         "Poskytujeme špičková data a analýzy z dronu,<br class=\"hidden md:inline\">\n          které vám pomohou plánovat, řídit a posouvat vaše projekty kupředu.": 
