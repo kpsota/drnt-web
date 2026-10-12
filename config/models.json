@@ -9,7 +9,7 @@
     "format": "Draco GLB",
     "method": "Letecká fotogrammetrie",
     "up": "z",
-    "isNew": true,
+    "isNew": false,
     "url": "https://data.drnt.cz/web/models/Holeovsk-9-18-2026-textured_model.glb"
   },
   {
@@ -23,7 +23,7 @@
     "method": "Letecká fotogrammetrie",
     "up": "z",
     "isNew": false,
-    "url": "https://data.drnt.cz/web/models/web/models/Husova-9-15-2026-textured_model.glb"
+    "url": "https://data.drnt.cz/web/models/Husova-9-15-2026-textured_model.glb"
   },
   {
     "id": "92abb6a4-ac96-4377-8054-782a163d07b0",
@@ -36,7 +36,7 @@
     "method": "Letecká fotogrammetrie",
     "up": "z",
     "isNew": false,
-    "url": "https://data.drnt.cz/web/models/web/models/Husova-10-4-2026-textured_model.glb"
+    "url": "https://data.drnt.cz/web/models/Husova-10-4-2026-textured_model.glb"
   }
 
 ]
