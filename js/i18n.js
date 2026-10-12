@@ -9,8 +9,8 @@
         "Přesná data. Lepší rozhodnutí.": "Precise data. Better decisions.",
         "Poptat zaměření": "Request a survey",
         "Ukázky prací": "See our work",
-        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavby, těžbu a průmysl po celé České republice.": 
-          "Orthophotos, 3D models, volumetrics and timelapse with centimeter accuracy<br class=\"hidden md:inline\">\n          for construction, mining and industry across the Czech Republic.",
+        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavebnictví, developery, samosprávy, energetiku nebo zemědělství.": 
+          "Orthophotos, 3D models, volumetrics and timelapse with centimeter accuracy<br class=\"hidden md:inline\">\n          for construction, developers, municipalities, energy or agriculture.",
         "Přesná data.": "Precise data.",
         "Lepší rozhodnutí.": "Better decisions.",
         "Poskytujeme špičková data a analýzy z dronu,<br class=\"hidden md:inline\">\n          které vám pomohou plánovat, řídit a posouvat vaše projekty kupředu.": 
@@ -320,8 +320,8 @@
         "Přesná data. Lepší rozhodnutí.": "Präzise Daten. Bessere Entscheidungen.",
         "Poptat zaměření": "Vermessung anfragen",
         "Ukázky prací": "Unsere Referenzen",
-        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavby, těžbu a průmysl po celé České republice.": 
-          "Orthofotos, 3D-Modelle, Kubaturen und Zeitraffer mit Zentimetergenauigkeit<br class=\"hidden md:inline\">\n          für Bau, Bergbau und Industrie in der gesamten Tschechischen Republik.",
+        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavebnictví, developery, samosprávy, energetiku nebo zemědělství.": 
+          "Orthofotos, 3D-Modelle, Kubaturen und Zeitraffer mit Zentimetergenauigkeit<br class=\"hidden md:inline\">\n          für Bauwesen, Bauträger, Kommunen, Energie oder Landwirtschaft.",
         "Přesná data.": "Präzise Daten.",
         "Lepší rozhodnutí.": "Bessere Entscheidungen.",
         "Poskytujeme špičková data a analýzy z dronu,<br class=\"hidden md:inline\">\n          které vám pomohou plánovat, řídit a posouvat vaše projekty kupředu.": 
