@@ -173,7 +173,7 @@ window.selectOrtho = function (id, updateHistory = true) {
 if (!MAP[id]) return;
 viewerView.classList.remove('hidden'); viewerView.classList.add('flex');
 document.body.classList.add('overflow-hidden');
-if (updateHistory) history.pushState({ id }, '', `${location.pathname}?ortho=${id}`);
+if (updateHistory) history.pushState({ id }, '', `${location.pathname}?id=${id}`);
 setTimeout(() => { initMap(); map.updateSize(); loadOrtho(id); }, 30);
 };
 
@@ -187,7 +187,7 @@ if (id) loadOrtho(id); else location.reload();
 };
 
 function route() {
-const p = (new URLSearchParams(location.search).get('ortho') || location.hash.replace('#', '')).toLowerCase();
+const p = (new URLSearchParams(location.search).get('id') || location.hash.replace('#', '')).toLowerCase();
 if (p && MAP[p]) window.selectOrtho(p, false); else window.location.replace('/data/');
 }
 

@@ -3,8 +3,8 @@
 //   model: format, method, up, fullTitle   ortho: gsd, nodata
 // Each type opens in its own viewer; add a new type by extending TYPES.
 const TYPES = {
-  model: { label: '3D modely', icon: 'bi-box', viewer: id => `/models/?model=${id}`, info: i => i.format || 'GLB' },
-  ortho: { label: 'Ortofota', icon: 'bi-map', viewer: id => `/ortho/?ortho=${id}`, info: i => i.gsd || 'GeoTIFF' }
+  model: { label: '3D modely', icon: 'bi-box', viewer: id => `/data/model/?id=${id}`, info: i => i.format || 'GLB' },
+  ortho: { label: 'Ortofota', icon: 'bi-map', viewer: id => `/data/ortho/?id=${id}`, info: i => i.gsd || 'GeoTIFF' }
 };
 
 const ITEMS = await fetch('/config/catalog.json', { cache: 'no-cache' }).then(r => r.json()).catch(err => { console.error(err); return []; });

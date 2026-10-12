@@ -277,7 +277,7 @@ window.selectModel = function(modelId, updateHistory = true) {
   document.body.classList.add('overflow-hidden');
 
   if (updateHistory) {
-    const newUrl = `${window.location.pathname}?model=${modelId}`;
+    const newUrl = `${window.location.pathname}?id=${modelId}`;
     window.history.pushState({ modelId }, '', newUrl);
   }
 
@@ -409,7 +409,7 @@ function handleInitialRoute() {
   populateViewerSelect();
 
   const urlParams = new URLSearchParams(window.location.search);
-  const paramModel = urlParams.get('model') || (window.location.hash ? window.location.hash.replace('#', '') : null);
+  const paramModel = urlParams.get('id') || (window.location.hash ? window.location.hash.replace('#', '') : null);
 
   if (paramModel && MODELS_MAP[paramModel.toLowerCase()]) {
     window.selectModel(paramModel.toLowerCase(), false);
@@ -421,7 +421,7 @@ function handleInitialRoute() {
 // Handle Browser History Back / Forward
 window.addEventListener('popstate', (e) => {
   const urlParams = new URLSearchParams(window.location.search);
-  const paramModel = urlParams.get('model');
+  const paramModel = urlParams.get('id');
   if (paramModel && MODELS_MAP[paramModel.toLowerCase()]) {
     window.selectModel(paramModel.toLowerCase(), false);
   } else {

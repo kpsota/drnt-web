@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="cs" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>3D Digitální dvojčata | DRONAUT</title>
+  <meta name="description" content="Seznam a interaktivní prohlížeč 3D fotogrammetrických modelů | DRONAUT">
+  <link rel="icon" type="image/png" href="/images/logos/logo-mint.png">
+
+  <!-- Tailwind CSS & Icons & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/css/models.css">
+</head>
+
+<body class="h-full bg-[#0d0e11] text-white">
+
+  <!-- ======================================================== -->
+  <!-- 2. INTERACTIVE 3D VIEWER VIEW (Full viewport overlay)    -->
+  <!-- ======================================================== -->
+  <div id="viewer-view" class="fixed inset-0 z-20 flex flex-col bg-[#0d0e11] text-white select-none hidden">
+
+    <!-- Header -->
+    <header class="px-4 sm:px-6 py-2.5 sm:py-3 z-30 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#0d0e11]/90 backdrop-blur-md">
+      <!-- Left: Back to List & DRONAUT Logo -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <button id="btn-back-to-catalog" onclick="window.showCatalog()" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Zpět na seznam modelů">
+          <i class="bi bi-list-ul text-[#cff245]"></i>
+          <span class="hidden sm:inline">Katalog dat</span>
+          <span class="sm:hidden">Katalog</span>
+        </button>
+
+        <div class="h-4 w-[1px] bg-white/10 hidden md:block"></div>
+
+        <a href="/" class="items-center gap-2.5 group hidden md:flex">
+          <span class="font-bold text-base tracking-tight leading-none text-white">DRONAUT</span>
+          <span class="text-[9px] text-gray-400 tracking-[0.18em] font-mono uppercase">3D PROHLÍŽEČ</span>
+        </a>
+      </div>
+
+      <!-- Center: Model Dropdown Switcher (Scales cleanly for dozens of models) -->
+      <div class="flex items-center bg-black/40 border border-white/10 px-3 py-1.5 rounded-xl font-mono text-xs shadow-inner">
+        <i class="bi bi-box text-[#cff245] mr-2 text-xs"></i>
+        <select id="viewer-model-select" onchange="window.selectModel(this.value)" class="bg-transparent text-gray-200 text-xs font-mono focus:outline-none cursor-pointer pr-1">
+          <!-- Dynamically populated options -->
+        </select>
+      </div>
+
+      <!-- Right: Back to Main Web -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="/" class="flex items-center gap-2 text-xs font-mono text-gray-300 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-[#cff245]/40 bg-white/[0.03] hover:bg-[#cff245]/10 transition duration-200" title="Návrat na hlavní web drnt.cz">
+          <i class="bi bi-arrow-left text-[#cff245]"></i>
+          <span class="hidden sm:inline">Hlavní web</span>
+          <span class="sm:hidden">Web</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Viewer Canvas Container -->
+    <main class="relative flex-1 w-full h-full overflow-hidden" id="canvas-container">
+
+      <!-- Loading Screen Overlay -->
+      <div id="loading-overlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#0d0e11]/95 backdrop-blur-md transition-opacity duration-500 p-6">
+        <div class="hud-card rounded-3xl p-8 max-w-md w-full flex flex-col items-center text-center gap-5 border border-white/10">
+          <!-- Animated Radar / Logo Spinner -->
+          <div class="relative w-16 h-16 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-2 border-[#cff245]/20"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-[#cff245] border-t-transparent animate-spin"></div>
+            <i class="bi bi-box text-2xl text-[#cff245] pulse-glow"></i>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <h2 id="loading-title" class="text-lg font-bold tracking-tight text-white">Načítání 3D modelu</h2>
+            <p id="loading-subtitle" class="text-xs text-gray-400 font-mono">Letecká fotogrammetrie</p>
+          </div>
+
+          <!-- Progress Bar & Metrics -->
+          <div class="w-full flex flex-col gap-2 mt-1">
+            <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden p-0.5 border border-white/5">
+              <div id="progress-bar" class="h-full bg-gradient-to-r from-[#8bb31d] to-[#cff245] rounded-full transition-all duration-200" style="width: 5%;"></div>
+            </div>
+            <div class="flex justify-between items-center text-[11px] font-mono text-gray-400">
+              <span id="loading-status">Připojuji se k R2 uložení...</span>
+              <span id="loading-percent" class="text-[#cff245] font-semibold">0%</span>
+            </div>
+          </div>
+
+          <!-- Notice -->
+          <p id="loading-notice" class="text-[10px] text-gray-500 leading-relaxed font-mono">
+            Model je komprimován technologií Draco. Načtení probíhá z Cloudflare R2 CDN.
+          </p>
+
+          <!-- Error State (hidden by default) -->
+          <div id="error-box" class="hidden flex-col items-center gap-3 w-full pt-2 border-t border-red-500/20 text-red-400">
+            <span class="text-xs font-mono" id="error-msg">Chyba při stahování modelu.</span>
+            <button onclick="window.retryLoad()" class="px-4 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-300 hover:bg-red-500/20 transition">
+              Zkusit znovu
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Overlay: Top-Left Model Info Card -->
+      <div class="absolute top-4 left-4 z-10 hidden sm:block">
+        <div class="hud-card rounded-2xl p-4 max-w-xs flex flex-col gap-2.5 transition-all">
+          <div class="flex items-center justify-between border-b border-white/5 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#cff245] animate-pulse"></span>
+              <span id="hud-model-title" class="text-xs font-bold text-white font-mono tracking-tight">3D Model</span>
+            </div>
+            <span class="text-[9px] font-mono uppercase bg-[#cff245]/10 text-[#cff245] border border-[#cff245]/20 px-1.5 py-0.5 rounded">GLB</span>
+          </div>
+          
+          <div class="flex flex-col gap-1 text-[11px] font-mono text-gray-400">
+            <div class="flex justify-between">
+              <span class="text-gray-500">Lokalita:</span>
+              <span id="hud-model-loc" class="text-gray-200">–</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Datum:</span>
+              <span id="hud-model-date" class="text-gray-200">–</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Metoda:</span>
+              <span class="text-gray-200">Fotogrammetrie</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Komprese:</span>
+              <span class="text-gray-200">Google Draco</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Velikost:</span>
+              <span id="hud-model-size" class="text-gray-200">–</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Hosting:</span>
+              <span class="text-gray-200">Cloudflare R2 CDN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Overlay: Bottom Controls Bar -->
+      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-10">
+        <div class="hud-card rounded-2xl px-3 py-2 flex items-center gap-2 border border-white/10 shadow-2xl">
+          <!-- Texture / Wireframe Mode Toggle -->
+          <button id="btn-wireframe" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Přepnout režim textury / drátěného modelu">
+            <i class="bi bi-grid-3x3"></i>
+            <span class="hidden md:inline" id="label-wireframe">Drátěný model</span>
+          </button>
+
+          <!-- Auto-Rotate Toggle -->
+          <button id="btn-autorotate" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Zapnout / vypnout automatické otáčení">
+            <i class="bi bi-arrow-repeat"></i>
+            <span class="hidden md:inline" id="label-autorotate">Auto-rotace</span>
+          </button>
+
+          <!-- Reset Camera -->
+          <button id="btn-reset" class="hud-btn px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-2" title="Resetovat pozici kamery">
+            <i class="bi bi-aspect-ratio"></i>
+            <span class="hidden md:inline">Reset kamery</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="h-4 w-[1px] bg-white/10"></div>
+
+          <!-- Fullscreen Button -->
+          <button id="btn-fullscreen" class="hud-btn p-2 rounded-xl text-xs flex items-center justify-center" title="Celá obrazovka">
+            <i class="bi bi-fullscreen text-sm" id="fullscreen-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- HUD Overlay: Navigation Help (Bottom-Left) -->
+      <div class="absolute bottom-5 left-4 z-10 hidden lg:block">
+        <div class="hud-card rounded-xl px-3.5 py-2 text-[10px] font-mono text-gray-400 flex flex-col gap-1 border border-white/5 pointer-events-none">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-mouse text-[#cff245]"></i>
+            <span>Levé tlačítko: Rotace</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="bi bi-arrows-move text-[#cff245]"></i>
+            <span>Pravé tlačítko / Shift: Posun</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="bi bi-zoom-in text-[#cff245]"></i>
+            <span>Kolečko myši: Přiblížení</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <!-- Application Logic -->
+  <script type="module" src="/js/models.js?v=2"></script>
+</body>
+</html>
