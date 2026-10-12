@@ -1,6 +1,6 @@
 [
   {
-    "id": "holesovska",
+    "id": "5c19c3ec-d058-4878-88cf-656b831957c6",
     "title": "Holešovská",
     "location": "Objekt a terén",
     "fullTitle": "Holešovská",
@@ -13,7 +13,7 @@
     "url": "https://data.drnt.cz/web/models/Holeovsk-9-18-2026-textured_model.glb"
   },
   {
-    "id": "husova",
+    "id": "5e23a875-9338-4e4e-87be-2f2bb7ec8bc3",
     "title": "Husova",
     "location": "Kutná Hora",
     "fullTitle": "Husova, Kutná Hora",
@@ -24,5 +24,19 @@
     "up": "z",
     "isNew": false,
     "url": "https://data.drnt.cz/web/models/web/models/Husova-9-15-2026-textured_model.glb"
+  },
+  {
+    "id": "92abb6a4-ac96-4377-8054-782a163d07b0",
+    "title": "Husova",
+    "location": "Kutná Hora",
+    "fullTitle": "Husova, Kutná Hora",
+    "date": "4. 10. 2026",
+    "size": "75.9 MB",
+    "format": "Draco GLB",
+    "method": "Letecká fotogrammetrie",
+    "up": "z",
+    "isNew": false,
+    "url": "https://data.drnt.cz/web/models/web/models/Husova-10-4-2026-textured_model.glb"
   }
+
 ]
