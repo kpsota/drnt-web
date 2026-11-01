@@ -1,0 +1,42 @@
+# Dronaut
+
+> Dronaut (drnt.cz) je česká firma zaměřená na mapování dronem a zpracování leteckých dat. Dodává ortofoto, 3D modely a mračna bodů, výpočty kubatur a časosběr s centimetrovou přesností pro stavebnictví, developery, samosprávy, energetiku, těžbu a zemědělství. Sídlí ve Zlíně a pracuje po celé České republice.
+
+Web je jednostránkový (česky), sekce jsou dostupné přes kotvy. Výstupy dodáváme ve standardních souřadnicových systémech kompatibilních s GIS, CAD a BIM (např. GeoTIFF, DXF, SHP, OBJ, LAS). Lety provádíme s pilotními licencemi pro specifickou kategorii v souladu s předpisy ÚCL.
+
+Kontakt: info@drnt.cz, +420 731 456 272
+
+## Služby
+
+- [Ortofoto a mapy](https://drnt.cz/#sluzby): Georeferencované ortofotomapy s deklarovanou přesností jako podklad pro projekci, analýzy a prezentace. Doplňkově analýza zdraví rostlin (vitalita porostu) a kontrola sečení luk a polí.
+- [3D modely a mračna bodů](https://drnt.cz/#sluzby): Detailní 3D modely (digitální dvojčata) staveb, objektů a terénu pro vizualizace, posouzení stavu budov a strukturální analýzy.
+- [Kubatury a objemy](https://drnt.cz/#sluzby): Výpočet objemů skládek, zemin a sypkých materiálů a sledování úbytku či přírůstku opakovaným snímkováním. Pro stavebnictví, těžbu a logistiku.
+- [Časosběr staveb](https://drnt.cz/#sluzby): Pravidelné snímkování průběhu projektu (video, foto, tematické mapy) od zahájení po kolaudaci; kontrola investic a archivace postupu.
+- [Krizový management](https://drnt.cz/#sluzby): Rychlé nasazení dronů při povodních a mimořádných událostech, monitoring vodních toků a dopravy, analýza průjezdnosti pro složky IZS.
+- [Foto a video](https://drnt.cz/#sluzby): Letecké fotografie a videa pro web, sociální sítě, marketing a realitní makléře.
+
+## O nás
+
+- [Tým](https://drnt.cz/#onas): Propojujeme bezpilotní systémy, geoinformatiku a moderní IT. Ondřej Slavík – Business Development & Chief Pilot (komunikace s klienty, návrh řešení, letecké operace). Karel Psota – Chief Data Officer (geoinformatika, data engineering, metodická správnost výstupů a integrace do systémů klienta).
+
+## Reference
+
+- [Vybrané projekty](https://drnt.cz/#reference): Přehled realizovaných zakázek:
+  - Halda Jan Šverma, Ostrava (ekologie a sanace, 2025): výškový profil, polohopis a ortofoto pro rekultivaci a tréninkové plochy HZS.
+  - Dálnice D55 Babice – Staré Město (infrastruktura, 2025): ortofotomapa pro dokumentaci skutečného provedení stavby.
+  - Silnice I/57 Semetín – Bystřička (infrastruktura, 2025): průběžné zaměřování zemního tělesa, výškový profil, ortofoto a kubatury.
+  - Voda a Kanalizace – vodárenské objekty (Hřivínův Újezd, Lukoveček, Zlín – Jižní Svahy): ortofoto a 3D model pro technické posouzení.
+  - Průmyslový objekt Malenovice u Zlína (průmysl a energetika, 2024): zaměření střechy, ortofoto a 3D model pro návrh fotovoltaiky.
+  - Projekce a architektura – soukromé objekty a pozemky: ortofoto, polohopis a výškopis pro projektanty a architekty.
+  - Suchý důl, Zlín (odpadové hospodářství): průběžné zaměřování skládky a pravidelný výpočet kubatur.
+  - Sídliště Nové Malenovice, Zlín (časosběr, od 2025): pravidelné snímkování z totožných pozic a časosběrné video výstavby.
+
+## Případové studie
+
+- [Sanace haldy Jan Šverma, Ostrava](https://drnt.cz/): UAV fotogrammetrie s RTK a termální inspekcí doutnajícího odvalu. Data naměřena za 1 letový den a dodána do 48 hodin; náklady nižší o více než 65 % oproti pozemnímu zaměření (běžně 2–3 týdny), bez rizika pro geodety.
+- [FVE projekt Malenovice](https://drnt.cz/): 3D model členité střechy průmyslové haly pro rozmístění fotovoltaických panelů. Model a polohopis dodány do 3 hodin od náletu (místo cca 2 dnů), bez práce ve výškách, výstupy importovatelné do CAD/BIM (.dxf, .dwg, .obj, .las).
+
+## Kontakt
+
+- [Kontakt](https://drnt.cz/#kontakt): E-mail info@drnt.cz, telefon +420 731 456 272. Rádi ukážeme ukázky dat a navrhneme metodiku pro váš projekt. Specializace: mapování a 3D modelování, inspekce a technická kontrola, zemědělství a monitoring, krizový management, foto a video z dronu.
+
