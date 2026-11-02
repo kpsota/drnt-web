@@ -17,7 +17,7 @@
         "Přesná data. Lepší rozhodnutí.": "Precise data. Better decisions.",
         "Poptat zaměření": "Request a survey",
         "Ukázky prací": "See our work",
-        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavebnictví, developery, samosprávy, energetiku nebo zemědělství. Přesná data pro lepší rozhodnutí.": 
+        "Ortofoto, 3D modely, kubatury a časosběr pořízené dronem s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavebnictví, developery, samosprávy, energetiku nebo zemědělství. Přesná data pro lepší rozhodnutí.": 
           "Orthophotos, 3D models, volumetrics and timelapse with centimeter accuracy<br class=\"hidden md:inline\">\n          for construction, developers, municipalities, energy or agriculture. Precise data for better decisions.",
         "Přesná data.": "Precise data.",
         "Lepší rozhodnutí.": "Better decisions.",
@@ -32,7 +32,7 @@
         "3D výstupy": "3D outputs",
         "Ortofoto, 3D modely, mračna bodů a další výstupy na míru.": "Orthophotos, 3D models, point clouds, and other custom outputs.",
         "Ortofoto": "Orthophoto",
-        "Vytváříme georeferencované ortofotomapy s deklarovanou přesností. Díky leteckým snímkům z našich dronů získáte nezkreslený a věrný obraz sledovaného území. Výsledná data jsou ideálním podkladem pro projekční práce, hloubkové analýzy i prezentace. Vysoké rozlišení vám zajistí detailní podklad pro každé strategické rozhodnutí.":
+        "Vytváříme georeferencované ortofotomapy s deklarovanou přesností. Díky leteckým snímkům pořízeným dronem získáte nezkreslený a věrný obraz sledovaného území. Výsledná data jsou ideálním podkladem pro projekční práce, hloubkové analýzy i prezentace. Vysoké rozlišení vám zajistí detailní podklad pro každé strategické rozhodnutí.":
           "We create georeferenced orthophotomaps with declared accuracy. Thanks to aerial imagery from our drones, you obtain an undistorted and true image of the monitored area. The resulting data is ideal for design work, in-depth analysis, and presentations. High resolution ensures a detailed basis for every strategic decision.",
         "3D Modely": "3D Models",
         "Tvoříme detailní 3D modely objektů, které přesně zachycují jejich tvar, strukturu i výškové poměry. Jsou nepostradatelné pro vizualizace, posuzování aktuálního stavu budov nebo vzdálenostní a strukturální analýzy. Získejte realistický digitální dvojče svého objektu, které si prohlédnete z libovolného úhlu.":
@@ -336,7 +336,7 @@
         "Přesná data. Lepší rozhodnutí.": "Präzise Daten. Bessere Entscheidungen.",
         "Poptat zaměření": "Vermessung anfragen",
         "Ukázky prací": "Unsere Referenzen",
-        "Ortofoto, 3D modely, kubatury a časosběr s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavebnictví, developery, samosprávy, energetiku nebo zemědělství. Přesná data pro lepší rozhodnutí.": 
+        "Ortofoto, 3D modely, kubatury a časosběr pořízené dronem s centimetrovou přesností<br class=\"hidden md:inline\">\n          pro stavebnictví, developery, samosprávy, energetiku nebo zemědělství. Přesná data pro lepší rozhodnutí.": 
           "Orthofotos, 3D-Modelle, Kubaturen und Zeitraffer mit Zentimetergenauigkeit<br class=\"hidden md:inline\">\n          für Bauwesen, Bauträger, Kommunen, Energie oder Landwirtschaft. Präzise Daten für bessere Entscheidungen.",
         "Přesná data.": "Präzise Daten.",
         "Lepší rozhodnutí.": "Bessere Entscheidungen.",
@@ -351,7 +351,7 @@
         "3D výstupy": "3D-Ausgaben",
         "Ortofoto, 3D modely, mračna bodů a další výstupy na míru.": "Orthofotos, 3D-Modelle, Punktwolken und andere maßgeschneiderte Ausgaben.",
         "Ortofoto": "Orthofoto",
-        "Vytváříme georeferencované ortofotomapy s deklarovanou přesností. Díky leteckým snímkům z našich dronů získáte nezkreslený a věrný obraz sledovaného území. Výsledná data jsou ideálním podkladem pro projekční práce, hloubkové analýzy i prezentace. Vysoké rozlišení vám zajistí detailní podklad pro každé strategické rozhodnutí.":
+        "Vytváříme georeferencované ortofotomapy s deklarovanou přesností. Díky leteckým snímkům pořízeným dronem získáte nezkreslený a věrný obraz sledovaného území. Výsledná data jsou ideálním podkladem pro projekční práce, hloubkové analýzy i prezentace. Vysoké rozlišení vám zajistí detailní podklad pro každé strategické rozhodnutí.":
           "Wir erstellen georeferenzierte Orthofotokarten mit deklarierter Genauigkeit. Dank der Luftaufnahmen unserer Drohnen erhalten Sie ein unverzerrtes und getreues Bild des beobachteten Gebiets. Die resultierenden Daten sind eine ideale Grundlage für Planungsarbeiten, Tiefenanalysen und Präsentationen. Hohe Auflösung sichert Ihnen eine detaillierte Basis für jede strategische Entscheidung.",
         "3D Modely": "3D-Modelle",
         "Tvoříme detailní 3D modely objektů, které přesně zachycují jejich tvar, strukturu i výškové poměry. Jsou nepostradatelné pro vizualizace, posuzování aktuálního stavu budov nebo vzdálenostní a strukturální analýzy. Získejte realistický digitální dvojče svého objektu, které si prohlédnete z libovolného úhlu.":
