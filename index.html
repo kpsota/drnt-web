@@ -239,7 +239,7 @@
               <line x1="15" y1="6" x2="15" y2="21"></line>
             </svg>
           </div>
-          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">Ortofoto a mapy</h3>
+          <p class="text-white font-semibold text-sm mb-0.5 mt-1.5">Ortofoto a mapy</p>
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Aktuální georeferencované mapy území s centimetrovou přesností.</p>
         </a>
         <!-- Col 2 -->
@@ -261,7 +261,7 @@
               <line x1="17" y1="19" x2="21" y2="19"></line>
             </svg>
           </div>
-          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">Kubatury a objemy</h3>
+          <p class="text-white font-semibold text-sm mb-0.5 mt-1.5">Kubatury a objemy</p>
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Výpočet objemů skládek, zemin a materiálu, sledování změn v čase.</p>
         </a>
         <!-- Col 3 -->
@@ -275,7 +275,7 @@
               <line x1="1" y1="12" x2="23" y2="12"></line>
             </svg>
           </div>
-          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">3D modely a mračna bodů</h3>
+          <p class="text-white font-semibold text-sm mb-0.5 mt-1.5">3D modely a mračna bodů</p>
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Detailní modely staveb a terénu pro projekci a dokumentaci.</p>
         </a>
         <!-- Col 4 -->
@@ -287,7 +287,7 @@
               <line x1="12" y1="22.08" x2="12" y2="12"></line>
             </svg>
           </div>
-          <h3 class="text-white font-semibold text-sm mb-0.5 mt-1.5">Časosběr staveb</h3>
+          <p class="text-white font-semibold text-sm mb-0.5 mt-1.5">Časosběr staveb</p>
           <p class="text-gray-400 text-[11px] max-w-xs leading-relaxed">Pravidelné snímkování průběhu projektu od prvního kopnutí po kolaudaci.</p>
         </a>
       </div>
@@ -2011,7 +2011,7 @@
   <div id="lightbox">
     <button id="lb-close" onclick="closeLightbox()" title="Zavřít">&times;</button>
     <button id="lb-prev" onclick="lbNav(-1)">&#8249;</button>
-    <img id="lb-img" src="" alt="Zvětšený náhled fotografie">
+    <img id="lb-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Zvětšený náhled fotografie">
     <button id="lb-next" onclick="lbNav(1)">&#8250;</button>
   </div>
 
@@ -2058,46 +2058,46 @@
           
           <!-- Card 1 -->
           <button onclick="setCompareScenario('house', 'images/photos/compare_garden.png', 6)" id="btn-scen-house" class="scen-btn text-left p-4 rounded-2xl bg-[#cff245]/5 border border-[#cff245]/80 transition duration-200 hover:bg-[#cff245]/10 flex flex-col gap-1.5">
-            <div class="flex items-center justify-between">
+            <span class="flex items-center justify-between">
               <span class="text-xs font-bold text-white compare-scen-house-title">Soukromý pozemek</span>
               <span class="text-[9px] bg-[#cff245] text-black font-bold px-1.5 py-0.5 rounded-md font-mono">35m</span>
-            </div>
+            </span>
             <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-house-desc">Zahrada rodinného domu, maximální detaily povrchu.</span>
           </button>
 
           <!-- Card 2 -->
           <button onclick="setCompareScenario('ind', 'images/photos/compare_industrial.png', 4)" id="btn-scen-ind" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
-            <div class="flex items-center justify-between">
+            <span class="flex items-center justify-between">
               <span class="text-xs font-bold text-white compare-scen-ind-title">Průmyslový areál</span>
               <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">60m</span>
-            </div>
+            </span>
             <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-ind-desc">Zaměření objektů, skladů a zpevněných ploch.</span>
           </button>
 
           <!-- Card 3 -->
           <button onclick="setCompareScenario('golf', 'images/photos/compare_golf.png', 3)" id="btn-scen-golf" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
-            <div class="flex items-center justify-between">
+            <span class="flex items-center justify-between">
               <span class="text-xs font-bold text-white compare-scen-golf-title">Golfové hřiště</span>
               <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">100m</span>
-            </div>
+            </span>
             <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-golf-desc">Velkoplošné mapování terénu a vegetace.</span>
           </button>
 
           <!-- Card 4 -->
           <button onclick="setCompareScenario('const', 'images/photos/compare_construction.png', 4.5)" id="btn-scen-const" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
-            <div class="flex items-center justify-between">
+            <span class="flex items-center justify-between">
               <span class="text-xs font-bold text-white compare-scen-const-title">Staveniště bytového domu</span>
               <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">80m</span>
-            </div>
+            </span>
             <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-const-desc">Zaměření stavební jámy, základů a postupů prací.</span>
           </button>
 
           <!-- Card 5 -->
           <button onclick="setCompareScenario('quarry', 'images/photos/compare_quarry_v2.png', 3.5)" id="btn-scen-quarry" class="scen-btn text-left p-4 rounded-2xl bg-white/[0.01] border border-white/5 transition duration-200 hover:border-white/20 hover:bg-white/[0.04] flex flex-col gap-1.5">
-            <div class="flex items-center justify-between">
+            <span class="flex items-center justify-between">
               <span class="text-xs font-bold text-white compare-scen-quarry-title">Povrchový lom</span>
               <span class="text-[9px] bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded-md font-mono">120m</span>
-            </div>
+            </span>
             <span class="text-[10px] text-gray-400 leading-relaxed compare-scen-quarry-desc">Objemová analýza, mapování terénu a lomových stěn.</span>
           </button>
         </div>
