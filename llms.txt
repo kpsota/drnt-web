@@ -1,6 +1,6 @@
 # Dronaut
 
-> Dronaut (drnt.cz) je česká firma zaměřená na mapování dronem a zpracování leteckých dat. Dodává ortofoto, 3D modely a mračna bodů, výpočty kubatur a časosběr s centimetrovou přesností pro stavebnictví, developery, samosprávy, energetiku, vodohospodářství, životní prostředí, těžbu a zemědělství. Výstupy připravuje od dat pro CAD a GIS až po přehledné reporty pro vedení a rozhodování. Sídlí ve Zlíně a pracuje po celé České republice.
+> Dronaut (DRNT, drnt.cz) je česká firma zaměřená na mapování dronem a zpracování leteckých dat. Dodává ortofoto, 3D modely a mračna bodů, výpočty kubatur a časosběr s centimetrovou přesností pro stavebnictví, developery, samosprávy, energetiku, vodohospodářství, životní prostředí, těžbu a zemědělství. Výstupy připravuje od dat pro CAD a GIS až po přehledné reporty pro vedení a rozhodování. Sídlí ve Zlíně a pracuje po celé České republice.
 
 Web je jednostránkový (česky), sekce jsou dostupné přes kotvy. Výstupy dodáváme ve standardních souřadnicových systémech kompatibilních s GIS, CAD a BIM (např. GeoTIFF, DXF, SHP, OBJ, LAS). Lety provádíme s pilotními licencemi pro specifickou kategorii v souladu s předpisy ÚCL.
 
